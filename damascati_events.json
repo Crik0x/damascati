@@ -1,0 +1,216 @@
+{
+  "club": "Il Salotto dei Damascati",
+  "last_updated": "2026-05-12T10:00:00",
+  "version": "1.0",
+
+  "cities": [
+    {
+      "id": "roma",
+      "label": "Roma",
+      "active": true,
+      "address": "Location comunicata agli iscritti",
+      "postal_code": "00100",
+      "latitude": null,
+      "longitude": null,
+      "maps_url": "",
+      "phone": "+393203194044",
+      "email": "ciao@damascati.it",
+      "hub_url": "/incontri/roma"
+    }
+  ],
+
+  "hosts": [
+    {
+      "id": "nicolaj_dortona",
+      "name": "Nicolaj D'Ortona",
+      "role": "Fondatore",
+      "bio_short": "Fondatore del Salotto dei Damascati e di Vatican Privé.",
+      "image": "https://www.vaticanprive.com/fondatore.jpg",
+      "url": "https://damascati.it/chi-siamo"
+    }
+  ],
+
+  "formats": [
+    {
+      "format_id": "salotto_damascati",
+      "base_title": "Il Salotto dei Damascati",
+      "category": ["socialita"],
+      "recurrence": "Ogni venerdì",
+      "cities_available": ["roma"],
+      "event_type": "recurring",
+      "audience": "public",
+      "min_membership_level": null,
+      "duration_minutes": 150,
+      "dress_code": "smart casual",
+      "language": "it",
+      "schema_type": "Event",
+      "tags": ["cultura", "conversazione", "community"],
+      "description_short": "Un salotto di conversazione raffinata tra persone che sanno ascoltare e sorprendere.",
+      "description_long": "Il Salotto dei Damascati è il cuore del movimento. Ogni venerdì, una stanza, una conversazione, persone scelte. La cultura come pretesto per riconoscersi davvero.",
+      "image_url": "",
+      "pricing": {
+        "free_with_booking": true,
+        "public": null
+      }
+    },
+    {
+      "format_id": "conversazione",
+      "base_title": "La Conversazione",
+      "category": ["socialita"],
+      "recurrence": "Una volta al mese",
+      "cities_available": ["roma"],
+      "event_type": "recurring",
+      "audience": "public",
+      "min_membership_level": null,
+      "duration_minutes": 120,
+      "dress_code": "smart casual",
+      "language": "it",
+      "schema_type": "Event",
+      "tags": ["filosofia", "conversazione", "riflessione"],
+      "description_short": "Un tema, un testo, una stanza. La conversazione come arte.",
+      "description_long": "Ogni mese, il Salotto sceglie un tema e un testo. Non si dibatte — si conversa. La differenza è tutto.",
+      "image_url": "",
+      "pricing": {
+        "free_with_booking": true,
+        "public": null
+      }
+    },
+    {
+      "format_id": "gran_salotto",
+      "base_title": "Il Gran Salotto",
+      "category": ["socialita"],
+      "recurrence": "Trimestrale",
+      "cities_available": ["roma"],
+      "event_type": "occasional",
+      "audience": "public",
+      "min_membership_level": null,
+      "duration_minutes": 360,
+      "dress_code": "elegante",
+      "language": "it",
+      "schema_type": "Event",
+      "tags": ["serata", "cultura", "comunità", "gala"],
+      "description_short": "La serata del Salotto. Una volta al trimestre, il movimento si riunisce in grande stile.",
+      "description_long": "Il Gran Salotto è la serata dell'anno. Iscritti da tutta Italia, un luogo straordinario, una cena e una conversazione che si ricordano.",
+      "image_url": "",
+      "pricing": {
+        "free_with_booking": false,
+        "public": null
+      }
+    }
+  ],
+
+  "events": [
+    {
+      "id": "dsc_001",
+      "format_id": "salotto_damascati",
+      "city": "roma",
+      "edition": 1,
+      "title": "Il Salotto dei Damascati",
+      "date_start": "2026-05-15T20:00:00",
+      "date_end":   "2026-05-15T22:30:00",
+      "visibility": "public",
+      "published": true,
+      "featured": true,
+      "language": "it",
+      "host": "nicolaj_dortona",
+      "co_host": "",
+      "location": {
+        "name": "Roma — Location comunicata agli iscritti",
+        "address": "Roma",
+        "city": "roma",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": ""
+      },
+      "description_override": "",
+      "capacity": {
+        "total": 20,
+        "available": 18,
+        "waitlist": 0
+      },
+      "registration": {
+        "required": true,
+        "type": "whatsapp",
+        "url": "https://api.whatsapp.com/send/?phone=393203194044&text=Salve%2C+vorrei+partecipare+al+prossimo+Salotto+dei+Damascati.+Mi+chiamo+",
+        "deadline_hours_before": 24,
+        "waitlist_enabled": true
+      },
+      "pricing_event": {
+        "free_with_booking": true,
+        "public": null
+      },
+      "media": {
+        "image_card": "https://static.tildacdn.com/tild3761-6537-4339-b361-323437666632/Salotto_dei_Damascat.jpg",
+        "image_hero": "",
+        "video_url": ""
+      },
+      "seo": {
+        "title_override": "",
+        "description_override": "",
+        "slug_override": ""
+      },
+      "status": "available",
+      "_meta": {
+        "created_at": "2026-05-12T10:00:00",
+        "updated_at": "2026-05-12T10:00:00",
+        "notes_internal": "Prima edizione pubblica"
+      }
+    },
+    {
+      "id": "dsc_002",
+      "format_id": "salotto_damascati",
+      "city": "roma",
+      "edition": 2,
+      "title": "Il Salotto dei Damascati",
+      "date_start": "2026-05-22T20:00:00",
+      "date_end":   "2026-05-22T22:30:00",
+      "visibility": "public",
+      "published": true,
+      "featured": false,
+      "language": "it",
+      "host": "nicolaj_dortona",
+      "co_host": "",
+      "location": {
+        "name": "Roma — Location comunicata agli iscritti",
+        "address": "Roma",
+        "city": "roma",
+        "latitude": null,
+        "longitude": null,
+        "maps_url": ""
+      },
+      "description_override": "",
+      "capacity": {
+        "total": 20,
+        "available": 20,
+        "waitlist": 0
+      },
+      "registration": {
+        "required": true,
+        "type": "whatsapp",
+        "url": "https://api.whatsapp.com/send/?phone=393203194044&text=Salve%2C+vorrei+partecipare+al+prossimo+Salotto+dei+Damascati.+Mi+chiamo+",
+        "deadline_hours_before": 24,
+        "waitlist_enabled": true
+      },
+      "pricing_event": {
+        "free_with_booking": true,
+        "public": null
+      },
+      "media": {
+        "image_card": "https://static.tildacdn.com/tild3761-6537-4339-b361-323437666632/Salotto_dei_Damascat.jpg",
+        "image_hero": "",
+        "video_url": ""
+      },
+      "seo": {
+        "title_override": "",
+        "description_override": "",
+        "slug_override": ""
+      },
+      "status": "available",
+      "_meta": {
+        "created_at": "2026-05-12T10:00:00",
+        "updated_at": "2026-05-12T10:00:00",
+        "notes_internal": ""
+      }
+    }
+  ]
+}
