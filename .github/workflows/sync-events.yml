@@ -1,21 +1,9 @@
-name: Sync Supabase → JSON
+name: Sync Supabase -> JSON
 
 on:
   schedule:
-    - cron: '0 * * * *'   # ogni ora
-  workflow_dispatch:        # trigger manuale da GitHub
-
-jobs:
-  sync:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4name: Sync Supabase → JSON
-
-on:
-  schedule:
-    - cron: '0 * * * *'   # ogni ora
-  workflow_dispatch:        # trigger manuale da GitHub
+    - cron: '0 * * * *'
+  workflow_dispatch:
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
@@ -43,32 +31,10 @@ jobs:
 
       - name: Commit and push if changed
         run: |
-          git config user.name  "damascati-bot"
+          git config user.name "damascati-bot"
           git config user.email "bot@damascati.it"
           git add damascati_events.json events_archive.json
           git diff --staged --quiet && echo "Nessuna modifica" && exit 0
-          git commit -m "sync: aggiorna eventi da Supabase [$(date '+%Y-%m-%d %H:%M')]"
+          git commit -m "sync: aggiorna eventi [$(date '+%Y-%m-%d %H:%M')]"
           git pull --rebase origin main
           git push origin main
-
-        with:
-          token: ${{ secrets.GH_PAT }}
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-
-      - name: Sync Supabase to JSON
-        env:
-          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
-        run: node scripts/sync-events.js
-
-      - name: Commit and push if changed
-        run: |
-          git config user.name  "damascati-bot"
-          git config user.email "bot@damascati.it"
-          git add damascati_events.json events_archive.json
-          git diff --staged --quiet || git commit -m "sync: aggiorna eventi da Supabase [$(date '+%Y-%m-%d %H:%M')]"
-          git push
