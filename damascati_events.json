@@ -1,948 +1,106 @@
 {
   "club": "Il Salotto dei Damascati",
-  "last_updated": "2026-05-16T00:00:00",
+  "last_updated": "2026-05-16T21:20:39.080Z",
   "version": "2.0",
-  "cities": [
-    {
-      "id": "roma",
-      "label": "Roma",
-      "active": true,
-      "address": "Via della Conciliazione 44",
-      "postal_code": "00193",
-      "latitude": 41.90257025285699,
-      "longitude": 12.460015758530925,
-      "maps_url": "https://maps.app.goo.gl/7onYiX7ZFN8Jfj2bA",
-      "phone": "+393203194044",
-      "email": "salotto@damascati.it",
-      "hub_url": "/incontri/roma"
-    },
-    {
-      "id": "milano",
-      "label": "Milano",
-      "active": false,
-      "address": "",
-      "postal_code": "",
-      "latitude": null,
-      "longitude": null,
-      "maps_url": "",
-      "phone": "",
-      "email": "salotto@damascati.it",
-      "hub_url": "/incontri/milano"
-    }
-  ],
-  "hosts": [
-    {
-      "id": "nicolaj_dortona",
-      "name": "Nicolaj D'Ortona",
-      "role": "Fondatore",
-      "bio_short": "Attore, Produttore, Product Manager | Turnaround & 0-to-1 Operator | Launching & Scaling Products to Revenue, fondatore di Vatican Privé.",
-      "image": "https://www.vaticanprive.com/fondatore.jpg",
-      "url": "https://damascati.it/chi-siamo"
-    }
-  ],
   "pricing_tiers": {
     "osservatore": {
       "label": "Osservatore",
-      "level": 1,
-      "price_annual": 250,
-      "discount": 0,
-      "credits_rate": 0.02,
-      "credits_welcome": 0,
-      "credits_welcome_expiry_days": null
+      "description": "Ingresso standard"
     },
     "custode": {
       "label": "Custode",
-      "level": 2,
-      "price_annual": 600,
-      "discount": 0.15,
-      "credits_rate": 0.05,
-      "credits_welcome": 50,
-      "credits_welcome_expiry_days": 90
+      "description": "Sconto 15% su tutti gli eventi"
     },
     "damascato": {
       "label": "Damascato",
-      "level": 3,
-      "price_annual": 960,
-      "discount": 0.33,
-      "credits_rate": 0.1,
-      "credits_welcome": 150,
-      "credits_welcome_expiry_days": 90
+      "description": "Sconto 33% su tutti gli eventi"
     }
   },
-  "categories": [
+  "categories": [],
+  "formats": [],
+  "hosts": [
     {
-      "id": "socialita",
-      "label": "Socialità & Cultura",
-      "icon": "✦"
-    },
-    {
-      "id": "gioco",
-      "label": "Gioco & Strategia",
-      "icon": "✦"
-    },
-    {
-      "id": "business",
-      "label": "Business & Mindset",
-      "icon": "✦"
-    },
-    {
-      "id": "gastronomia",
-      "label": "Gastronomia",
-      "icon": "✦"
-    },
-    {
-      "id": "escursione",
-      "label": "Fuori Roma",
-      "icon": "✦"
-    }
-  ],
-  "formats": [
-    {
-      "format_id": "salotto_damascati",
-      "base_title": "Il Salotto dei Damascati",
-      "category": [
-        "socialita"
-      ],
-      "recurrence": "Ogni venerdì",
-      "cities_available": [
-        "roma"
-      ],
-      "event_type": "recurring",
-      "audience": "public",
-      "min_membership_level": null,
-      "duration_minutes": 150,
-      "dress_code": "smart casual",
-      "language": "it",
-      "schema_type": "Event",
-      "tags": [
-        "cultura",
-        "conversazione",
-        "community"
-      ],
-      "seo": {
-        "title_template": "{title} | Il Salotto dei Damascati {city}",
-        "description_template": "{description_short} Ogni venerdì a {city}."
-      },
-      "description_short": "Un salotto di conversazione raffinata tra persone che sanno ascoltare e sorprendere.",
-      "description_long": "Il Salotto dei Damascati è il cuore pulsante del Club. Ogni venerdì, una stanza, una conversazione, persone scelte. La cultura come pretesto per conoscersi davvero.",
-      "image_url": "",
-      "pricing": {
-        "free_with_booking": true,
-        "osservatore": 0,
-        "public": null,
-        "custode": 0,
-        "damascato": 0
-      }
-    },
-    {
-      "format_id": "aperitivi_divini",
-      "base_title": "Aperitivi diVini",
-      "category": [
-        "socialita",
-        "gastronomia"
-      ],
-      "recurrence": "Ogni sabato",
-      "cities_available": [
-        "roma",
-        "milano"
-      ],
-      "event_type": "recurring",
-      "audience": "public",
-      "min_membership_level": null,
-      "duration_minutes": 150,
-      "dress_code": "smart casual",
-      "language": "it",
-      "schema_type": "Event",
-      "tags": [
-        "vino",
-        "networking",
-        "cultura"
-      ],
-      "seo": {
-        "title_template": "{title} | Il Salotto dei Damascati {city}",
-        "description_template": "{description_short} Ogni sabato a {city}."
-      },
-      "description_short": "Vini di carattere, persone di spessore. La serata fatta come si deve.",
-      "description_long": "Aperitivi diVini è il momento in cui il Club si apre al piacere puro. Selezioni di vini raccontate da chi li conosce, in compagnia di chi sa apprezzarli.",
-      "image_url": "",
-      "pricing": {
-        "free_with_booking": false,
-        "osservatore": 45,
-        "public": null,
-        "custode": 38,
-        "damascato": 30
-      }
-    },
-    {
-      "format_id": "menti_salotto",
-      "base_title": "Menti in Salotto",
-      "category": [
-        "gioco",
-        "socialita"
-      ],
-      "recurrence": "2 sabati al mese",
-      "cities_available": [
-        "roma"
-      ],
-      "event_type": "recurring",
-      "audience": "public",
-      "min_membership_level": null,
-      "duration_minutes": 210,
-      "dress_code": "smart casual",
-      "language": "it",
-      "schema_type": "Event",
-      "tags": [
-        "gioco",
-        "psicologia",
-        "social deduction"
-      ],
-      "seo": {
-        "title_template": "{title} | Il Salotto dei Damascati {city}",
-        "description_template": "{description_short} A {city}, Il Salotto dei Damascati."
-      },
-      "description_short": "Un gioco di intelligenza sociale dove le regole non si dicono, si scoprono.",
-      "description_long": "Menti in Salotto è una serata di conversazione immersiva. Alcuni devono mentire per nascondere le proprie tracce, altri guidare le menti per incastrare gli assassini. Il gioco psicologico e sociale più coinvolgente del Club — si rivivono storie di complotti veri.",
-      "image_url": "",
-      "pricing": {
-        "free_with_booking": false,
-        "osservatore": 80,
-        "public": null,
-        "custode": 68,
-        "damascato": 54
-      }
-    },
-    {
-      "format_id": "scacchiera_re",
-      "base_title": "La Scacchiera dei Re",
-      "category": [
-        "gioco",
-        "business"
-      ],
-      "recurrence": "4 sessioni al mese",
-      "cities_available": [
-        "roma"
-      ],
-      "event_type": "recurring",
-      "audience": "members",
-      "min_membership_level": "osservatore",
-      "duration_minutes": 90,
-      "dress_code": "casual",
-      "language": "it",
-      "schema_type": "Event",
-      "tags": [
-        "scacchi",
-        "strategia",
-        "mindset"
-      ],
-      "seo": {
-        "title_template": "{title} | Il Salotto dei Damascati {city}",
-        "description_template": "{description_short} A {city}, Il Salotto dei Damascati."
-      },
-      "description_short": "Gli scacchi come metafora del pensiero strategico applicato al business e alla vita.",
-      "description_long": "La Scacchiera dei Re non è un torneo. È un laboratorio di pensiero. Ogni partita è una conversazione tra due visioni del mondo. Chi gioca, impara a decidere. Venduto come pack da 4 sessioni mensili.",
-      "image_url": "",
-      "pack": {
-        "sessions_per_month": 4,
-        "pack_discount": 0.1
-      },
-      "pricing": {
-        "free_with_booking": false,
-        "osservatore": 20,
-        "public": null,
-        "custode": 17,
-        "damascato": 14
-      }
-    },
-    {
-      "format_id": "conclave",
-      "base_title": "Il Conclave",
-      "category": [
-        "business"
-      ],
-      "recurrence": "Quarta domenica del mese",
-      "cities_available": [
-        "roma",
-        "milano"
-      ],
-      "event_type": "recurring",
-      "audience": "members",
-      "min_membership_level": "osservatore",
-      "duration_minutes": 540,
-      "dress_code": "business casual",
-      "language": "it",
-      "schema_type": "Event",
-      "tags": [
-        "mastermind",
-        "imprenditori",
-        "networking",
-        "strategia"
-      ],
-      "seo": {
-        "title_template": "{title} | Il Salotto dei Damascati {city}",
-        "description_template": "{description_short} Ogni mese a {city}."
-      },
-      "description_short": "Una riunione riservata tra imprenditori e menti che costruiscono. Non si parla di lavoro — si fa.",
-      "description_long": "Il Conclave è il mastermind di Vatican Privé. 6 ore di networking, analisi gestionale, mindset, visione e strategia. Imprenditori, professionisti e pensatori si riuniscono per ragionare ad alta voce sui propri progetti. Struttura: presentazione del tema, analisi collettiva, sintesi actionable, cena finale.",
-      "image_url": "",
-      "pricing": {
-        "free_with_booking": false,
-        "osservatore": 250,
-        "public": null,
-        "custode": 212,
-        "damascato": 168
-      }
-    },
-    {
-      "format_id": "cena_membri",
-      "base_title": "Cena dei Membri",
-      "category": [
-        "socialita",
-        "gastronomia"
-      ],
-      "recurrence": "1 volta al mese",
-      "cities_available": [
-        "roma"
-      ],
-      "event_type": "recurring",
-      "audience": "members",
-      "min_membership_level": "osservatore",
-      "duration_minutes": 210,
-      "dress_code": "smart casual",
-      "language": "it",
-      "schema_type": "Event",
-      "tags": [
-        "cena",
-        "community",
-        "soci"
-      ],
-      "seo": {
-        "title_template": "{title} | Il Salotto dei Damascati {city}",
-        "description_template": "{description_short} Riservata ai soci Il Salotto dei Damascati."
-      },
-      "description_short": "La cena del Club. Ogni mese, la tavola apparecchiata per chi appartiene davvero.",
-      "description_long": "La Cena dei Membri è il rito mensile della comunità Vatican Privé. Non si vende, non si promuove — si guadagna con la membership. Rafforza il senso di appartenenza e premia la fedeltà alla comunità.",
-      "image_url": "",
-      "pricing": {
-        "free_with_booking": false,
-        "osservatore": 120,
-        "public": null,
-        "custode": 102,
-        "damascato": 80
-      }
-    },
-    {
-      "format_id": "fuori_mura",
-      "base_title": "Fuori le Mura",
-      "category": [
-        "escursione",
-        "socialita"
-      ],
-      "recurrence": "1 volta al mese",
-      "cities_available": [
-        "roma"
-      ],
-      "event_type": "recurring",
-      "audience": "public",
-      "min_membership_level": null,
-      "duration_minutes": null,
-      "dress_code": "casual",
-      "language": "it",
-      "schema_type": "Event",
-      "tags": [
-        "escursione",
-        "borghi",
-        "natura",
-        "community"
-      ],
-      "seo": {
-        "title_template": "{title} | Il Salotto dei Damascati {city}",
-        "description_template": "{description_short} Con Il Salotto dei Damascati."
-      },
-      "description_short": "Quando Roma non basta. Un'uscita fuori porta tra luoghi, sapori e persone inaspettate.",
-      "description_long": "Fuori le Mura porta la comunità Vatican Privé oltre i confini della città. Ogni edizione è una destinazione diversa: borghi, cantine, palazzi privati, paesaggi dimenticati. Il format che trasforma i soci in amici.",
-      "image_url": "",
-      "price_variable": true,
-      "pricing": {
-        "free_with_booking": false,
-        "osservatore": {
-          "min": 180,
-          "max": 300
-        },
-        "public": null,
-        "custode": {
-          "min": 155,
-          "max": 255
-        },
-        "damascato": {
-          "min": 120,
-          "max": 201
-        }
-      }
-    },
-    {
-      "format_id": "verba_manent",
-      "base_title": "Verba Manent",
-      "category": [
-        "socialita"
-      ],
-      "recurrence": "1 volta al mese",
-      "cities_available": [
-        "roma"
-      ],
-      "event_type": "recurring",
-      "audience": "public",
-      "min_membership_level": null,
-      "duration_minutes": 180,
-      "dress_code": "smart casual",
-      "language": "it",
-      "schema_type": "Event",
-      "tags": [
-        "letteratura",
-        "teatro",
-        "cultura",
-        "apericena"
-      ],
-      "seo": {
-        "title_template": "{title} | Il Salotto dei Damascati {city}",
-        "description_template": "{description_short} Ogni mese a {city}."
-      },
-      "description_short": "Un attore legge, la musica sostiene, il pubblico entra nel testo e lo vive.",
-      "description_long": "Un attore legge. La musica dal vivo sostiene. Un interprete guida. Venti minuti di spettacolo — poi la sala si apre: il pubblico entra nel testo, lo vive, lo porta nella propria vita. Segue apericena dove le conversazioni fioriscono da sole. La letteratura non si legge da soli — si vive insieme.",
-      "image_url": "",
-      "pricing": {
-        "free_with_booking": false,
-        "osservatore": 80,
-        "public": null,
-        "custode": 68,
-        "damascato": 54
-      }
-    },
-    {
-      "format_id": "cash_flow",
-      "base_title": "Cash Flow (Kiyosaki)",
-      "category": [
-        "business",
-        "gioco"
-      ],
-      "recurrence": "1 volta al mese",
-      "cities_available": [
-        "roma"
-      ],
-      "event_type": "recurring",
-      "audience": "public",
-      "min_membership_level": null,
-      "duration_minutes": 240,
-      "dress_code": "casual",
-      "language": "it",
-      "schema_type": "Event",
-      "tags": [
-        "kiyosaki",
-        "cashflow",
-        "finanza",
-        "mindset",
-        "gioco"
-      ],
-      "seo": {
-        "title_template": "{title} | Il Salotto dei Damascati {city}",
-        "description_template": "{description_short} A {city}, Il Salotto dei Damascati."
-      },
-      "description_short": "Si gioca per scoprire sé stessi. Il gioco di Kiyosaki come specchio dei propri blocchi finanziari.",
-      "description_long": "Si gioca una partita al gioco Cash Flow di Robert Kiyosaki. Ma l'obiettivo non è vincere — è scoprire sé stessi. Ogni scelta al tavolo rivela comportamenti reali: cosa ci blocca, dove ci autosabotiamo, quali trigger psicologici ci tengono fermi nella vita reale. Al termine della partita, l'analisi collettiva trasforma il gioco in uno specchio.",
-      "image_url": "",
-      "pricing": {
-        "free_with_booking": false,
-        "osservatore": 75,
-        "public": null,
-        "custode": 60,
-        "damascato": 50
-      }
-    },
-    {
-      "format_id": "business_meeting",
-      "base_title": "Business Meeting",
-      "category": [
-        "business"
-      ],
-      "recurrence": "1 volta al mese",
-      "cities_available": [
-        "roma"
-      ],
-      "event_type": "recurring",
-      "audience": "members",
-      "min_membership_level": "osservatore",
-      "duration_minutes": 120,
-      "dress_code": "business casual",
-      "language": "it",
-      "schema_type": "Event",
-      "tags": [
-        "business",
-        "networking",
-        "professionale"
-      ],
-      "seo": {
-        "title_template": "{title} | Il Salotto dei Damascati {city}",
-        "description_template": "{description_short} A {city}, Il Salotto dei Damascati."
-      },
-      "description_short": "Incontri professionali strutturati con agenda chiara e networking qualificato.",
-      "description_long": "Business Meeting è lo spazio regolare per incontri professionali con un'agenda definita e un obiettivo di networking qualificato. Format in sviluppo.",
-      "image_url": "",
-      "pricing": {
-        "free_with_booking": false,
-        "osservatore": 35,
-        "public": null,
-        "custode": 30,
-        "damascato": 24
-      }
+      "id": "nicolaj",
+      "name": "Nicolaj D'Ortona",
+      "role": "Fondatore",
+      "url": "https://damascati.it/chi-siamo",
+      "image": ""
     }
   ],
   "events": [
     {
-      "id": "evt_009",
-      "format_id": "salotto_damascati",
-      "city": "roma",
-      "edition": 2,
-      "title": "Il Salotto dei Damascati",
-      "date_start": "2026-05-22T20:00:00",
-      "date_end": "2026-05-22T23:00:00",
-      "visibility": "public",
-      "published": true,
-      "featured": false,
-      "language": "it",
-      "host": "nicolaj_dortona",
-      "co_host": "",
-      "location": {
-        "name": "Vatican Privé",
-        "address": "Via della Conciliazione 44, 00193 Roma",
-        "city": "roma",
-        "latitude": 41.90257025285699,
-        "longitude": 12.460015758530925,
-        "maps_url": "https://maps.app.goo.gl/7onYiX7ZFN8Jfj2bA"
-      },
-      "description_override": "",
-      "capacity": {
-        "total": 20,
-        "available": 20,
-        "waitlist": 0,
-        "members_reserved": 10,
-        "public_available": 10
-      },
-      "registration": {
-        "required": true,
-        "type": "whatsapp",
-        "url": "https://api.whatsapp.com/send/?phone=393515182533&text=Salve%2C+vorrei+prenotare+il+prossimo+evento+%22Salotto+dei+Damascati%22.+Ci+sono+ancora+posti+disponibili%3F+Mi+chiamo+&type=phone_number&app_absent=0",
-        "deadline_hours_before": 24,
-        "waitlist_enabled": true
-      },
-      "pricing_event": {
-        "free_with_booking": true,
-        "osservatore": 0,
-        "public": null,
-        "custode": 0,
-        "damascato": 0
-      },
-      "media": {
-        "image_card": "https://static.tildacdn.com/tild3761-6537-4339-b361-323437666632/Salotto_dei_Damascat.jpg",
-        "image_hero": "",
-        "video_url": ""
-      },
-      "seo": {
-        "title_override": "",
-        "description_override": "",
-        "slug_override": ""
-      },
-      "status": "sold_out",
-      "google_calendar_event_id": "https://calendar.app.google/LwD4fxagR68dYcpj9",
-      "_meta": {
-        "created_at": "2026-05-13T12:00:00",
-        "updated_at": "2026-05-13T13:00:00",
-        "notes_internal": "",
-        "revenue_estimated": 0,
-        "registrations_count": 0
-      }
-    },
-    {
-      "id": "evt_010",
-      "format_id": "aperitivi_divini",
-      "city": "roma",
-      "edition": 2,
-      "title": "Aperitivi diVini",
-      "date_start": "2026-05-02T20:00:00",
-      "date_end": "2026-05-02T22:30:00",
-      "visibility": "public",
-      "published": true,
-      "featured": false,
-      "language": "it",
-      "host": "nicolaj_dortona",
-      "co_host": "",
-      "location": {
-        "name": "Vatican Privé",
-        "address": "Via della Conciliazione 44, 00193 Roma",
-        "city": "roma",
-        "latitude": 41.90257025285699,
-        "longitude": 12.460015758530925,
-        "maps_url": "https://maps.app.goo.gl/7onYiX7ZFN8Jfj2bA"
-      },
-      "description_override": "",
-      "capacity": {
-        "total": 20,
-        "available": 18,
-        "waitlist": 0,
-        "members_reserved": 10,
-        "public_available": 8
-      },
-      "registration": {
-        "required": true,
-        "type": "whatsapp",
-        "url": "https://api.whatsapp.com/send/?phone=393515182533&text=Salve%2C+vorrei+prenotare+il+prossimo+evento+%22Aperitivi+diVini%22.+Ci+sono+ancora+posti+disponibili%3F+Mi+chiamo+&type=phone_number&app_absent=0",
-        "deadline_hours_before": 24,
-        "waitlist_enabled": true
-      },
-      "pricing_event": {
-        "free_with_booking": false,
-        "osservatore": null,
-        "public": null,
-        "custode": null,
-        "damascato": null
-      },
-      "media": {
-        "image_card": "https://static.tildacdn.com/tild3238-3364-4439-b861-643133376465/photo-1644302406517-.jpg",
-        "image_hero": "",
-        "video_url": ""
-      },
-      "seo": {
-        "title_override": "",
-        "description_override": "",
-        "slug_override": ""
-      },
-      "status": "available",
-      "google_calendar_event_id": "https://calendar.app.google/4tLnhVq3mL9FgbZT7",
-      "_meta": {
-        "created_at": "2026-04-28T12:00:00",
-        "updated_at": "2026-04-28T13:00:00",
-        "notes_internal": "",
-        "revenue_estimated": 0,
-        "registrations_count": 0
-      }
-    },
-    {
-      "id": "evt_011",
-      "format_id": "conclave",
-      "city": "roma",
-      "edition": 2,
-      "title": "Il Conclave",
-      "date_start": "2026-05-03T12:00:00",
-      "date_end": "2026-05-03T21:00:00",
-      "visibility": "members",
-      "published": true,
-      "featured": true,
-      "language": "it",
-      "host": "nicolaj_dortona",
-      "co_host": "",
-      "location": {
-        "name": "Sede Riservata",
-        "address": "Roma — Location comunicata solo ai partecipanti",
-        "city": "roma",
-        "latitude": null,
-        "longitude": null,
-        "maps_url": ""
-      },
-      "description_override": "Edizione di maggio. Tema: costruire reti che durano.",
-      "capacity": {
-        "total": 12,
-        "available": 12,
-        "waitlist": 0,
-        "members_reserved": 12,
-        "public_available": 0
-      },
-      "registration": {
-        "required": true,
-        "type": "whatsapp",
-        "url": "https://api.whatsapp.com/send/?phone=393515182533&text=Salve%2C+vorrei+prenotare+il+prossimo+evento+%22Il+Conclave%22.+Ci+sono+ancora+posti+disponibili%3F+Mi+chiamo+&type=phone_number&app_absent=0",
-        "deadline_hours_before": 48,
-        "waitlist_enabled": true
-      },
-      "pricing_event": {
-        "free_with_booking": false,
-        "osservatore": null,
-        "public": null,
-        "custode": null,
-        "damascato": null
-      },
-      "media": {
-        "image_card": "https://static.tildacdn.com/tild6333-3935-4236-b563-323833626135/photo-1472759153518-.jpg",
-        "image_hero": "",
-        "video_url": ""
-      },
-      "seo": {
-        "title_override": "",
-        "description_override": "",
-        "slug_override": ""
-      },
-      "status": "available",
-      "google_calendar_event_id": "",
-      "_meta": {
-        "created_at": "2026-04-16T13:00:00",
-        "updated_at": "2026-04-17T12:00:00",
-        "notes_internal": "Edizione maggio — tema networking",
-        "revenue_estimated": 0,
-        "registrations_count": 0
-      }
-    },
-    {
-      "id": "evt_004",
-      "format_id": "cena_membri",
-      "city": "roma",
-      "edition": 1,
-      "title": "Cena dei Membri",
-      "date_start": "2026-05-06T20:00:00",
-      "date_end": "2026-05-06T23:30:00",
-      "visibility": "members",
-      "published": true,
-      "featured": false,
-      "language": "it",
-      "host": "nicolaj_dortona",
-      "co_host": "",
-      "location": {
-        "name": "Da definire",
-        "address": "Roma",
-        "city": "roma",
-        "latitude": null,
-        "longitude": null,
-        "maps_url": ""
-      },
-      "description_override": "",
-      "capacity": {
-        "total": 30,
-        "available": 30,
-        "waitlist": 0,
-        "members_reserved": 30,
-        "public_available": 0
-      },
-      "registration": {
-        "required": true,
-        "type": "whatsapp",
-        "url": "https://api.whatsapp.com/send/?phone=393515182533&text=Salve%2C+vorrei+prenotare+il+prossimo+evento+%22Cena+dei+Membri%22.+Ci+sono+ancora+posti+disponibili%3F+Mi+chiamo+&type=phone_number&app_absent=0",
-        "deadline_hours_before": 48,
-        "waitlist_enabled": true
-      },
-      "pricing_event": {
-        "free_with_booking": false,
-        "osservatore": null,
-        "public": null,
-        "custode": null,
-        "damascato": null
-      },
-      "media": {
-        "image_card": "https://static.tildacdn.com/tild6536-6365-4138-b731-623131386661/Vatican_Priv_Cena_de.jpg",
-        "image_hero": "",
-        "video_url": ""
-      },
-      "seo": {
-        "title_override": "",
-        "description_override": "",
-        "slug_override": ""
-      },
-      "status": "available",
-      "google_calendar_event_id": "",
-      "_meta": {
-        "created_at": "2026-04-16T13:00:00",
-        "updated_at": "2026-04-17T12:00:00",
-        "notes_internal": "",
-        "revenue_estimated": 0,
-        "registrations_count": 0
-      }
-    },
-    {
       "id": "evt_005",
       "format_id": "menti_salotto",
-      "city": "roma",
-      "edition": 1,
       "title": "Menti in Salotto",
-      "date_start": "2026-05-16T19:30:00",
-      "date_end": "2026-05-16T23:00:00",
+      "date_start": "2026-05-16T19:30:00+00:00",
+      "date_end": "2026-05-16T23:00:00+00:00",
+      "publish_at": "2026-04-16T09:00:00+00:00",
       "visibility": "public",
+      "status": "available",
       "published": true,
       "featured": false,
-      "language": "it",
-      "host": "nicolaj_dortona",
-      "co_host": "",
       "location": {
         "name": "Il Salotto dei Damascati — Sede",
         "address": "Via della Conciliazione 44, 00193 Roma",
-        "city": "roma",
-        "latitude": 41.90257025285699,
-        "longitude": 12.460015758530925,
         "maps_url": "https://maps.app.goo.gl/7onYiX7ZFN8Jfj2bA"
       },
-      "description_override": "",
       "capacity": {
         "total": 16,
         "available": 16,
-        "waitlist": 0,
-        "members_reserved": 8,
-        "public_available": 8
-      },
-      "registration": {
-        "required": true,
-        "type": "whatsapp",
-        "url": "https://api.whatsapp.com/send/?phone=393515182533&text=Salve%2C+vorrei+prenotare+il+prossimo+evento+%22Menti+in+Salotto%22.+Ci+sono+ancora+posti+disponibili%3F+Mi+chiamo+&type=phone_number&app_absent=0",
-        "deadline_hours_before": 24,
-        "waitlist_enabled": true
+        "osservatore": 6,
+        "custode": 5,
+        "damascato": 5
       },
       "pricing_event": {
-        "free_with_booking": false,
-        "osservatore": null,
-        "public": null,
-        "custode": null,
-        "damascato": null
-      },
-      "media": {
-        "image_card": "https://static.tildacdn.com/tild3536-6461-4439-b361-393062663263/Vatican_Priv_Menti_i.jpg",
-        "image_hero": "",
-        "video_url": ""
-      },
-      "seo": {
-        "title_override": "",
-        "description_override": "",
-        "slug_override": ""
-      },
-      "status": "available",
-      "google_calendar_event_id": "",
-      "_meta": {
-        "created_at": "2026-04-16T13:00:00",
-        "updated_at": "2026-04-17T12:00:00",
-        "notes_internal": "Attenzione: vecchio format_id era menti_segreto — corretto in menti_salotto (nome definitivo)",
-        "revenue_estimated": 0,
-        "registrations_count": 0
-      }
-    },
-    {
-      "id": "evt_005",
-      "format_id": "scacchiera_re",
-      "city": "roma",
-      "edition": 1,
-      "title": "La Scacchiera dei Re",
-      "date_start": "2026-05-20T18:00:00",
-      "date_end": "2026-05-20T20:00:00",
-      "visibility": "public",
-      "published": true,
-      "featured": false,
-      "language": "it",
-      "host": "nicolaj_dortona",
-      "co_host": "",
-      "location": {
-        "name": "Vatican Privé",
-        "address": "Via della Conciliazione 44, 00193 Roma",
-        "city": "roma",
-        "latitude": 41.90257025285699,
-        "longitude": 12.460015758530925,
-        "maps_url": "https://maps.app.goo.gl/7onYiX7ZFN8Jfj2bA"
+        "osservatore": 80,
+        "custode": 68,
+        "damascato": 54
       },
       "description_override": "",
-      "capacity": {
-        "total": 10,
-        "available": 10,
-        "waitlist": 0,
-        "members_reserved": 2,
-        "public_available": 6
+      "media": {
+        "image_card": "https://static.tildacdn.com/tild3536-6461-4439-b361-393062663263/Vatican_Priv_Menti_i.jpg"
       },
       "registration": {
-        "required": true,
-        "type": "whatsapp",
-        "url": "https://api.whatsapp.com/send/?phone=393515182533&text=Salve%2C+vorrei+prenotare+il+prossimo+evento+%22Menti+in+Salotto%22.+Ci+sono+ancora+posti+disponibili%3F+Mi+chiamo+&type=phone_number&app_absent=0",
-        "deadline_hours_before": 24,
-        "waitlist_enabled": true
+        "url": "https://api.whatsapp.com/send/?phone=393515182533&text=Ciao+vorrei+prenotare+Menti+in+Salotto"
       },
-      "pricing_event": {
-        "free_with_booking": false,
-        "osservatore": null,
-        "public": null,
-        "custode": null,
-        "damascato": null
-      },
-      "media": {
-        "image_card": "https://static.tildacdn.com/tild3536-6461-4439-b361-393062663263/Vatican_Priv_Menti_i.jpg",
-        "image_hero": "",
-        "video_url": ""
-      },
-      "seo": {
-        "title_override": "",
-        "description_override": "",
-        "slug_override": ""
-      },
-      "status": "available",
-      "google_calendar_event_id": "",
-      "_meta": {
-        "created_at": "2026-05-16T13:00:00",
-        "updated_at": "2026-05-16T12:00:00",
-        "notes_internal": "",
-        "revenue_estimated": 0,
-        "registrations_count": 0
-      }
+      "google_calendar_id": ""
     },
     {
       "id": "evt_006",
       "format_id": "fuori_mura",
-      "city": "roma",
-      "edition": 1,
       "title": "Fuori le Mura",
-      "date_start": "2026-05-17T09:30:00",
-      "date_end": "2026-05-17T19:00:00",
+      "date_start": "2026-05-17T09:30:00+00:00",
+      "date_end": "2026-05-17T19:00:00+00:00",
+      "publish_at": "2026-04-16T09:00:00+00:00",
       "visibility": "public",
+      "status": "sold_out",
       "published": true,
       "featured": false,
-      "language": "it",
-      "host": "nicolaj_dortona",
-      "co_host": "",
       "location": {
         "name": "Da definire",
         "address": "Fuori Roma",
-        "city": "roma",
-        "latitude": null,
-        "longitude": null,
         "maps_url": ""
       },
-      "description_override": "",
       "capacity": {
         "total": 20,
-        "available": 20,
-        "waitlist": 0,
-        "members_reserved": 10,
-        "public_available": 10
-      },
-      "registration": {
-        "required": true,
-        "type": "whatsapp",
-        "url": "https://api.whatsapp.com/send/?phone=393515182533&text=Salve%2C+vorrei+prenotare+il+prossimo+evento+%22Fuori+le+Mura%22.+Ci+sono+ancora+posti+disponibili%3F+Mi+chiamo+&type=phone_number&app_absent=0",
-        "deadline_hours_before": 72,
-        "waitlist_enabled": true
+        "available": 0,
+        "osservatore": 8,
+        "custode": 6,
+        "damascato": 6
       },
       "pricing_event": {
-        "free_with_booking": false,
-        "osservatore": null,
-        "public": null,
-        "custode": null,
-        "damascato": null
+        "osservatore": 240,
+        "custode": 204,
+        "damascato": 160
       },
+      "description_override": "",
       "media": {
-        "image_card": "https://static.tildacdn.com/tild6333-6266-4738-b231-343335666237/photo-1519930147693-.jpg",
-        "image_hero": "",
-        "video_url": ""
+        "image_card": "https://static.tildacdn.com/tild6333-6266-4738-b231-343335666237/photo-1519930147693-.jpg"
       },
-      "seo": {
-        "title_override": "",
-        "description_override": "",
-        "slug_override": ""
+      "registration": {
+        "url": "https://api.whatsapp.com/send/?phone=393515182533&text=Ciao+vorrei+prenotare+Fuori+le+Mura"
       },
-      "status": "sold_out",
-      "google_calendar_event_id": "",
-      "_meta": {
-        "created_at": "2026-04-16T13:00:00",
-        "updated_at": "2026-04-17T12:00:00",
-        "notes_internal": "Meta da definire",
-        "revenue_estimated": 0,
-        "registrations_count": 0
-      }
+      "google_calendar_id": ""
     }
   ]
 }
