@@ -1,6 +1,6 @@
 {
   "club": "Il Salotto dei Damascati",
-  "last_updated": "2026-05-16T21:59:44.863Z",
+  "last_updated": "2026-05-16T22:29:09.113Z",
   "version": "2.0",
   "archive": [
     {
@@ -37,6 +37,43 @@
       },
       "registration": {
         "url": "https://api.whatsapp.com/send/?phone=393515182533&text=Ciao+vorrei+prenotare+Il+Conclave"
+      },
+      "google_calendar_id": ""
+    },
+    {
+      "id": "evt_004",
+      "format_id": "cena_membri",
+      "title": "Cena dei Membri",
+      "date_start": "2026-05-22T22:00:00+00:00",
+      "date_end": "2026-05-07T01:30:00+00:00",
+      "publish_at": "2026-05-16T22:00:00+00:00",
+      "visibility": "members",
+      "status": "available",
+      "published": true,
+      "featured": false,
+      "location": {
+        "name": "Da definire",
+        "address": "Roma",
+        "maps_url": ""
+      },
+      "capacity": {
+        "total": 30,
+        "available": 30,
+        "osservatore": null,
+        "custode": 10,
+        "damascato": 20
+      },
+      "pricing_event": {
+        "osservatore": null,
+        "custode": 102,
+        "damascato": 80
+      },
+      "description_override": "",
+      "media": {
+        "image_card": "https://static.tildacdn.com/tild6536-6365-4138-b731-623131386661/Vatican_Priv_Cena_de.jpg"
+      },
+      "registration": {
+        "url": "https://api.whatsapp.com/send/?phone=393515182533&text=Ciao+vorrei+prenotare+la+Cena+dei+Membri"
       },
       "google_calendar_id": ""
     },
