@@ -1,6 +1,6 @@
 {
   "club": "Il Salotto dei Damascati",
-  "last_updated": "2026-05-17T09:52:39.465Z",
+  "last_updated": "2026-05-17T09:57:42.944Z",
   "version": "2.0",
   "pricing_tiers": {
     "osservatore": {
@@ -76,24 +76,6 @@
       "price_variable": false,
       "duration_hours": 2.5,
       "visibility": "public"
-    },
-    {
-      "format_id": "cena_membri",
-      "base_title": "Cena dei Membri",
-      "description_short": "",
-      "description_long": "",
-      "image_url": "https://static.tildacdn.com/tild6536-6365-4138-b731-623131386661/Vatican_Priv_Cena_de.jpg",
-      "category": [
-        "socialita"
-      ],
-      "pricing": {
-        "osservatore": null,
-        "custode": 102,
-        "damascato": 80
-      },
-      "price_variable": false,
-      "duration_hours": 2.5,
-      "visibility": "members"
     }
   ],
   "hosts": [
