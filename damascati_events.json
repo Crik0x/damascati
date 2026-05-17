@@ -1,6 +1,6 @@
 {
   "club": "Il Salotto dei Damascati",
-  "last_updated": "2026-05-16T23:01:19.760Z",
+  "last_updated": "2026-05-17T04:01:11.017Z",
   "version": "2.0",
   "pricing_tiers": {
     "osservatore": {
@@ -28,43 +28,6 @@
     }
   ],
   "events": [
-    {
-      "id": "evt_005",
-      "format_id": "menti_salotto",
-      "title": "Menti in Salotto",
-      "date_start": "2026-05-16T19:30:00+00:00",
-      "date_end": "2026-05-16T23:00:00+00:00",
-      "publish_at": "2026-04-16T09:00:00+00:00",
-      "visibility": "public",
-      "status": "available",
-      "published": true,
-      "featured": false,
-      "location": {
-        "name": "Il Salotto dei Damascati — Sede",
-        "address": "Via della Conciliazione 44, 00193 Roma",
-        "maps_url": "https://maps.app.goo.gl/7onYiX7ZFN8Jfj2bA"
-      },
-      "capacity": {
-        "total": 16,
-        "available": 16,
-        "osservatore": 6,
-        "custode": 5,
-        "damascato": 5
-      },
-      "pricing_event": {
-        "osservatore": 80,
-        "custode": 68,
-        "damascato": 54
-      },
-      "description_override": "",
-      "media": {
-        "image_card": "https://static.tildacdn.com/tild3536-6461-4439-b361-393062663263/Vatican_Priv_Menti_i.jpg"
-      },
-      "registration": {
-        "url": "https://api.whatsapp.com/send/?phone=393515182533&text=Ciao+vorrei+prenotare+Menti+in+Salotto"
-      },
-      "google_calendar_id": ""
-    },
     {
       "id": "evt_006",
       "format_id": "fuori_mura",
@@ -99,6 +62,43 @@
       },
       "registration": {
         "url": "https://api.whatsapp.com/send/?phone=393515182533&text=Ciao+vorrei+prenotare+Fuori+le+Mura"
+      },
+      "google_calendar_id": ""
+    },
+    {
+      "id": "evt_1778962605190",
+      "format_id": "custom",
+      "title": "La scacchiera dei Re",
+      "date_start": "2026-05-19T00:00:00+00:00",
+      "date_end": "2026-05-19T03:00:00+00:00",
+      "publish_at": "2026-05-17T00:00:00+00:00",
+      "visibility": "public",
+      "status": "available",
+      "published": true,
+      "featured": false,
+      "location": {
+        "name": "",
+        "address": "",
+        "maps_url": ""
+      },
+      "capacity": {
+        "total": 10,
+        "available": 9,
+        "osservatore": null,
+        "custode": null,
+        "damascato": null
+      },
+      "pricing_event": {
+        "osservatore": 35,
+        "custode": 30,
+        "damascato": 25
+      },
+      "description_override": "",
+      "media": {
+        "image_card": ""
+      },
+      "registration": {
+        "url": ""
       },
       "google_calendar_id": ""
     }
