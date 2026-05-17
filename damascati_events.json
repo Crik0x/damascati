@@ -1,6 +1,6 @@
 {
   "club": "Il Salotto dei Damascati",
-  "last_updated": "2026-05-17T09:13:39.467Z",
+  "last_updated": "2026-05-17T09:52:39.465Z",
   "version": "2.0",
   "pricing_tiers": {
     "osservatore": {
@@ -23,40 +23,6 @@
     }
   ],
   "formats": [
-    {
-      "format_id": "aperitivi_divini",
-      "base_title": "Aperitivi diVini",
-      "description_short": "",
-      "description_long": "",
-      "image_url": "https://static.tildacdn.com/tild3238-3364-4439-b861-643133376465/photo-1644302406517-.jpg",
-      "category": [
-        "socialita"
-      ],
-      "pricing": {
-        "osservatore": 45,
-        "custode": 38,
-        "damascato": 30
-      },
-      "price_variable": false,
-      "duration_hours": 2.5,
-      "visibility": "public"
-    },
-    {
-      "format_id": "salotto_damascati",
-      "base_title": "Il Salotto dei Damascati",
-      "description_short": "",
-      "description_long": "",
-      "image_url": "https://static.tildacdn.com/tild3761-6537-4339-b361-323437666632/Salotto_dei_Damascat.jpg",
-      "category": [
-        "socialita"
-      ],
-      "pricing": {
-        "free_with_booking": true
-      },
-      "price_variable": false,
-      "duration_hours": 2.5,
-      "visibility": "public"
-    },
     {
       "format_id": "menti_salotto",
       "base_title": "Menti in Salotto",
@@ -98,7 +64,7 @@
       "base_title": "La scacchiera dei Re",
       "description_short": "",
       "description_long": "",
-      "image_url": "",
+      "image_url": "https://static.tildacdn.com/tild3964-3531-4662-b765-663237333439/photo-1596507457972-.jpg",
       "category": [
         "socialita"
       ],
@@ -181,9 +147,9 @@
       "id": "evt_1778962605190",
       "format_id": "custom",
       "title": "La scacchiera dei Re",
-      "date_start": "2026-05-19T00:00:00+00:00",
-      "date_end": "2026-05-19T03:00:00+00:00",
-      "publish_at": "2026-05-17T00:00:00+00:00",
+      "date_start": "2026-05-19T02:00:00+00:00",
+      "date_end": "2026-05-19T05:00:00+00:00",
+      "publish_at": "2026-05-17T02:00:00+00:00",
       "visibility": "public",
       "status": "available",
       "published": true,
@@ -207,81 +173,7 @@
       },
       "description_override": "",
       "media": {
-        "image_card": ""
-      },
-      "registration": {
-        "url": ""
-      },
-      "google_calendar_id": ""
-    },
-    {
-      "id": "evt_1779008778075",
-      "format_id": "custom",
-      "title": "Prova",
-      "date_start": "2026-05-25T20:00:00+00:00",
-      "date_end": "2026-05-25T22:30:00+00:00",
-      "publish_at": "2026-04-16T15:00:00+00:00",
-      "visibility": "public",
-      "status": "available",
-      "published": true,
-      "featured": false,
-      "location": {
-        "name": "Salotto",
-        "address": "",
-        "maps_url": ""
-      },
-      "capacity": {
-        "total": 20,
-        "available": 20,
-        "osservatore": null,
-        "custode": null,
-        "damascato": null
-      },
-      "pricing_event": {
-        "osservatore": null,
-        "custode": null,
-        "damascato": null
-      },
-      "description_override": "",
-      "media": {
-        "image_card": ""
-      },
-      "registration": {
-        "url": ""
-      },
-      "google_calendar_id": ""
-    },
-    {
-      "id": "evt_1779008443900",
-      "format_id": "custom",
-      "title": "Tiro con Arco",
-      "date_start": "2026-05-30T15:00:00+00:00",
-      "date_end": "2026-05-30T20:00:00+00:00",
-      "publish_at": "2026-04-16T13:00:00+00:00",
-      "visibility": "public",
-      "status": "available",
-      "published": true,
-      "featured": false,
-      "location": {
-        "name": "",
-        "address": "",
-        "maps_url": ""
-      },
-      "capacity": {
-        "total": null,
-        "available": null,
-        "osservatore": null,
-        "custode": null,
-        "damascato": null
-      },
-      "pricing_event": {
-        "osservatore": null,
-        "custode": null,
-        "damascato": null
-      },
-      "description_override": "",
-      "media": {
-        "image_card": ""
+        "image_card": "https://static.tildacdn.com/tild3964-3531-4662-b765-663237333439/photo-1596507457972-.jpg"
       },
       "registration": {
         "url": ""
