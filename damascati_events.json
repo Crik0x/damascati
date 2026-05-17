@@ -1,6 +1,6 @@
 {
   "club": "Il Salotto dei Damascati",
-  "last_updated": "2026-05-17T09:07:40.448Z",
+  "last_updated": "2026-05-17T09:13:39.467Z",
   "version": "2.0",
   "pricing_tiers": {
     "osservatore": {
@@ -16,8 +16,120 @@
       "description": "Sconto 33% su tutti gli eventi"
     }
   },
-  "categories": [],
-  "formats": [],
+  "categories": [
+    {
+      "id": "socialita",
+      "label": "Socialità & Cultura"
+    }
+  ],
+  "formats": [
+    {
+      "format_id": "aperitivi_divini",
+      "base_title": "Aperitivi diVini",
+      "description_short": "",
+      "description_long": "",
+      "image_url": "https://static.tildacdn.com/tild3238-3364-4439-b861-643133376465/photo-1644302406517-.jpg",
+      "category": [
+        "socialita"
+      ],
+      "pricing": {
+        "osservatore": 45,
+        "custode": 38,
+        "damascato": 30
+      },
+      "price_variable": false,
+      "duration_hours": 2.5,
+      "visibility": "public"
+    },
+    {
+      "format_id": "salotto_damascati",
+      "base_title": "Il Salotto dei Damascati",
+      "description_short": "",
+      "description_long": "",
+      "image_url": "https://static.tildacdn.com/tild3761-6537-4339-b361-323437666632/Salotto_dei_Damascat.jpg",
+      "category": [
+        "socialita"
+      ],
+      "pricing": {
+        "free_with_booking": true
+      },
+      "price_variable": false,
+      "duration_hours": 2.5,
+      "visibility": "public"
+    },
+    {
+      "format_id": "menti_salotto",
+      "base_title": "Menti in Salotto",
+      "description_short": "",
+      "description_long": "",
+      "image_url": "https://static.tildacdn.com/tild3536-6461-4439-b361-393062663263/Vatican_Priv_Menti_i.jpg",
+      "category": [
+        "socialita"
+      ],
+      "pricing": {
+        "osservatore": 80,
+        "custode": 68,
+        "damascato": 54
+      },
+      "price_variable": false,
+      "duration_hours": 2.5,
+      "visibility": "public"
+    },
+    {
+      "format_id": "fuori_mura",
+      "base_title": "Fuori le Mura",
+      "description_short": "",
+      "description_long": "",
+      "image_url": "https://static.tildacdn.com/tild6333-6266-4738-b231-343335666237/photo-1519930147693-.jpg",
+      "category": [
+        "socialita"
+      ],
+      "pricing": {
+        "osservatore": 240,
+        "custode": 204,
+        "damascato": 160
+      },
+      "price_variable": false,
+      "duration_hours": 2.5,
+      "visibility": "public"
+    },
+    {
+      "format_id": "custom",
+      "base_title": "La scacchiera dei Re",
+      "description_short": "",
+      "description_long": "",
+      "image_url": "",
+      "category": [
+        "socialita"
+      ],
+      "pricing": {
+        "osservatore": 35,
+        "custode": 30,
+        "damascato": 25
+      },
+      "price_variable": false,
+      "duration_hours": 2.5,
+      "visibility": "public"
+    },
+    {
+      "format_id": "cena_membri",
+      "base_title": "Cena dei Membri",
+      "description_short": "",
+      "description_long": "",
+      "image_url": "https://static.tildacdn.com/tild6536-6365-4138-b731-623131386661/Vatican_Priv_Cena_de.jpg",
+      "category": [
+        "socialita"
+      ],
+      "pricing": {
+        "osservatore": null,
+        "custode": 102,
+        "damascato": 80
+      },
+      "price_variable": false,
+      "duration_hours": 2.5,
+      "visibility": "members"
+    }
+  ],
   "hosts": [
     {
       "id": "nicolaj",
