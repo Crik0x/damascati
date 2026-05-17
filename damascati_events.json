@@ -1,6 +1,6 @@
 {
   "club": "Il Salotto dei Damascati",
-  "last_updated": "2026-05-17T07:36:01.633Z",
+  "last_updated": "2026-05-17T09:07:40.448Z",
   "version": "2.0",
   "pricing_tiers": {
     "osservatore": {
@@ -92,6 +92,80 @@
         "osservatore": 35,
         "custode": 30,
         "damascato": 25
+      },
+      "description_override": "",
+      "media": {
+        "image_card": ""
+      },
+      "registration": {
+        "url": ""
+      },
+      "google_calendar_id": ""
+    },
+    {
+      "id": "evt_1779008778075",
+      "format_id": "custom",
+      "title": "Prova",
+      "date_start": "2026-05-25T20:00:00+00:00",
+      "date_end": "2026-05-25T22:30:00+00:00",
+      "publish_at": "2026-04-16T15:00:00+00:00",
+      "visibility": "public",
+      "status": "available",
+      "published": true,
+      "featured": false,
+      "location": {
+        "name": "Salotto",
+        "address": "",
+        "maps_url": ""
+      },
+      "capacity": {
+        "total": 20,
+        "available": 20,
+        "osservatore": null,
+        "custode": null,
+        "damascato": null
+      },
+      "pricing_event": {
+        "osservatore": null,
+        "custode": null,
+        "damascato": null
+      },
+      "description_override": "",
+      "media": {
+        "image_card": ""
+      },
+      "registration": {
+        "url": ""
+      },
+      "google_calendar_id": ""
+    },
+    {
+      "id": "evt_1779008443900",
+      "format_id": "custom",
+      "title": "Tiro con Arco",
+      "date_start": "2026-05-30T15:00:00+00:00",
+      "date_end": "2026-05-30T20:00:00+00:00",
+      "publish_at": "2026-04-16T13:00:00+00:00",
+      "visibility": "public",
+      "status": "available",
+      "published": true,
+      "featured": false,
+      "location": {
+        "name": "",
+        "address": "",
+        "maps_url": ""
+      },
+      "capacity": {
+        "total": null,
+        "available": null,
+        "osservatore": null,
+        "custode": null,
+        "damascato": null
+      },
+      "pricing_event": {
+        "osservatore": null,
+        "custode": null,
+        "damascato": null
       },
       "description_override": "",
       "media": {
