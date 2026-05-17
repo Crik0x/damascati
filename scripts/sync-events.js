@@ -113,6 +113,29 @@ async function main() {
   console.log(`📅 Eventi trovati: ${eventiRaw.length}`);
   console.log(`📋 Formats trovati: ${formatsRaw.length}`);
 
+  // Genera formats sintetici se la tabella è vuota
+  if (formatsRaw.length === 0) {
+    const ids = [...new Set(eventiRaw.map(e => e.format_id).filter(Boolean))];
+    ids.forEach(fid => {
+      const ref = eventiRaw.find(e => e.format_id === fid);
+      formatsRaw.push({
+        id: fid,
+        nome: ref ? (ref.title || fid) : fid,
+        descrizione_breve: ref ? (ref.description_override || '') : '',
+        descrizione_completa: '',
+        immagine_default: ref ? (ref.image_card || '') : '',
+        categoria: 'socialita',
+        visibilita_default: ref ? (ref.visibility || 'public') : 'public',
+        prezzo_osservatore_default: ref ? ref.prezzo_osservatore : null,
+        prezzo_custode_default: ref ? ref.prezzo_custode : null,
+        prezzo_damascato_default: ref ? ref.prezzo_damascato : null,
+        capacity_default: ref ? ref.capacity_total : null,
+        durata_ore: 2.5,
+        attivo: true
+      });
+    });
+  }
+  
   const formatsMap = {};
   formatsRaw.forEach(f => formatsMap[f.id] = f);
 
