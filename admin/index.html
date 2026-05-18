@@ -1310,7 +1310,7 @@ function showPanel(name) {
 // ═══════════════════════════════════
 async function loadDashboard() {
   // Stats
-  const filtIsc = activeCity==='all' ? C.salotto : C.salotto.filter(i=>i.citta===activeCity);
+  const filtIsc = activeCity==='all' ? C.salotto : C.salotto.filter(i=>((i.citta||i.city||'')===(activeCity)));
   const filtOcc = activeCity==='all' ? C.occorrenze : C.occorrenze.filter(e=>e.citta===activeCity);
 
   document.getElementById('s-salotto').textContent = filtIsc.length;
@@ -1361,16 +1361,16 @@ async function loadDashboard() {
 
   // Tier chart
   const tiers = {osservatore:0,custode:0,damascato:0};
-  filtIsc.forEach(i=>{ if(tiers[i.tier]!==undefined) tiers[i.tier]++; });
+  filtIsc.forEach(i=>{ if(tiers[i.tier||i.membership_leve||'osservatore']!==undefined) tiers[i.tier||i.membership_leve||'osservatore']++; });
   renderTierChart(Object.values(tiers));
 
   // Ultime iscrizioni
   const ultimi = [...filtIsc].sort((a,b)=>new Date(b.created_at)-new Date(a.created_at)).slice(0,8);
   document.getElementById('dash-recent-salotto').innerHTML = ultimi.map(i=>`
     <tr>
-      <td style="font-size:0.82rem;font-weight:500">${i.nome} ${i.cognome}</td>
-      <td style="font-size:0.72rem;color:var(--ink-6)">${i.citta||'—'}</td>
-      <td><span class="badge badge-${i.tier}">${cap(i.tier)}</span></td>
+      <td style="font-size:0.82rem;font-weight:500">${i.nome||i.name||'—'} ${i.cognome||i.surname||''}</td>
+      <td style="font-size:0.72rem;color:var(--ink-6)">${i.citta||i.city||'—'}</td>
+      <td><span class="badge badge-${i.tier||i.membership_leve||'osservatore'}">${cap(i.tier||i.membership_leve||'osservatore')}</span></td>
       <td style="font-size:0.72rem;color:var(--ink-6);font-family:var(--font-m)">${fmtDate(i.created_at)}</td>
     </tr>`).join('');
 
@@ -1383,7 +1383,7 @@ function updateRealtime() {
   const settimanaFa = new Date(now-7*86400000);
   const meseFa = new Date(now.getFullYear(), now.getMonth(), 1);
 
-  const filtIsc = activeCity==='all' ? C.salotto : C.salotto.filter(i=>i.citta===activeCity);
+  const filtIsc = activeCity==='all' ? C.salotto : C.salotto.filter(i=>((i.citta||i.city||'')===(activeCity)));
   document.getElementById('rt-today').textContent  = filtIsc.filter(i=>new Date(i.created_at).toDateString()===oggi).length;
   document.getElementById('rt-week').textContent   = filtIsc.filter(i=>new Date(i.created_at)>=settimanaFa).length;
   document.getElementById('rt-month').textContent  = filtIsc.filter(i=>new Date(i.created_at)>=meseFa).length;
@@ -1454,7 +1454,7 @@ function initCharts() {
   const ctx2=document.getElementById('chart-citta');
   if(charts.citta) charts.citta.destroy();
   const cityCounts={};
-  C.salotto.forEach(i=>{const c=i.citta||'Altro';cityCounts[c]=(cityCounts[c]||0)+1;});
+  C.salotto.forEach(i=>{const c=i.citta||i.city||'Altro';cityCounts[c]=(cityCounts[c]||0)+1;});
   const sortedCities=Object.entries(cityCounts).sort((a,b)=>b[1]-a[1]).slice(0,8);
   if(ctx2) charts.citta = new Chart(ctx2,{
     type:'bar',
@@ -1986,7 +1986,7 @@ async function loadsalotto() {
     rendersalotto(data);
     document.getElementById('badge-isc').textContent=data.length;
     const sel=document.getElementById('da-isc');
-    sel.innerHTML=data.map(i=>`<option value="${i.id}">${i.nome} ${i.cognome} — ${i.tier}</option>`).join('');
+    sel.innerHTML=data.map(i=>`<option value="${i.id}">${i.nome||i.name||'—'} ${i.cognome||i.surname||''} — ${cap(i.tier||i.membership_leve||'osservatore')}</option>`).join('');
   }catch(e){toast('Errore salotto','error');}
 }
 
@@ -1994,10 +1994,10 @@ function rendersalotto(data) {
   const tbody=document.getElementById('salotto-tbody');
   if(!data.length){tbody.innerHTML='<tr><td colspan="8" style="text-align:center;padding:3rem;color:var(--ink-6);font-style:italic;">Nessun iscritto</td></tr>';return;}
   tbody.innerHTML=data.map(i=>`<tr>
-    <td style="font-weight:500;font-size:0.82rem">${i.nome} ${i.cognome}</td>
+    <td style="font-weight:500;font-size:0.82rem">${i.nome||i.name||'—'} ${i.cognome||i.surname||''}</td>
     <td style="font-size:0.75rem;color:var(--ink-6)">${i.email}</td>
-    <td style="font-size:0.78rem">${i.citta||'—'}</td>
-    <td><span class="badge badge-${i.tier}">${cap(i.tier)}</span></td>
+    <td style="font-size:0.78rem">${i.citta||i.city||'—'}</td>
+    <td><span class="badge badge-${i.tier||i.membership_leve||'osservatore'}">${cap(i.tier||i.membership_leve||'osservatore')}</span></td>
     <td id="ds-${i.id}" style="font-family:var(--font-m);font-size:0.78rem">—</td>
     <td id="pres-${i.id}" style="font-size:0.78rem">—</td>
     <td style="font-size:0.72rem;color:var(--ink-6);font-family:var(--font-m)">${fmtDate(i.created_at)}</td>
@@ -2009,8 +2009,8 @@ function rendersalotto(data) {
 function filtersalotto(q) {
   const city=document.getElementById('isc-city-filter').value;
   let data=C.salotto;
-  if(city!=='all') data=data.filter(i=>i.citta===city);
-  if(q) data=data.filter(i=>`${i.nome} ${i.cognome} ${i.email}`.toLowerCase().includes(q.toLowerCase()));
+  if(city!=='all') data=data.filter(i=>(i.citta||i.city||'')===(city));
+  if(q) data=data.filter(i=>`${i.nome||i.name||'—'} ${i.cognome||i.surname||''} ${i.email}`.toLowerCase().includes(q.toLowerCase()));
   rendersalotto(data);
 }
 
