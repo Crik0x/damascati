@@ -1,6 +1,6 @@
 {
   "club": "Il Salotto dei Damascati",
-  "last_updated": "2026-05-18T12:35:50.656Z",
+  "last_updated": "2026-05-18T14:34:35.619Z",
   "version": "2.1",
   "config": {
     "sconto_custode": 10,
@@ -75,7 +75,7 @@
       },
       "capacity": {
         "total": 10,
-        "available": 9,
+        "available": 3,
         "osservatore": null,
         "custode": null,
         "damascato": null
@@ -113,7 +113,7 @@
       },
       "capacity": {
         "total": 15,
-        "available": 5,
+        "available": 4,
         "osservatore": 4,
         "custode": 5,
         "damascato": 6
