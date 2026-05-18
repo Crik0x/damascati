@@ -1,8 +1,11 @@
 /**
- * sync-events.js
- * Legge eventi e formats da Supabase e scrive:
+ * sync-events.js v2
+ * Legge eventi, formats e config da Supabase e scrive:
  *   - damascati_events.json  (eventi futuri pubblicati)
  *   - events_archive.json    (eventi passati)
+ *
+ * Calcola prezzi Custode e Damascato dagli sconti in tabella config
+ * se i prezzi manuali non sono impostati sull'evento.
  */
 
 const SUPABASE_URL = process.env.SUPABASE_URL;
@@ -30,31 +33,49 @@ function isExpired(evento) {
   return end < new Date();
 }
 
-function buildPricingEvent(evt) {
+// Calcola prezzo tier applicando lo sconto sul prezzo base
+// Se il prezzo manuale è impostato → usa quello
+// Se non è impostato → calcola da prezzo_osservatore × (1 - sconto%)
+function calcolaPrezzo(prezzoManuale, prezzoBase, scontoPercent) {
+  if (prezzoManuale !== null && prezzoManuale !== undefined) return prezzoManuale;
+  if (!prezzoBase) return null;
+  return Math.round(prezzoBase * (1 - scontoPercent / 100));
+}
+
+function buildPricingEvent(evt, config) {
   if (evt.pricing_free) return { free_with_booking: true };
+
+  const base = evt.prezzo_osservatore ?? null;
+  const sc   = parseFloat(config.sconto_custode   || '10');
+  const sd   = parseFloat(config.sconto_damascato || '25');
+
   return {
-    osservatore: evt.prezzo_osservatore ?? null,
-    custode:     evt.prezzo_custode     ?? null,
-    damascato:   evt.prezzo_damascato   ?? null
+    osservatore: base,
+    custode:     calcolaPrezzo(evt.prezzo_custode,   base, sc),
+    damascato:   calcolaPrezzo(evt.prezzo_damascato, base, sd)
   };
 }
 
-function buildPricingFormat(fmt) {
-  if (!fmt.prezzo_osservatore_default && !fmt.prezzo_custode_default) {
+function buildPricingFormat(fmt, config) {
+  const base = fmt.prezzo_osservatore_default ?? null;
+  if (!base && !fmt.prezzo_custode_default) {
     return { free_with_booking: true };
   }
+  const sc = parseFloat(config.sconto_custode   || '10');
+  const sd = parseFloat(config.sconto_damascato || '25');
   return {
-    osservatore: fmt.prezzo_osservatore_default ?? null,
-    custode:     fmt.prezzo_custode_default     ?? null,
-    damascato:   fmt.prezzo_damascato_default   ?? null
+    osservatore: base,
+    custode:     calcolaPrezzo(fmt.prezzo_custode_default,   base, sc),
+    damascato:   calcolaPrezzo(fmt.prezzo_damascato_default, base, sd)
   };
 }
 
-function eventToJson(evt, fmt) {
+function eventToJson(evt, fmt, config) {
   return {
     id:          evt.id,
     format_id:   evt.format_id,
     title:       evt.title,
+    citta:       evt.citta || '',
     date_start:  evt.date_start,
     date_end:    evt.date_end,
     publish_at:  evt.publish_at,
@@ -74,7 +95,7 @@ function eventToJson(evt, fmt) {
       custode:     evt.capacity_custode     ?? null,
       damascato:   evt.capacity_damascato   ?? null
     },
-    pricing_event:        buildPricingEvent(evt),
+    pricing_event:        buildPricingEvent(evt, config),
     description_override: evt.description_override || '',
     media: {
       image_card: evt.image_card || (fmt ? fmt.immagine_default : '') || ''
@@ -86,15 +107,15 @@ function eventToJson(evt, fmt) {
   };
 }
 
-function formatToJson(fmt) {
+function formatToJson(fmt, config) {
   return {
     format_id:         fmt.id,
     base_title:        fmt.nome,
-    description_short: fmt.descrizione_breve  || '',
+    description_short: fmt.descrizione_breve   || '',
     description_long:  fmt.descrizione_completa || '',
-    image_url:         fmt.immagine_default    || '',
+    image_url:         fmt.immagine_default     || '',
     category:          fmt.categoria ? [fmt.categoria] : [],
-    pricing:           buildPricingFormat(fmt),
+    pricing:           buildPricingFormat(fmt, config),
     price_variable:    false,
     duration_hours:    fmt.durata_ore || null,
     visibility:        fmt.visibilita_default || 'public'
@@ -104,54 +125,60 @@ function formatToJson(fmt) {
 async function main() {
   console.log('🔄 Avvio sync Supabase → JSON...');
 
-  // 1. Carica dati
-  const [eventiRaw, formatsRaw] = await Promise.all([
-    query('eventi', '?published=eq.true&order=date_start.asc'),
-    query('formats', '?attivo=eq.true&order=id.asc')
+  // 1. Carica dati in parallelo (incluso config)
+  const [eventiRaw, formatsRaw, configRaw] = await Promise.all([
+    query('eventi',  '?published=eq.true&order=date_start.asc'),
+    query('formats', '?attivo=eq.true&order=id.asc'),
+    query('config',  '?select=chiave,valore')
   ]);
+
+  // Converti config in oggetto chiave→valore
+  const config = {};
+  configRaw.forEach(r => { config[r.chiave] = r.valore; });
+
+  const sc = parseFloat(config.sconto_custode   || '10');
+  const sd = parseFloat(config.sconto_damascato || '25');
 
   console.log(`📅 Eventi trovati: ${eventiRaw.length}`);
   console.log(`📋 Formats trovati: ${formatsRaw.length}`);
+  console.log(`⚙️  Config: sconto_custode=${sc}% | sconto_damascato=${sd}%`);
 
-  // Genera formats sintetici se la tabella è vuota
-  if (formatsRaw.length === 0) {
-    const ids = [...new Set(eventiRaw.map(e => e.format_id).filter(Boolean))];
-    ids.forEach(fid => {
-      const ref = eventiRaw.find(e => e.format_id === fid);
-      formatsRaw.push({
-        id: fid,
-        nome: ref ? (ref.title || fid) : fid,
-        descrizione_breve: ref ? (ref.description_override || '') : '',
-        descrizione_completa: '',
-        immagine_default: ref ? (ref.image_card || '') : '',
-        categoria: 'socialita',
-        visibilita_default: ref ? (ref.visibility || 'public') : 'public',
-        prezzo_osservatore_default: ref ? ref.prezzo_osservatore : null,
-        prezzo_custode_default: ref ? ref.prezzo_custode : null,
-        prezzo_damascato_default: ref ? ref.prezzo_damascato : null,
-        capacity_default: ref ? ref.capacity_total : null,
-        durata_ore: 2.5,
-        attivo: true
-      });
-    });
-  }
-  
   const formatsMap = {};
   formatsRaw.forEach(f => formatsMap[f.id] = f);
 
-  // 2. Separa eventi futuri da archiviati
+  // 2. Se formats è vuoto → genera sintetici dagli eventi
+  if (formatsRaw.length === 0) {
+    console.log('⚠️  Tabella formats vuota — genero formats sintetici dagli eventi');
+    const ids = [...new Set(eventiRaw.map(e => e.format_id).filter(Boolean))];
+    ids.forEach(fid => {
+      const ref = eventiRaw.find(e => e.format_id === fid);
+      const synthetic = {
+        id: fid, nome: ref ? (ref.title || fid) : fid,
+        descrizione_breve: ref ? (ref.description_override || '') : '',
+        immagine_default: ref ? (ref.image_card || '') : '',
+        categoria: 'socialita', visibilita_default: ref ? (ref.visibility || 'public') : 'public',
+        prezzo_osservatore_default: ref ? ref.prezzo_osservatore : null,
+        prezzo_custode_default: null, prezzo_damascato_default: null,
+        capacity_default: ref ? ref.capacity_total : null, durata_ore: 2.5, attivo: true
+      };
+      formatsRaw.push(synthetic);
+      formatsMap[fid] = synthetic;
+    });
+    console.log(`✅ Generati ${formatsRaw.length} formats sintetici`);
+  }
+
+  // 3. Separa upcoming da archiviati
   const now = new Date();
   const upcoming = [];
   const archived = [];
 
   for (const evt of eventiRaw) {
-    // Aggiorna automaticamente publish_at
     if (evt.publish_at && new Date(evt.publish_at) > now) {
-      console.log(`⏳ Evento ${evt.id} non ancora da pubblicare (publish_at: ${evt.publish_at})`);
+      console.log(`⏳ ${evt.id} non ancora pubblicabile (publish_at: ${evt.publish_at})`);
       continue;
     }
     const fmt = formatsMap[evt.format_id] || null;
-    const evtJson = eventToJson(evt, fmt);
+    const evtJson = eventToJson(evt, fmt, config);
     if (isExpired(evt)) {
       archived.push(evtJson);
     } else {
@@ -161,51 +188,47 @@ async function main() {
 
   console.log(`✅ Upcoming: ${upcoming.length} | 📦 Archived: ${archived.length}`);
 
-  // 3. Carica archivio esistente per non perdere eventi già archiviati manualmente
+  // 4. Merge archivio esistente
   let existingArchive = { archive: [] };
   try {
     if (fs.existsSync('events_archive.json')) {
       existingArchive = JSON.parse(fs.readFileSync('events_archive.json', 'utf8'));
     }
-  } catch(e) { console.warn('Archivio esistente non leggibile, si ricrea.'); }
+  } catch(e) { console.warn('Archivio non leggibile, si ricrea.'); }
 
-  // Merge archivio — evita duplicati per id
   const archiveIds = new Set((existingArchive.archive || []).map(e => e.id));
-  const newArchived = archived.filter(e => !archiveIds.has(e.id));
-  const mergedArchive = [...(existingArchive.archive || []), ...newArchived]
-    .sort((a, b) => new Date(b.date_start) - new Date(a.date_start));
+  const mergedArchive = [
+    ...(existingArchive.archive || []),
+    ...archived.filter(e => !archiveIds.has(e.id))
+  ].sort((a, b) => new Date(b.date_start) - new Date(a.date_start));
 
-  // 4. Costruisci categories da formats
+  // 5. Categories
   const categoryMap = {
-    socialita:   'Socialità & Cultura',
-    cultura:     'Cultura & Incontri',
-    esperienza:  'Esperienze',
-    esclusivo:   'Solo Soci'
+    socialita: 'Socialità & Cultura', cultura: 'Cultura & Incontri',
+    esperienza: 'Esperienze', esclusivo: 'Solo Soci'
   };
   const usedCats = [...new Set(formatsRaw.map(f => f.categoria).filter(Boolean))];
   const categories = usedCats.map(id => ({ id, label: categoryMap[id] || id }));
 
-  // 5. Costruisci pricing_tiers
+  // 6. Pricing tiers con sconti reali da config
   const pricing_tiers = {
     osservatore: { label: 'Osservatore', description: 'Ingresso standard' },
-    custode:     { label: 'Custode',     description: 'Sconto 15% su tutti gli eventi' },
-    damascato:   { label: 'Damascato',   description: 'Sconto 33% su tutti gli eventi' }
+    custode:     { label: 'Custode',     description: `Sconto ${sc}% su tutti gli eventi` },
+    damascato:   { label: 'Damascato',   description: `Sconto ${sd}% su tutti gli eventi` }
   };
 
-  // 6. Scrivi damascati_events.json
+  // 7. Scrivi damascati_events.json
   const eventsJson = {
     club: 'Il Salotto dei Damascati',
     last_updated: new Date().toISOString(),
-    version: '2.0',
+    version: '2.1',
+    config: { sconto_custode: sc, sconto_damascato: sd },
     pricing_tiers,
     categories,
-    formats: formatsRaw.filter(f => f.attivo).map(formatToJson),
+    formats: formatsRaw.filter(f => f.attivo).map(f => formatToJson(f, config)),
     hosts: [{
-      id: 'nicolaj',
-      name: 'Nicolaj D\'Ortona',
-      role: 'Fondatore',
-      url: 'https://damascati.it/chi-siamo',
-      image: ''
+      id: 'nicolaj', name: "Nicolaj D'Ortona", role: 'Fondatore',
+      url: 'https://damascati.it/chi-siamo', image: ''
     }],
     events: upcoming
   };
@@ -213,15 +236,13 @@ async function main() {
   fs.writeFileSync('damascati_events.json', JSON.stringify(eventsJson, null, 2), 'utf8');
   console.log('✅ damascati_events.json scritto');
 
-  // 7. Scrivi events_archive.json
-  const archiveJson = {
+  // 8. Scrivi events_archive.json
+  fs.writeFileSync('events_archive.json', JSON.stringify({
     club: 'Il Salotto dei Damascati',
     last_updated: new Date().toISOString(),
-    version: '2.0',
+    version: '2.1',
     archive: mergedArchive
-  };
-
-  fs.writeFileSync('events_archive.json', JSON.stringify(archiveJson, null, 2), 'utf8');
+  }, null, 2), 'utf8');
   console.log('✅ events_archive.json scritto');
 
   console.log('🎉 Sync completato.');
