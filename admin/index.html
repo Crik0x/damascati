@@ -548,10 +548,6 @@ body { background:var(--ink); color:var(--avorio); font-family:var(--font-s); fo
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 7V5a2 2 0 012-2h2M17 3h2a2 2 0 012 2v2M21 17v2a2 2 0 01-2 2h-2M7 21H5a2 2 0 01-2-2v-2"/><path d="M9 12l2 2 4-4"/></svg>
         <span>Check-in QR</span>
       </div>
-      <div class="nav-item" onclick="showPanel('impostazioni')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 010 14.14M4.93 4.93a10 10 0 000 14.14"/></svg>
-        <span>Impostazioni</span>
-      </div>
     </nav>
 
     <div class="sb-footer">
@@ -837,69 +833,6 @@ body { background:var(--ink); color:var(--avorio); font-family:var(--font-s); fo
         </div>
       </div>
 
-
-      <!-- ── IMPOSTAZIONI ── -->
-      <div class="panel" id="panel-impostazioni">
-        <h2 style="font-family:var(--font-d);font-size:1.6rem;font-weight:400;margin-bottom:0.4rem;">Impostazioni <span style="color:var(--oro);font-style:italic">Sistema</span></h2>
-        <p style="font-size:0.8rem;color:var(--ink-6);margin-bottom:1.5rem;font-style:italic;">Modifica i parametri globali del sistema. Le modifiche si applicano a tutti gli eventi futuri.</p>
-
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;max-width:800px;">
-
-          <div class="card">
-            <div class="card-head"><div class="card-title">Sconti Membership</div></div>
-            <div class="card-body">
-              <p style="font-size:0.8rem;color:var(--ink-6);margin-bottom:1.2rem;font-style:italic;">Applicati automaticamente sul prezzo Osservatore quando non si imposta un prezzo manuale.</p>
-              <div class="form-group">
-                <label class="form-label">Sconto Custode %</label>
-                <div style="display:flex;align-items:center;gap:0.8rem;">
-                  <input type="number" class="form-input" id="cfg-sconto-cus" min="0" max="100" style="max-width:120px;">
-                  <span style="font-size:0.8rem;color:var(--ink-6)">es. 10 → Custode paga il 90% del prezzo base</span>
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="form-label">Sconto Damascato %</label>
-                <div style="display:flex;align-items:center;gap:0.8rem;">
-                  <input type="number" class="form-input" id="cfg-sconto-dam" min="0" max="100" style="max-width:120px;">
-                  <span style="font-size:0.8rem;color:var(--ink-6)">es. 25 → Damascato paga il 75% del prezzo base</span>
-                </div>
-              </div>
-              <div id="cfg-prezzi-preview" style="background:var(--ink-3);border-radius:var(--r);padding:0.9rem 1.1rem;margin-bottom:1.2rem;display:none;">
-                <div style="font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink-6);margin-bottom:0.5rem;">Anteprima su base €80</div>
-                <div style="display:flex;gap:1.5rem;">
-                  <div><div style="font-size:0.65rem;color:var(--ink-6)">Osservatore</div><div style="font-family:var(--font-m);color:var(--avorio)">€80</div></div>
-                  <div><div style="font-size:0.65rem;color:var(--ink-6)">Custode</div><div id="prev-cus" style="font-family:var(--font-m);color:var(--oro)">—</div></div>
-                  <div><div style="font-size:0.65rem;color:var(--ink-6)">Damascato</div><div id="prev-dam" style="font-family:var(--font-m);color:var(--oro)">—</div></div>
-                </div>
-              </div>
-              <button class="btn btn-primary btn-sm" onclick="saveConfig()">Salva sconti</button>
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="card-head"><div class="card-title">Prenotazioni</div></div>
-            <div class="card-body">
-              <p style="font-size:0.8rem;color:var(--ink-6);margin-bottom:1.2rem;font-style:italic;">Regole per la gestione delle prenotazioni Osservatori.</p>
-              <div class="form-group">
-                <label class="form-label">Posti garantiti Osservatori</label>
-                <div style="display:flex;align-items:center;gap:0.8rem;">
-                  <input type="number" class="form-input" id="cfg-posti-garantiti" min="1" max="50" style="max-width:120px;">
-                  <span style="font-size:0.8rem;color:var(--ink-6)">oltre questo numero → lista d'attesa</span>
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="form-label">Ore prima per conferma attesa</label>
-                <div style="display:flex;align-items:center;gap:0.8rem;">
-                  <input type="number" class="form-input" id="cfg-ore-conferma" min="1" max="48" style="max-width:120px;">
-                  <span style="font-size:0.8rem;color:var(--ink-6)">ore prima dell'evento → email conferma</span>
-                </div>
-              </div>
-              <button class="btn btn-primary btn-sm" onclick="saveConfig()">Salva impostazioni</button>
-            </div>
-          </div>
-
-        </div>
-      </div>
-
     </div><!-- /content -->
   </div><!-- /main -->
 </div><!-- /app -->
@@ -1117,19 +1050,9 @@ body { background:var(--ink); color:var(--avorio); font-family:var(--font-s); fo
         </label>
       </div>
       <div id="occ-prezzi" class="form-row-3">
-        <div class="form-group">
-          <label class="form-label">€ Osservatore (base)</label>
-          <input type="number" class="form-input" id="occ-p-oss" oninput="calcolaPrezziTier()" placeholder="es. 80">
-          <div class="form-hint">Inserisci il prezzo base — Custode e Damascato si calcolano automaticamente</div>
-        </div>
-        <div class="form-group">
-          <label class="form-label">€ Custode <span id="lbl-sconto-cus" style="color:var(--oro);font-size:0.65rem;"></span></label>
-          <input type="number" class="form-input" id="occ-p-cus" placeholder="calcolato automaticamente" oninput="this.dataset.manual='true'">
-        </div>
-        <div class="form-group">
-          <label class="form-label">€ Damascato <span id="lbl-sconto-dam" style="color:var(--oro);font-size:0.65rem;"></span></label>
-          <input type="number" class="form-input" id="occ-p-dam" placeholder="calcolato automaticamente" oninput="this.dataset.manual='true'">
-        </div>
+        <div class="form-group"><label class="form-label">€ Osservatore</label><input type="number" class="form-input" id="occ-p-oss"></div>
+        <div class="form-group"><label class="form-label">€ Custode</label><input type="number" class="form-input" id="occ-p-cus"></div>
+        <div class="form-group"><label class="form-label">€ Damascato</label><input type="number" class="form-input" id="occ-p-dam"></div>
       </div>
 
       <div class="form-section">Impostazioni</div>
@@ -1207,7 +1130,26 @@ body { background:var(--ink); color:var(--avorio); font-family:var(--font-s); fo
 const SB_URL  = 'https://plsthpdttewxkyilyyno.supabase.co';
 const SB_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBsc3RocGR0dGV3eGt5aWx5eW5vIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg2ODkyODIsImV4cCI6MjA5NDI2NTI4Mn0.D0nI7F1-xouepfRCOP5nqXwFrY96Q9urAuoHynj5KRw';
 const GA_ID   = 'G-9P2126F2PQ';
+const GH_REPO = 'Crik0x/damascati';
+const GH_PAT  = ''; // Inserisci il tuo GitHub PAT per il sync immediato
 let TOKEN = null;
+
+// Trigger sync GitHub Actions dopo modifica posti
+async function triggerSync() {
+  if (!GH_PAT) return; // Skip se PAT non configurato
+  try {
+    await fetch(`https://api.github.com/repos/${GH_REPO}/dispatches`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${GH_PAT}`,
+        'Accept': 'application/vnd.github.v3+json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ event_type: 'sync-eventi' })
+    });
+    toast('Sync avviato — sito aggiornato in ~30 secondi', 'success');
+  } catch(e) { console.warn('Sync trigger fallito:', e.message); }
+}
 
 const CITIES = ['Roma','Milano','Napoli','Torino','Berlino','Monaco','Barcellona','Madrid'];
 
@@ -1301,7 +1243,7 @@ async function doLogout() {
 // ═══════════════════════════════════
 // CACHE
 // ═══════════════════════════════════
-let C = { templates:[], occorrenze:[], iscritti:[], dama:[], presenze:[], config:{} };
+let C = { templates:[], occorrenze:[], iscritti:[], dama:[], presenze:[] };
 let activeCity = 'all';
 let calYear = new Date().getFullYear();
 let calMonth = new Date().getMonth();
@@ -1317,7 +1259,7 @@ async function initApp(email) {
   document.getElementById('da-scad').value = `${new Date().getFullYear()}-12-31`;
 
   populateCityDropdowns();
-  await Promise.all([loadTemplates(), loadOccorrenze(), loadIscritti(), loadDama(), loadConfig()]);
+  await Promise.all([loadTemplates(), loadOccorrenze(), loadIscritti(), loadDama()]);
   loadDashboard();
   renderCalendario();
 
@@ -1349,7 +1291,7 @@ function populateCityDropdowns() {
 const PANEL_TITLES = {
   dashboard:'Dashboard',analytics:'Analytics',calendario:'Calendario',
   template:'Template Evento',occorrenze:'Occorrenze',iscritti:'Iscritti',
-  dama:'Crediti DAMA',checkin:'Check-in QR',impostazioni:'Impostazioni'
+  dama:'Crediti DAMA',checkin:'Check-in QR'
 };
 function showPanel(name) {
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
@@ -1360,7 +1302,6 @@ function showPanel(name) {
   document.getElementById('topbar-title').innerHTML = `${PANEL_TITLES[name]||name} <span>· Il Salotto</span>`;
   if(name==='analytics') initCharts();
   if(name==='dama') loadDamaStats();
-  if(name==='impostazioni') renderConfigPanel();
   if(name==='checkin') populateScanSelects();
 }
 
@@ -1828,7 +1769,13 @@ function renderOccorrenze(data) {
         <span class="badge badge-${e.status}">${labelStatus(e.status)}</span>
       </div>
       <div>
-        <div style="font-size:0.78rem;color:var(--ink-6)">${e.capacity_available??'—'}/${e.capacity_total??'—'}</div>
+        <div class="posti-counter">
+          <button class="btn-posti" onclick="modificaPosti('${e.id}',-1,event)" title="Riduci posti disponibili">−</button>
+          <div class="posti-num ${(e.capacity_available??1)===0?'esauriti':(e.capacity_available??99)<=3?'pochi':''}" id="posti-${e.id}">
+            ${e.capacity_available??'—'}/${e.capacity_total??'—'}
+          </div>
+          <button class="btn-posti" onclick="modificaPosti('${e.id}',+1,event)" title="Aumenta posti disponibili">+</button>
+        </div>
         <div class="cap-bar"><div class="cap-fill" style="width:${pct}%"></div></div>
       </div>
       <div>
@@ -1910,8 +1857,6 @@ function openModalOccorrenza(occ=null, preDate=null, preTpl=null) {
   document.getElementById('occ-feat').checked=false;
   document.getElementById('occ-free').checked=false;
   document.getElementById('occ-prezzi').style.display='';
-  document.getElementById('occ-p-cus').dataset.manual='';
-  document.getElementById('occ-p-dam').dataset.manual='';
   document.getElementById('occ-vis').value='public';
   document.getElementById('occ-status').value='available';
 
@@ -2232,86 +2177,45 @@ function addScanLog(isc,dama){const tb=document.getElementById('scan-log');const
 // ═══════════════════════════════════
 // UTILS
 // ═══════════════════════════════════
-// ═══════════════════════════════════
-// CONFIG
-// ═══════════════════════════════════
-async function loadConfig() {
+// ── MODIFICA POSTI ──
+async function modificaPosti(id, delta, event) {
+  event.stopPropagation();
+  const occ = C.occorrenze.find(e => e.id === id);
+  if (!occ) return;
+
+  const attuale = occ.capacity_available ?? 0;
+  const totale  = occ.capacity_total ?? 0;
+  const nuovo   = Math.max(0, Math.min(totale, attuale + delta));
+
+  if (nuovo === attuale) return; // nessuna modifica
+
   try {
-    const data = await sbQ('config','?select=chiave,valore');
-    data.forEach(r => { C.config[r.chiave] = r.valore; });
-    // Aggiorna label sconti nel modal occorrenza
-    const sc = parseInt(C.config.sconto_custode)||10;
-    const sd = parseInt(C.config.sconto_damascato)||25;
-    const lc = document.getElementById('lbl-sconto-cus');
-    const ld = document.getElementById('lbl-sconto-dam');
-    if(lc) lc.textContent = `−${sc}%`;
-    if(ld) ld.textContent = `−${sd}%`;
-  } catch(e) { console.warn('Config non caricata:', e.message); }
-}
+    await sbU('eventi', id, {
+      capacity_available: nuovo,
+      updated_at: new Date().toISOString()
+    });
 
-function renderConfigPanel() {
-  document.getElementById('cfg-sconto-cus').value = C.config.sconto_custode || '10';
-  document.getElementById('cfg-sconto-dam').value = C.config.sconto_damascato || '25';
-  document.getElementById('cfg-posti-garantiti').value = C.config.posti_garantiti_osservatore || '5';
-  document.getElementById('cfg-ore-conferma').value = C.config.ore_conferma_attesa || '6';
-  aggiornaPreviewPrezzi();
-  // Live preview
-  ['cfg-sconto-cus','cfg-sconto-dam'].forEach(id => {
-    document.getElementById(id).addEventListener('input', aggiornaPreviewPrezzi);
-  });
-}
+    // Aggiorna cache locale
+    occ.capacity_available = nuovo;
 
-function aggiornaPreviewPrezzi() {
-  const sc = parseFloat(document.getElementById('cfg-sconto-cus').value)||10;
-  const sd = parseFloat(document.getElementById('cfg-sconto-dam').value)||25;
-  const base = 80;
-  const cus = Math.round(base * (1 - sc/100));
-  const dam = Math.round(base * (1 - sd/100));
-  document.getElementById('prev-cus').textContent = `€${cus}`;
-  document.getElementById('prev-dam').textContent = `€${dam}`;
-  document.getElementById('cfg-prezzi-preview').style.display = 'block';
-}
-
-async function saveConfig() {
-  const rows = [
-    { chiave:'sconto_custode',              valore: document.getElementById('cfg-sconto-cus').value },
-    { chiave:'sconto_damascato',            valore: document.getElementById('cfg-sconto-dam').value },
-    { chiave:'posti_garantiti_osservatore', valore: document.getElementById('cfg-posti-garantiti').value },
-    { chiave:'ore_conferma_attesa',         valore: document.getElementById('cfg-ore-conferma').value }
-  ];
-  try {
-    for (const row of rows) {
-      // UPSERT — aggiorna se esiste, inserisce se no
-      await fetch(`${SB_URL}/rest/v1/config?chiave=eq.${row.chiave}`, {
-        method: 'PATCH',
-        headers: { ...H(), 'Prefer':'return=representation' },
-        body: JSON.stringify({ valore: row.valore })
-      });
-      C.config[row.chiave] = row.valore;
+    // Aggiorna UI senza ricaricare tutto
+    const el = document.getElementById('posti-' + id);
+    if (el) {
+      el.textContent = `${nuovo}/${totale}`;
+      el.className = 'posti-num ' + (nuovo === 0 ? 'esauriti' : nuovo <= 3 ? 'pochi' : '');
     }
-    // Aggiorna label sconti nel modal
-    await loadConfig();
-    toast('Impostazioni salvate ✓','success');
-  } catch(err) { toast('Errore: '+err.message,'error'); }
-}
 
-function calcolaPrezziTier() {
-  const oss = parseFloat(document.getElementById('occ-p-oss').value);
-  if (isNaN(oss) || oss <= 0) return;
+    // Aggiorna barra capacità
+    const pct = totale ? Math.round((1 - nuovo/totale)*100) : 0;
+    const bar = el?.closest('.occ-row')?.querySelector('.cap-fill');
+    if (bar) bar.style.width = pct + '%';
 
-  const sc = parseFloat(C.config.sconto_custode) || 10;
-  const sd = parseFloat(C.config.sconto_damascato) || 25;
+    toast(`Posti aggiornati: ${nuovo}/${totale}`, 'success');
 
-  const elCus = document.getElementById('occ-p-cus');
-  const elDam = document.getElementById('occ-p-dam');
+    // Trigger sync GitHub
+    triggerSync();
 
-  // Calcola solo se non modificato manualmente
-  if (elCus.dataset.manual !== 'true') {
-    elCus.value = Math.round(oss * (1 - sc/100));
-  }
-  if (elDam.dataset.manual !== 'true') {
-    elDam.value = Math.round(oss * (1 - sd/100));
-  }
+  } catch(err) { toast('Errore: ' + err.message, 'error'); }
 }
 
 function isExpired(e){const end=new Date(e.date_end||e.date_start);end.setHours(end.getHours()+2);return end<new Date();}
