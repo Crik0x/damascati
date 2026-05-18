@@ -1,0 +1,1405 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Area Riservata — Il Salotto dei Damascati</title>
+<meta name="robots" content="noindex, nofollow">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,600&family=Montserrat:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+/* ═══════════ THEME ═══════════ */
+:root {
+  --oro:       #C9A96E;
+  --oro-d:     #8B6914;
+  --oro-l:     #E8D5A8;
+  --rosso:     #A01818;
+  --r:         6px;
+  --font-d:    'Cormorant Garamond', Georgia, serif;
+  --font-s:    'Montserrat', sans-serif;
+  --font-m:    'JetBrains Mono', monospace;
+  --ease:      cubic-bezier(0.4,0,0.2,1);
+  --ease-out:  cubic-bezier(0.16,1,0.3,1);
+}
+
+[data-theme="dark"] {
+  --bg:        #0F0D0B;
+  --bg-2:      #1A1714;
+  --bg-3:      #252118;
+  --bg-4:      #332E24;
+  --border:    rgba(201,169,110,0.1);
+  --border-h:  rgba(201,169,110,0.25);
+  --text:      #F4F0E8;
+  --text-2:    #A09080;
+  --text-3:    #6B6050;
+  --shadow:    0 8px 32px rgba(0,0,0,0.5);
+}
+
+[data-theme="light"] {
+  --bg:        #F4F0E8;
+  --bg-2:      #FDFCF9;
+  --bg-3:      #EDE8DC;
+  --bg-4:      #E0D8CC;
+  --border:    rgba(26,22,20,0.1);
+  --border-h:  rgba(139,105,20,0.3);
+  --text:      #1A1614;
+  --text-2:    #6B6050;
+  --text-3:    #A09080;
+  --shadow:    0 8px 32px rgba(0,0,0,0.12);
+}
+
+body {
+  background:var(--bg); color:var(--text);
+  font-family:var(--font-s); font-size:14px;
+  min-height:100vh; overflow-x:hidden;
+  transition:background 0.4s var(--ease), color 0.4s var(--ease);
+}
+
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--bg-4);border-radius:2px}
+
+/* ═══════════ LOGIN ═══════════ */
+#login-screen {
+  min-height:100vh; display:flex; align-items:center; justify-content:center;
+  padding:2rem;
+  background:var(--bg);
+  position:relative; overflow:hidden;
+}
+#login-screen::before {
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 60% 50% at 50% 30%, rgba(201,169,110,0.08) 0%, transparent 60%);
+  pointer-events:none;
+}
+.login-card {
+  width:100%;max-width:420px;
+  background:var(--bg-2);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:3rem 2.5rem;
+  box-shadow:var(--shadow);
+  position:relative;z-index:1;
+  animation:fadeUp 0.6s var(--ease-out);
+}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+
+.login-symbol {
+  font-family:var(--font-d);font-size:2.8rem;
+  color:var(--oro);text-align:center;
+  display:block;margin-bottom:0.4rem;line-height:1;
+}
+.login-title {
+  font-family:var(--font-d);font-size:1.2rem;
+  color:var(--text);text-align:center;letter-spacing:0.08em;
+  text-transform:uppercase;margin-bottom:0.3rem;
+}
+.login-sub {
+  font-size:0.72rem;color:var(--text-3);
+  text-align:center;letter-spacing:0.15em;
+  text-transform:uppercase;margin-bottom:2.5rem;
+}
+.login-tabs {
+  display:flex;border:1px solid var(--border);
+  border-radius:var(--r);overflow:hidden;margin-bottom:1.5rem;
+}
+.login-tab {
+  flex:1;padding:0.6rem;text-align:center;
+  font-size:0.72rem;font-weight:500;letter-spacing:0.1em;
+  text-transform:uppercase;cursor:pointer;
+  background:transparent;color:var(--text-3);
+  border:none;transition:all 0.2s;font-family:var(--font-s);
+}
+.login-tab.active{background:var(--oro);color:#0F0D0B;}
+.login-input {
+  width:100%;background:var(--bg-3);
+  border:1px solid var(--border);border-radius:var(--r);
+  padding:0.85rem 1rem;color:var(--text);
+  font-family:var(--font-s);font-size:0.88rem;
+  outline:none;transition:border-color 0.2s;margin-bottom:0.8rem;
+}
+.login-input:focus{border-color:var(--oro);}
+.login-input::placeholder{color:var(--text-3);}
+.login-btn {
+  width:100%;background:var(--oro);color:#0F0D0B;
+  border:none;border-radius:var(--r);padding:0.9rem;
+  font-family:var(--font-s);font-size:0.78rem;font-weight:600;
+  letter-spacing:0.15em;text-transform:uppercase;
+  cursor:pointer;transition:all 0.2s;
+}
+.login-btn:hover{background:var(--oro-l);transform:translateY(-1px);}
+.login-msg{font-size:0.78rem;text-align:center;margin-top:0.8rem;color:var(--text-2);}
+.login-err{color:#ff8080;font-size:0.78rem;text-align:center;margin-top:0.8rem;display:none;}
+
+/* ═══════════ APP LAYOUT ═══════════ */
+#app{display:none;min-height:100vh;}
+
+/* SIDEBAR */
+.sidebar {
+  position:fixed;top:0;left:0;bottom:0;width:240px;
+  background:var(--bg-2);border-right:1px solid var(--border);
+  display:flex;flex-direction:column;z-index:100;
+  transition:transform 0.3s var(--ease),background 0.4s var(--ease),border-color 0.4s var(--ease);
+}
+.sb-top{padding:1.6rem 1.4rem 1.2rem;border-bottom:1px solid var(--border);}
+.sb-logo{font-family:var(--font-d);font-size:0.9rem;color:var(--oro);letter-spacing:0.08em;text-transform:uppercase;display:block;}
+.sb-logo-sub{font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--text-3);margin-top:0.2rem;display:block;}
+
+/* USER CARD */
+.sb-user {
+  margin:1rem 1.2rem;padding:0.9rem 1rem;
+  background:var(--bg-3);border:1px solid var(--border);
+  border-radius:var(--r);cursor:pointer;
+  transition:border-color 0.2s;
+}
+.sb-user:hover{border-color:var(--border-h);}
+.sb-user-name{font-family:var(--font-d);font-size:1rem;color:var(--text);display:block;}
+.sb-user-tier{
+  display:inline-flex;align-items:center;gap:0.3rem;
+  font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;
+  padding:0.2rem 0.6rem;border-radius:2px;border:1px solid;margin-top:0.3rem;
+}
+.tier-osservatore{color:var(--text-3);border-color:var(--bg-4);}
+.tier-custode{color:var(--oro-l);border-color:rgba(201,169,110,0.4);}
+.tier-damascato{color:var(--oro);border-color:var(--oro);}
+
+.sb-nav{flex:1;padding:0.5rem 0;overflow-y:auto;}
+.sb-nav-label{
+  padding:0.8rem 1.4rem 0.3rem;
+  font-size:0.58rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--text-3);
+}
+.sb-nav-item {
+  display:flex;align-items:center;gap:0.65rem;
+  padding:0.65rem 1.4rem;color:var(--text-3);
+  cursor:pointer;transition:all 0.2s;
+  border-left:2px solid transparent;
+  font-size:0.82rem;letter-spacing:0.02em;user-select:none;
+}
+.sb-nav-item:hover{color:var(--oro-l);background:rgba(201,169,110,0.04);}
+.sb-nav-item.active{color:var(--oro);border-left-color:var(--oro);background:rgba(201,169,110,0.06);}
+.sb-nav-item svg{width:15px;height:15px;flex-shrink:0;}
+
+.sb-bottom{padding:1rem 1.2rem;border-top:1px solid var(--border);}
+.sb-actions{display:flex;align-items:center;justify-content:space-between;}
+.btn-theme {
+  width:36px;height:36px;border-radius:50%;
+  background:var(--bg-3);border:1px solid var(--border);
+  color:var(--text-2);cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;transition:all 0.2s;
+}
+.btn-theme:hover{border-color:var(--oro);color:var(--oro);}
+.btn-logout{
+  font-size:0.72rem;color:var(--text-3);
+  background:none;border:none;cursor:pointer;
+  letter-spacing:0.05em;transition:color 0.2s;
+  font-family:var(--font-s);
+}
+.btn-logout:hover{color:var(--rosso);}
+
+/* MAIN */
+.main{margin-left:240px;min-height:100vh;}
+.topbar {
+  position:sticky;top:0;z-index:50;
+  background:rgba(15,13,11,0);backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border);
+  padding:0.9rem 2rem;
+  display:flex;align-items:center;justify-content:space-between;
+  transition:background 0.4s var(--ease),border-color 0.4s var(--ease);
+}
+[data-theme="light"] .topbar{background:rgba(244,240,232,0);}
+.topbar-title{font-family:var(--font-d);font-size:1.3rem;color:var(--text);}
+.topbar-title span{color:var(--oro);font-style:italic;}
+.topbar-date{font-size:0.72rem;color:var(--text-3);letter-spacing:0.05em;}
+
+.content{padding:2rem;}
+
+/* ═══════════ PANELS ═══════════ */
+.panel{display:none;animation:fadeIn 0.35s var(--ease-out);}
+.panel.active{display:block;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* ═══════════ DAMA SCORE ═══════════ */
+.dama-hero {
+  background:linear-gradient(135deg, var(--bg-2) 0%, var(--bg-3) 100%);
+  border:1px solid var(--border);border-radius:12px;
+  padding:2rem;margin-bottom:1.5rem;
+  position:relative;overflow:hidden;
+}
+.dama-hero::before {
+  content:'✦';position:absolute;right:1.5rem;top:1rem;
+  font-family:var(--font-d);font-size:5rem;color:rgba(201,169,110,0.06);
+  line-height:1;pointer-events:none;
+}
+.dama-label{font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--text-3);margin-bottom:0.4rem;}
+.dama-score{font-family:var(--font-d);font-size:3.5rem;color:var(--oro);line-height:1;margin-bottom:0.3rem;}
+.dama-sub{font-size:0.78rem;color:var(--text-2);}
+
+/* ═══════════ STATS ROW ═══════════ */
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:1.5rem;}
+.stat-card {
+  background:var(--bg-2);border:1px solid var(--border);
+  border-radius:var(--r);padding:1.2rem 1.4rem;
+  transition:border-color 0.2s,transform 0.2s;
+}
+.stat-card:hover{border-color:var(--border-h);transform:translateY(-2px);}
+.stat-l{font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-3);margin-bottom:0.4rem;}
+.stat-v{font-family:var(--font-d);font-size:1.8rem;color:var(--oro);line-height:1;}
+.stat-s{font-size:0.72rem;color:var(--text-3);margin-top:0.2rem;}
+
+/* ═══════════ CARDS ═══════════ */
+.card {
+  background:var(--bg-2);border:1px solid var(--border);
+  border-radius:var(--r);overflow:hidden;
+  transition:border-color 0.2s;margin-bottom:1rem;
+}
+.card:hover{border-color:var(--border-h);}
+.card-head {
+  display:flex;align-items:center;justify-content:space-between;
+  padding:1rem 1.4rem;border-bottom:1px solid var(--border);
+}
+.card-title{font-size:0.68rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--oro-d);font-weight:500;}
+.card-body{padding:1.4rem;}
+
+/* ═══════════ EVENTI CARDS ═══════════ */
+.eventi-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1rem;}
+.evento-card {
+  background:var(--bg-2);border:1px solid var(--border);
+  border-radius:10px;overflow:hidden;
+  transition:all 0.25s var(--ease);
+}
+.evento-card:hover{border-color:var(--border-h);transform:translateY(-3px);box-shadow:var(--shadow);}
+.evento-img{height:140px;background:var(--bg-3);position:relative;overflow:hidden;}
+.evento-img img{width:100%;height:100%;object-fit:cover;opacity:0.75;transition:opacity 0.3s;}
+.evento-card:hover .evento-img img{opacity:0.9;}
+.evento-img-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:var(--font-d);font-size:3rem;color:rgba(201,169,110,0.12);}
+.evento-vis-badge{position:absolute;top:0.6rem;left:0.6rem;font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;padding:0.2rem 0.5rem;border-radius:2px;backdrop-filter:blur(8px);}
+.vis-public{background:rgba(128,179,255,0.15);color:#80b3ff;border:1px solid rgba(128,179,255,0.3);}
+.vis-members{background:rgba(201,169,110,0.15);color:var(--oro);border:1px solid rgba(201,169,110,0.3);}
+.evento-body{padding:1rem 1.2rem;}
+.evento-cat{font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--oro);margin-bottom:0.4rem;}
+.evento-title{font-family:var(--font-d);font-size:1.15rem;color:var(--text);margin-bottom:0.4rem;line-height:1.3;}
+.evento-desc{font-size:0.78rem;color:var(--text-2);line-height:1.6;margin-bottom:0.8rem;font-style:italic;}
+.evento-meta{display:flex;flex-wrap:wrap;gap:0.5rem 1rem;margin-bottom:0.8rem;}
+.evento-meta-item{font-size:0.72rem;color:var(--text-3);display:flex;align-items:center;gap:0.3rem;}
+.evento-meta-item svg{width:12px;height:12px;stroke:var(--oro-d);}
+
+/* POSTI BAR */
+.posti-wrap{margin-bottom:0.8rem;}
+.posti-row{display:flex;justify-content:space-between;margin-bottom:4px;}
+.posti-label{font-size:0.62rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-3);}
+.posti-num{font-size:0.72rem;font-family:var(--font-m);}
+.posti-num.ok{color:var(--oro);}
+.posti-num.pochi{color:#E8A040;}
+.posti-num.sold{color:#ff8080;}
+.posti-bar{height:3px;background:rgba(201,169,110,0.1);border-radius:2px;overflow:hidden;}
+.posti-fill{height:100%;border-radius:2px;transition:width 0.5s var(--ease-out);}
+.posti-fill.ok{background:var(--oro);}
+.posti-fill.pochi{background:#E8A040;}
+.posti-fill.sold{background:#ff8080;}
+
+/* PREZZO + CTA */
+.evento-footer {
+  display:flex;align-items:center;justify-content:space-between;
+  padding-top:0.8rem;border-top:1px solid var(--border);
+  gap:0.8rem;
+}
+.evento-prezzo{flex:1;}
+.prezzo-tier{font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-3);}
+.prezzo-val{font-family:var(--font-d);font-size:1.6rem;color:var(--text);line-height:1;}
+.prezzo-val.gratuito{font-size:1rem;color:var(--oro);}
+
+.btn-prenota {
+  font-family:var(--font-s);font-size:0.7rem;font-weight:600;
+  letter-spacing:0.12em;text-transform:uppercase;
+  padding:0.55rem 1.1rem;border-radius:var(--r);border:1px solid;
+  cursor:pointer;transition:all 0.2s;white-space:nowrap;
+}
+.btn-prenota.available{background:var(--oro);color:#0F0D0B;border-color:var(--oro);}
+.btn-prenota.available:hover{background:var(--oro-l);transform:translateY(-1px);}
+.btn-prenota.attesa{background:transparent;color:var(--oro);border-color:rgba(201,169,110,0.4);}
+.btn-prenota.attesa:hover{background:rgba(201,169,110,0.08);}
+.btn-prenota.disabled{background:transparent;color:var(--text-3);border-color:var(--bg-4);cursor:default;pointer-events:none;}
+.btn-prenota.prenotato{background:rgba(109,190,109,0.1);color:#6dbe6d;border-color:rgba(109,190,109,0.3);cursor:default;pointer-events:none;}
+
+/* ═══════════ DAMA HISTORY ═══════════ */
+.dama-list{display:flex;flex-direction:column;}
+.dama-item{
+  display:flex;align-items:center;gap:1rem;
+  padding:0.8rem 0;border-bottom:1px solid var(--border);
+}
+.dama-item:last-child{border-bottom:none;}
+.dama-icon{
+  width:32px;height:32px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;flex-shrink:0;
+}
+.dama-icon.plus{background:rgba(109,190,109,0.1);color:#6dbe6d;}
+.dama-icon.minus{background:rgba(255,128,128,0.1);color:#ff8080;}
+.dama-info{flex:1;}
+.dama-tipo{font-size:0.82rem;color:var(--text);font-weight:500;}
+.dama-data{font-size:0.7rem;color:var(--text-3);margin-top:1px;}
+.dama-importo{font-family:var(--font-m);font-size:0.88rem;font-weight:500;}
+.dama-importo.plus{color:#6dbe6d;}
+.dama-importo.minus{color:#ff8080;}
+
+/* ═══════════ PRESENZE ═══════════ */
+.presenze-list{display:flex;flex-direction:column;gap:0.6rem;}
+.presenza-item{
+  display:flex;align-items:center;gap:1rem;
+  background:var(--bg-3);border-radius:var(--r);
+  padding:0.8rem 1rem;
+}
+.presenza-data{font-family:var(--font-m);font-size:0.7rem;color:var(--text-3);min-width:80px;}
+.presenza-evento{font-size:0.85rem;color:var(--text);font-weight:500;flex:1;}
+.presenza-dama{font-family:var(--font-m);font-size:0.78rem;color:var(--oro);}
+
+/* ═══════════ PROFILO ═══════════ */
+.profilo-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+.profilo-field{margin-bottom:0.8rem;}
+.profilo-label{font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--text-3);margin-bottom:0.3rem;}
+.profilo-value{font-size:0.9rem;color:var(--text);}
+.qr-wrap{
+  background:white;padding:1rem;border-radius:var(--r);
+  display:inline-flex;align-items:center;justify-content:center;
+  margin:0 auto;display:block;width:fit-content;
+}
+.qr-canvas{width:160px;height:160px;}
+
+/* ═══════════ BADGE TIER ═══════════ */
+.tier-badge {
+  display:inline-flex;align-items:center;gap:0.4rem;
+  padding:0.3rem 0.8rem;border-radius:3px;border:1px solid;
+  font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;font-weight:500;
+}
+
+/* ═══════════ BUTTONS ═══════════ */
+.btn {
+  display:inline-flex;align-items:center;gap:0.4rem;
+  font-family:var(--font-s);font-size:0.72rem;font-weight:500;
+  letter-spacing:0.1em;text-transform:uppercase;
+  padding:0.5rem 1rem;border-radius:var(--r);border:1px solid;
+  cursor:pointer;transition:all 0.2s;text-decoration:none;white-space:nowrap;
+}
+.btn-primary{background:var(--oro);color:#0F0D0B;border-color:var(--oro);}
+.btn-primary:hover{background:var(--oro-l);}
+.btn-ghost{background:transparent;color:var(--text-2);border-color:var(--border);}
+.btn-ghost:hover{color:var(--oro);border-color:var(--border-h);}
+.btn svg{width:13px;height:13px;}
+
+/* ═══════════ MODAL ═══════════ */
+.modal-overlay{position:fixed;inset:0;z-index:500;background:rgba(0,0,0,0.7);display:none;align-items:center;justify-content:center;padding:1rem;backdrop-filter:blur(4px);}
+.modal-overlay.open{display:flex;}
+.modal{
+  background:var(--bg-2);border:1px solid var(--border);
+  border-radius:12px;width:100%;max-width:520px;
+  box-shadow:0 40px 80px rgba(0,0,0,0.6);
+  animation:fadeUp 0.25s var(--ease-out);
+}
+.modal-head{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:1.2rem 1.6rem;border-bottom:1px solid var(--border);
+}
+.modal-head h3{font-family:var(--font-d);font-size:1.3rem;font-weight:400;color:var(--text);}
+.modal-close{background:none;border:none;color:var(--text-3);font-size:1.4rem;cursor:pointer;transition:color 0.2s;line-height:1;}
+.modal-close:hover{color:var(--text);}
+.modal-body{padding:1.6rem;}
+.modal-foot{padding:1rem 1.6rem;border-top:1px solid var(--border);display:flex;gap:0.6rem;justify-content:flex-end;}
+
+/* EVENTO DETAIL IN MODAL */
+.modal-evento-img{height:160px;background:var(--bg-3);border-radius:var(--r);overflow:hidden;margin-bottom:1.2rem;}
+.modal-evento-img img{width:100%;height:100%;object-fit:cover;opacity:0.8;}
+.modal-detail-row{display:flex;justify-content:space-between;padding:0.6rem 0;border-bottom:1px solid var(--border);}
+.modal-detail-row:last-child{border-bottom:none;}
+.modal-detail-label{font-size:0.68rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-3);}
+.modal-detail-value{font-size:0.85rem;color:var(--text);font-weight:500;}
+
+/* TOAST */
+.toast{
+  position:fixed;bottom:1.5rem;right:1.5rem;
+  background:var(--bg-2);color:var(--text);
+  padding:0.8rem 1.4rem;border-radius:var(--r);
+  border:1px solid var(--border);
+  font-size:0.82rem;z-index:9999;
+  opacity:0;transform:translateY(8px) scale(0.98);
+  transition:all 0.3s var(--ease-out);
+  pointer-events:none;max-width:300px;
+  box-shadow:var(--shadow);
+}
+.toast.show{opacity:1;transform:none;}
+.toast.success{border-color:rgba(109,190,109,0.4);}
+.toast.error{border-color:rgba(255,128,128,0.4);}
+
+/* LOADER */
+.loader{display:inline-block;width:14px;height:14px;border:2px solid rgba(201,169,110,0.2);border-top-color:var(--oro);border-radius:50%;animation:spin 0.7s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* EMPTY STATE */
+.empty-state{text-align:center;padding:3rem 1rem;}
+.empty-state svg{width:48px;height:48px;stroke:var(--bg-4);margin-bottom:1rem;}
+.empty-state p{color:var(--text-3);font-style:italic;font-size:0.88rem;}
+
+/* MOBILE BURGER */
+.mobile-burger{display:none;position:fixed;top:1rem;left:1rem;z-index:200;width:40px;height:40px;background:var(--bg-2);border:1px solid var(--border);border-radius:var(--r);align-items:center;justify-content:center;cursor:pointer;flex-direction:column;gap:4px;}
+.mobile-burger span{display:block;width:18px;height:1px;background:var(--text);transition:all 0.3s;}
+
+@media(max-width:768px){
+  .sidebar{transform:translateX(-100%);}
+  .sidebar.open{transform:none;}
+  .main{margin-left:0;}
+  .mobile-burger{display:flex;}
+  .topbar{padding:0.9rem 1rem 0.9rem 4rem;}
+  .content{padding:1rem;}
+  .stats-row{grid-template-columns:1fr;}
+  .profilo-grid{grid-template-columns:1fr;}
+  .eventi-grid{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body data-theme="dark">
+
+<!-- MOBILE BURGER -->
+<button class="mobile-burger" id="burger" onclick="toggleSidebar()">
+  <span></span><span></span><span></span>
+</button>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-card">
+    <span class="login-symbol">✦</span>
+    <div class="login-title">Il Salotto dei Damascati</div>
+    <div class="login-sub">Area Riservata</div>
+
+    <div class="login-tabs">
+      <button class="login-tab active" onclick="setLoginMode('magic')" id="tab-magic">Magic Link</button>
+      <button class="login-tab" onclick="setLoginMode('password')" id="tab-pass">Password</button>
+    </div>
+
+    <input type="email" class="login-input" id="l-email" placeholder="La tua email">
+    <div id="l-pass-wrap" style="display:none;">
+      <input type="password" class="login-input" id="l-pass" placeholder="Password">
+    </div>
+
+    <button class="login-btn" id="l-btn" onclick="doLogin()">Accedi con Magic Link</button>
+    <div class="login-msg" id="l-msg" style="display:none;"></div>
+    <div class="login-err" id="l-err"></div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sb-top">
+      <span class="sb-logo">Il Salotto dei Damascati</span>
+      <span class="sb-logo-sub">Area Riservata</span>
+    </div>
+
+    <div class="sb-user" onclick="showPanel('profilo')">
+      <span class="sb-user-name" id="sb-nome">—</span>
+      <div>
+        <span class="sb-user-tier tier-osservatore" id="sb-tier">Osservatore</span>
+      </div>
+    </div>
+
+    <nav class="sb-nav">
+      <div class="sb-nav-label">Personale</div>
+      <div class="sb-nav-item active" onclick="showPanel('dashboard')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+        Dashboard
+      </div>
+      <div class="sb-nav-item" onclick="showPanel('profilo')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        Il Mio Profilo
+      </div>
+      <div class="sb-nav-item" onclick="showPanel('dama')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        Crediti DAMA
+      </div>
+      <div class="sb-nav-label">Salotto</div>
+      <div class="sb-nav-item" onclick="showPanel('eventi')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        Prossimi Incontri
+      </div>
+      <div class="sb-nav-item" onclick="showPanel('prenotazioni')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+        Le Mie Prenotazioni
+      </div>
+    </nav>
+
+    <div class="sb-bottom">
+      <div class="sb-actions">
+        <button class="btn-theme" onclick="toggleTheme()" title="Cambia tema" id="theme-btn">🌙</button>
+        <button class="btn-logout" onclick="doLogout()">← Esci</button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="main">
+    <div class="topbar">
+      <div class="topbar-title" id="topbar-title">Dashboard <span>· Il Salotto</span></div>
+      <div class="topbar-date" id="topbar-date"></div>
+    </div>
+
+    <div class="content">
+
+      <!-- DASHBOARD -->
+      <div class="panel active" id="panel-dashboard">
+        <div class="dama-hero">
+          <div class="dama-label">I tuoi crediti DAMA</div>
+          <div class="dama-score" id="dash-dama">—</div>
+          <div class="dama-sub" id="dash-dama-sub">crediti disponibili</div>
+        </div>
+
+        <div class="stats-row">
+          <div class="stat-card">
+            <div class="stat-l">Presenze totali</div>
+            <div class="stat-v" id="dash-presenze">—</div>
+            <div class="stat-s">eventi frequentati</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-l">Prenotazioni attive</div>
+            <div class="stat-v" id="dash-prenotazioni">—</div>
+            <div class="stat-s">prossimi eventi</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-l">Prossimo evento</div>
+            <div class="stat-v" id="dash-prossimo" style="font-size:1rem;padding-top:0.3rem;">—</div>
+            <div class="stat-s" id="dash-prossimo-data"></div>
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
+          <div class="card">
+            <div class="card-head">
+              <div class="card-title">Ultimi movimenti DAMA</div>
+              <button class="btn btn-ghost" style="padding:0.3rem 0.7rem;font-size:0.65rem;" onclick="showPanel('dama')">Vedi tutti</button>
+            </div>
+            <div class="card-body">
+              <div class="dama-list" id="dash-dama-list">
+                <div class="empty-state"><p>Nessun movimento</p></div>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-head">
+              <div class="card-title">Ultime presenze</div>
+              <button class="btn btn-ghost" style="padding:0.3rem 0.7rem;font-size:0.65rem;" onclick="showPanel('prenotazioni')">Vedi tutte</button>
+            </div>
+            <div class="card-body">
+              <div class="presenze-list" id="dash-presenze-list">
+                <div class="empty-state"><p>Nessuna presenza</p></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- EVENTI -->
+      <div class="panel" id="panel-eventi">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;">
+          <h2 style="font-family:var(--font-d);font-size:1.6rem;font-weight:400;">Prossimi <span style="color:var(--oro);font-style:italic;">Incontri</span></h2>
+          <div style="display:flex;gap:0.5rem;align-items:center;">
+            <select id="filter-citta" class="login-input" style="width:auto;padding:0.4rem 0.8rem;font-size:0.78rem;margin:0;" onchange="filterEventi()">
+              <option value="all">Tutte le città</option>
+            </select>
+          </div>
+        </div>
+        <div class="eventi-grid" id="eventi-grid">
+          <div class="empty-state" style="grid-column:1/-1;">
+            <p>Caricamento eventi...</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- PRENOTAZIONI -->
+      <div class="panel" id="panel-prenotazioni">
+        <h2 style="font-family:var(--font-d);font-size:1.6rem;font-weight:400;margin-bottom:1.5rem;">Le Mie <span style="color:var(--oro);font-style:italic;">Prenotazioni</span></h2>
+        <div id="prenotazioni-list">
+          <div class="empty-state"><p>Caricamento...</p></div>
+        </div>
+      </div>
+
+      <!-- PROFILO -->
+      <div class="panel" id="panel-profilo">
+        <h2 style="font-family:var(--font-d);font-size:1.6rem;font-weight:400;margin-bottom:1.5rem;">Il Mio <span style="color:var(--oro);font-style:italic;">Profilo</span></h2>
+        <div style="display:grid;grid-template-columns:1fr 280px;gap:1.5rem;align-items:start;">
+          <div>
+            <div class="card" style="margin-bottom:1rem;">
+              <div class="card-head"><div class="card-title">Dati personali</div></div>
+              <div class="card-body">
+                <div class="profilo-grid" id="profilo-dati"></div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-head"><div class="card-title">Membership</div></div>
+              <div class="card-body">
+                <div style="display:flex;align-items:center;gap:1rem;">
+                  <div class="tier-badge tier-osservatore" id="profilo-tier-badge">Osservatore</div>
+                  <div>
+                    <div style="font-size:0.78rem;color:var(--text-2);" id="profilo-tier-desc">Accesso agli eventi pubblici del Salotto</div>
+                    <div style="font-size:0.7rem;color:var(--text-3);margin-top:0.2rem;" id="profilo-dsc-code"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-head"><div class="card-title">Il tuo QR personale</div></div>
+            <div class="card-body" style="text-align:center;">
+              <p style="font-size:0.75rem;color:var(--text-3);margin-bottom:1rem;font-style:italic;">Mostralo all'ingresso degli eventi per il check-in.</p>
+              <div class="qr-wrap" id="profilo-qr">
+                <div style="width:160px;height:160px;display:flex;align-items:center;justify-content:center;color:var(--text-3);font-size:0.78rem;font-style:italic;">Generazione QR...</div>
+              </div>
+              <div style="margin-top:0.8rem;font-family:var(--font-m);font-size:0.7rem;color:var(--text-3);" id="profilo-qr-code"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DAMA -->
+      <div class="panel" id="panel-dama">
+        <h2 style="font-family:var(--font-d);font-size:1.6rem;font-weight:400;margin-bottom:1.5rem;">Crediti <span style="color:var(--oro);font-style:italic;">DAMA</span></h2>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;margin-bottom:1.5rem;">
+          <div class="stat-card"><div class="stat-l">Saldo attuale</div><div class="stat-v" id="dama-saldo">—</div></div>
+          <div class="stat-card"><div class="stat-l">Totale guadagnati</div><div class="stat-v" id="dama-totale">—</div></div>
+          <div class="stat-card"><div class="stat-l">Totale utilizzati</div><div class="stat-v" id="dama-usati">—</div></div>
+        </div>
+        <div class="card">
+          <div class="card-head"><div class="card-title">Storico movimenti</div></div>
+          <div class="card-body">
+            <div class="dama-list" id="dama-full-list">
+              <div class="empty-state"><p>Nessun movimento DAMA</p></div>
+            </div>
+          </div>
+        </div>
+        <div class="card" style="margin-top:1rem;">
+          <div class="card-head"><div class="card-title">Come guadagnare DAMA</div></div>
+          <div class="card-body">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;">
+              <div style="background:var(--bg-3);border-radius:var(--r);padding:0.9rem;">
+                <div style="font-size:0.68rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--oro);margin-bottom:0.3rem;">Presenza evento</div>
+                <div style="font-family:var(--font-d);font-size:1.4rem;color:var(--text);">+10 base</div>
+                <div style="font-size:0.72rem;color:var(--text-3);">+ tasso sul prezzo pagato</div>
+              </div>
+              <div style="background:var(--bg-3);border-radius:var(--r);padding:0.9rem;">
+                <div style="font-size:0.68rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--oro);margin-bottom:0.3rem;">3 eventi stesso mese</div>
+                <div style="font-family:var(--font-d);font-size:1.4rem;color:var(--text);">+7/+15</div>
+                <div style="font-size:0.72rem;color:var(--text-3);">Custode / Damascato</div>
+              </div>
+              <div style="background:var(--bg-3);border-radius:var(--r);padding:0.9rem;">
+                <div style="font-size:0.68rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--oro);margin-bottom:0.3rem;">Porta un ospite</div>
+                <div style="font-family:var(--font-d);font-size:1.4rem;color:var(--text);">+3 – +60</div>
+                <div style="font-size:0.72rem;color:var(--text-3);">In base al tier dell'ospite</div>
+              </div>
+              <div style="background:var(--bg-3);border-radius:var(--r);padding:0.9rem;">
+                <div style="font-size:0.68rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--oro);margin-bottom:0.3rem;">Post social coordinato</div>
+                <div style="font-family:var(--font-d);font-size:1.4rem;color:var(--text);">+2/+4</div>
+                <div style="font-size:0.72rem;color:var(--text-3);">Custode / Damascato</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /content -->
+  </div><!-- /main -->
+</div><!-- /app -->
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- MODAL PRENOTAZIONE -->
+<div class="modal-overlay" id="modal-prenota">
+  <div class="modal">
+    <div class="modal-head">
+      <h3>Conferma prenotazione</h3>
+      <button class="modal-close" onclick="closeModal('modal-prenota')">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-evento-img" id="mp-img"></div>
+      <div id="mp-details"></div>
+      <div id="mp-avviso" style="margin-top:1rem;padding:0.8rem 1rem;border-radius:var(--r);font-size:0.82rem;display:none;"></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="closeModal('modal-prenota')">Annulla</button>
+      <button class="btn btn-primary" id="mp-btn" onclick="confermaPrenota()">
+        <span id="mp-btn-label">Conferma</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+// ═══════════════════════════════════
+// CONFIG
+// ═══════════════════════════════════
+const SB_URL  = 'https://plsthpdttewxkyilyyno.supabase.co';
+const SB_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBsc3RocGR0dGV3eGt5aWx5eW5vIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg2ODkyODIsImV4cCI6MjA5NDI2NTI4Mn0.D0nI7F1-xouepfRCOP5nqXwFrY96Q9urAuoHynj5KRw';
+const EVENTS_JSON = 'https://raw.githubusercontent.com/Crik0x/damascati/refs/heads/main/damascati_events.json';
+
+let SESSION = null;
+let UTENTE  = null; // record da tabella salotto
+let PRENOTAZIONI_UTENTE = [];
+let EVENTI_DATA = null;
+let EVENTO_SELEZIONATO = null;
+let loginMode = 'magic';
+
+// ═══════════════════════════════════
+// SUPABASE API
+// ═══════════════════════════════════
+function authH() {
+  return {
+    'apikey': SB_ANON,
+    'Authorization': `Bearer ${SESSION?.access_token || SB_ANON}`,
+    'Content-Type': 'application/json',
+    'Prefer': 'return=representation'
+  };
+}
+
+async function sbQ(table, params='') {
+  const r = await fetch(`${SB_URL}/rest/v1/${table}${params}`, {headers: authH()});
+  if (!r.ok) throw new Error(`${table}: ${r.status}`);
+  return r.json();
+}
+
+async function sbI(table, data) {
+  const r = await fetch(`${SB_URL}/rest/v1/${table}`, {method:'POST', headers:authH(), body:JSON.stringify(data)});
+  if (!r.ok) { const e=await r.text(); throw new Error(e); }
+  return r.json();
+}
+
+async function sbU(table, filter, data) {
+  const r = await fetch(`${SB_URL}/rest/v1/${table}?${filter}`, {method:'PATCH', headers:authH(), body:JSON.stringify(data)});
+  if (!r.ok) { const e=await r.text(); throw new Error(e); }
+  return r.json();
+}
+
+// ═══════════════════════════════════
+// THEME
+// ═══════════════════════════════════
+function toggleTheme() {
+  const t = document.body.dataset.theme === 'dark' ? 'light' : 'dark';
+  document.body.dataset.theme = t;
+  document.getElementById('theme-btn').textContent = t === 'dark' ? '🌙' : '☀️';
+  localStorage.setItem('dsc_theme', t);
+}
+
+// ═══════════════════════════════════
+// LOGIN
+// ═══════════════════════════════════
+function setLoginMode(mode) {
+  loginMode = mode;
+  document.getElementById('tab-magic').classList.toggle('active', mode==='magic');
+  document.getElementById('tab-pass').classList.toggle('active', mode==='password');
+  document.getElementById('l-pass-wrap').style.display = mode==='password' ? 'block' : 'none';
+  document.getElementById('l-btn').textContent = mode==='magic' ? 'Accedi con Magic Link' : 'Accedi';
+}
+
+async function doLogin() {
+  const email = document.getElementById('l-email').value.trim();
+  const err   = document.getElementById('l-err');
+  const msg   = document.getElementById('l-msg');
+  const btn   = document.getElementById('l-btn');
+  err.style.display = 'none';
+  msg.style.display = 'none';
+
+  if (!email || !email.includes('@')) {
+    err.textContent = 'Inserisci una email valida'; err.style.display='block'; return;
+  }
+
+  btn.innerHTML = '<span class="loader" style="border-top-color:#0F0D0B"></span>';
+
+  if (loginMode === 'magic') {
+    const r = await fetch(`${SB_URL}/auth/v1/otp`, {
+      method:'POST',
+      headers:{'apikey':SB_ANON,'Content-Type':'application/json'},
+      body:JSON.stringify({email, options:{emailRedirectTo:'https://area.damascati.it'}})
+    });
+    const d = await r.json();
+    if (d.error) {
+      err.textContent = d.error.message || 'Errore invio magic link';
+      err.style.display='block'; btn.textContent='Accedi con Magic Link'; return;
+    }
+    msg.textContent = '✦ Magic link inviato! Controlla la tua email.';
+    msg.style.display = 'block'; btn.textContent = 'Accedi con Magic Link';
+
+  } else {
+    const pass = document.getElementById('l-pass').value;
+    const r = await fetch(`${SB_URL}/auth/v1/token?grant_type=password`, {
+      method:'POST',
+      headers:{'apikey':SB_ANON,'Content-Type':'application/json'},
+      body:JSON.stringify({email, password:pass})
+    });
+    const d = await r.json();
+    if (d.error || !d.access_token) {
+      err.textContent = d.error_description || 'Credenziali non valide';
+      err.style.display='block'; btn.textContent='Accedi'; return;
+    }
+    SESSION = d;
+    localStorage.setItem('dsc_session', JSON.stringify(d));
+    avviaApp();
+  }
+}
+
+// Gestisci token da URL (magic link callback)
+async function handleMagicLink() {
+  const hash = window.location.hash;
+  if (!hash) return false;
+  const params = new URLSearchParams(hash.slice(1));
+  const access_token = params.get('access_token');
+  const refresh_token = params.get('refresh_token');
+  if (!access_token) return false;
+  SESSION = {access_token, refresh_token};
+  localStorage.setItem('dsc_session', JSON.stringify(SESSION));
+  window.history.replaceState(null, '', window.location.pathname);
+  return true;
+}
+
+async function doLogout() {
+  SESSION = null; UTENTE = null;
+  localStorage.removeItem('dsc_session');
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('login-screen').style.display = 'flex';
+}
+
+// ═══════════════════════════════════
+// INIT APP
+// ═══════════════════════════════════
+async function avviaApp() {
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('app').style.display = 'block';
+  document.getElementById('topbar-date').textContent =
+    new Date().toLocaleDateString('it-IT',{weekday:'long',day:'numeric',month:'long'});
+
+  // Carica dati utente da salotto
+  try {
+    const user = await fetch(`${SB_URL}/auth/v1/user`, {
+      headers:{'apikey':SB_ANON,'Authorization':`Bearer ${SESSION.access_token}`}
+    }).then(r=>r.json());
+
+    if (user.email) {
+      const rows = await sbQ('salotto', `?email=eq.${encodeURIComponent(user.email)}&limit=1`);
+      UTENTE = rows[0] || null;
+    }
+  } catch(e) { console.warn('Utente non trovato in salotto:', e.message); }
+
+  // Aggiorna sidebar
+  if (UTENTE) {
+    const nome = `${UTENTE.name||''} ${UTENTE.surname||''}`.trim() || UTENTE.email;
+    document.getElementById('sb-nome').textContent = nome;
+    const tier = UTENTE.membership_level || 'osservatore';
+    const tierEl = document.getElementById('sb-tier');
+    tierEl.textContent = cap(tier);
+    tierEl.className = `sb-user-tier tier-${tier}`;
+  }
+
+  await Promise.all([loadEventi(), loadPrenotazioni(), loadDama(), loadPresenze()]);
+  loadDashboard();
+}
+
+// ═══════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════
+const TITLES = {
+  dashboard:'Dashboard',eventi:'Prossimi Incontri',
+  prenotazioni:'Le Mie Prenotazioni',profilo:'Il Mio Profilo',dama:'Crediti DAMA'
+};
+function showPanel(name) {
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.sb-nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('panel-'+name).classList.add('active');
+  document.querySelector(`.sb-nav-item[onclick="showPanel('${name}')"]`)?.classList.add('active');
+  document.getElementById('topbar-title').innerHTML = `${TITLES[name]||name} <span>· Il Salotto</span>`;
+  if (name==='profilo') renderProfilo();
+  if (window.innerWidth<=768) closeSidebar();
+}
+function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');}
+function closeSidebar(){document.getElementById('sidebar').classList.remove('open');}
+
+// ═══════════════════════════════════
+// DASHBOARD
+// ═══════════════════════════════════
+function loadDashboard() {
+  // DAMA saldo
+  const dama = window._damaLog || [];
+  const saldo = Math.round(dama.reduce((s,d)=>s+(parseFloat(d.importo)||0),0));
+  document.getElementById('dash-dama').textContent = saldo;
+  document.getElementById('dash-dama-sub').textContent = saldo===1?'credito disponibile':'crediti disponibili';
+
+  // Presenze
+  const presenze = window._presenze || [];
+  document.getElementById('dash-presenze').textContent = presenze.length;
+
+  // Prenotazioni attive
+  const now = new Date();
+  const attive = (window._prenotazioni||[]).filter(p=>{
+    const evt = getEvento(p.evento_id);
+    return evt && new Date(evt.date_start) > now && p.stato !== 'cancellata';
+  });
+  document.getElementById('dash-prenotazioni').textContent = attive.length;
+
+  // Prossimo evento prenotato
+  const prossimo = attive.sort((a,b)=>{
+    const ea=getEvento(a.evento_id), eb=getEvento(b.evento_id);
+    return new Date(ea?.date_start||0)-new Date(eb?.date_start||0);
+  })[0];
+  if (prossimo) {
+    const evt = getEvento(prossimo.evento_id);
+    document.getElementById('dash-prossimo').textContent = evt?.title||'—';
+    document.getElementById('dash-prossimo-data').textContent = fmtDate(evt?.date_start);
+  }
+
+  // DAMA list ultimi 5
+  const ul = document.getElementById('dash-dama-list');
+  const last5 = [...dama].sort((a,b)=>new Date(b.created_at)-new Date(a.created_at)).slice(0,5);
+  if (last5.length) {
+    ul.innerHTML = last5.map(d=>renderDamaItem(d)).join('');
+  }
+
+  // Presenze list ultime 3
+  const pl = document.getElementById('dash-presenze-list');
+  const last3 = [...presenze].sort((a,b)=>new Date(b.timestamp_checkin)-new Date(a.timestamp_checkin)).slice(0,3);
+  if (last3.length) {
+    pl.innerHTML = last3.map(p=>{
+      const evt = getEvento(p.evento_id);
+      return `<div class="presenza-item">
+        <div class="presenza-data">${fmtDateShort(p.timestamp_checkin)}</div>
+        <div class="presenza-evento">${evt?.title||'—'}</div>
+        <div class="presenza-dama">+${p.dama_assegnati||0}</div>
+      </div>`;
+    }).join('');
+  }
+}
+
+// ═══════════════════════════════════
+// EVENTI
+// ═══════════════════════════════════
+async function loadEventi() {
+  try {
+    const res = await fetch(EVENTS_JSON+'?t='+Date.now());
+    EVENTI_DATA = await res.json();
+    const cities = [...new Set((EVENTI_DATA.events||[]).map(e=>e.citta).filter(Boolean))];
+    const sel = document.getElementById('filter-citta');
+    sel.innerHTML = '<option value="all">Tutte le città</option>' +
+      cities.map(c=>`<option value="${c}">${c}</option>`).join('');
+    renderEventi(EVENTI_DATA.events||[]);
+  } catch(e) { toast('Errore caricamento eventi','error'); }
+}
+
+function filterEventi() {
+  const city = document.getElementById('filter-citta').value;
+  const evts = (EVENTI_DATA?.events||[]).filter(e=>city==='all'||e.citta===city);
+  renderEventi(evts);
+}
+
+function getEvento(id) {
+  return (EVENTI_DATA?.events||[]).find(e=>e.id===id)||null;
+}
+
+function renderEventi(evts) {
+  const grid = document.getElementById('eventi-grid');
+  const now = new Date();
+  const upcoming = evts.filter(e=>!isExpired(e)).sort((a,b)=>new Date(a.date_start)-new Date(b.date_start));
+  if (!upcoming.length) {
+    grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1;"><p>Nessun evento in programma al momento</p></div>';
+    return;
+  }
+  const tier = UTENTE?.membership_level||'osservatore';
+  grid.innerHTML = upcoming.map(e=>buildEventoCard(e,tier)).join('');
+}
+
+function buildEventoCard(evt, tier) {
+  const fmt = EVENTI_DATA?.formats?.find(f=>f.format_id===evt.format_id)||{};
+  const title = evt.title || fmt.base_title || evt.format_id;
+  const desc  = evt.description_override || fmt.description_short || '';
+  const img   = evt.media?.image_card || fmt.image_url || '';
+  const cats  = fmt.category||[];
+  const catLabel = cats.length ? getCatLabel(cats[0]) : '';
+
+  // Prezzi
+  const pr = evt.pricing_event||{};
+  const isFree = pr.free_with_booking;
+  const prezzo = isFree ? null : (pr[tier] ?? pr.osservatore ?? null);
+  const prezzoLabel = isFree ? 'Gratuito' : (prezzo!=null ? `€${prezzo}` : '—');
+
+  // Posti
+  const cap = evt.capacity||{};
+  const tot = cap.total||0;
+  const avail = cap.available??tot;
+  const pct = tot>0 ? Math.round((1-avail/tot)*100) : 0;
+  let postiClass='ok', postiLabel=`${avail}/${tot} posti`;
+  if(avail===0){postiClass='sold';postiLabel='Sold Out';}
+  else if(avail<=3){postiClass='pochi';postiLabel=`Ultimi ${avail} posti`;}
+
+  // Già prenotato?
+  const giàPrenotato = (window._prenotazioni||[]).some(p=>p.evento_id===evt.id&&p.stato!=='cancellata');
+
+  // CTA
+  let btnHtml='';
+  if(giàPrenotato) {
+    btnHtml=`<button class="btn-prenota prenotato">✓ Prenotato</button>`;
+  } else if(evt.status==='sold_out'||avail===0) {
+    btnHtml=`<button class="btn-prenota disabled">Sold Out</button>`;
+  } else if(evt.visibility==='members'&&(tier==='osservatore')) {
+    btnHtml=`<button class="btn-prenota disabled">Solo Soci</button>`;
+  } else {
+    btnHtml=`<button class="btn-prenota available" onclick="apriModalPrenota('${evt.id}')">Prenota</button>`;
+  }
+
+  return `<div class="evento-card">
+    <div class="evento-img">
+      ${img?`<img src="${img}" alt="${title}" loading="lazy">`:`<div class="evento-img-placeholder">✦</div>`}
+      <span class="evento-vis-badge ${evt.visibility==='members'?'vis-members':'vis-public'}">${evt.visibility==='members'?'Solo Soci':'Pubblico'}</span>
+    </div>
+    <div class="evento-body">
+      <div class="evento-cat">${catLabel}</div>
+      <div class="evento-title">${title}</div>
+      <div class="evento-desc">${desc}</div>
+      <div class="evento-meta">
+        <span class="evento-meta-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          ${fmtDateShort(evt.date_start)}
+        </span>
+        <span class="evento-meta-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          ${evt.location?.name||evt.citta||'—'}
+        </span>
+      </div>
+      ${tot>0?`<div class="posti-wrap">
+        <div class="posti-row"><span class="posti-label">Disponibilità</span><span class="posti-num ${postiClass}">${postiLabel}</span></div>
+        <div class="posti-bar"><div class="posti-fill ${postiClass}" style="width:${pct}%"></div></div>
+      </div>`:''}
+      <div class="evento-footer">
+        <div class="evento-prezzo">
+          <div class="prezzo-tier">${cap(tier)}</div>
+          <div class="prezzo-val ${isFree?'gratuito':''}">${prezzoLabel}</div>
+        </div>
+        ${btnHtml}
+      </div>
+    </div>
+  </div>`;
+}
+
+function getCatLabel(id){
+  const map={socialita:'Socialità',cultura:'Cultura',esperienza:'Esperienza',esclusivo:'Esclusivo'};
+  return map[id]||id;
+}
+
+// ═══════════════════════════════════
+// PRENOTAZIONI
+// ═══════════════════════════════════
+async function loadPrenotazioni() {
+  if (!UTENTE) return;
+  try {
+    const data = await sbQ('prenotazioni',`?iscritto_id=eq.${UTENTE.id}&order=created_at.desc`);
+    window._prenotazioni = data;
+    PRENOTAZIONI_UTENTE = data;
+    renderPrenotazioni(data);
+  } catch(e) { window._prenotazioni=[]; }
+}
+
+function renderPrenotazioni(data) {
+  const list = document.getElementById('prenotazioni-list');
+  const now = new Date();
+  if (!data.length) {
+    list.innerHTML='<div class="empty-state"><p>Nessuna prenotazione ancora</p></div>'; return;
+  }
+  list.innerHTML = data.map(p=>{
+    const evt = getEvento(p.evento_id);
+    const past = evt ? new Date(evt.date_start)<now : false;
+    const statusColor = p.stato==='confermata'?'#6dbe6d':p.stato==='attesa'?'var(--oro)':'#ff8080';
+    return `<div class="card" style="margin-bottom:0.8rem;">
+      <div class="card-body" style="display:flex;align-items:center;gap:1rem;">
+        <div style="flex:1;">
+          <div style="font-family:var(--font-d);font-size:1.1rem;color:var(--text)">${evt?.title||p.evento_id}</div>
+          <div style="font-size:0.72rem;color:var(--text-3);margin-top:2px">${evt?fmtDate(evt.date_start):'—'} · ${evt?.location?.name||evt?.citta||'—'}</div>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-size:0.68rem;letter-spacing:0.12em;text-transform:uppercase;color:${statusColor}">${p.stato||'confermata'}</div>
+          ${p.prezzo_finale!=null?`<div style="font-family:var(--font-d);font-size:1rem;color:var(--text);margin-top:2px">€${p.prezzo_finale}</div>`:''}
+        </div>
+        ${!past&&p.stato!=='cancellata'?`<button class="btn btn-ghost" style="padding:0.3rem 0.7rem;font-size:0.65rem;color:#ff8080;border-color:rgba(255,128,128,0.2);" onclick="cancellaPrenotazione('${p.id}')">Annulla</button>`:''}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ═══════════════════════════════════
+// MODAL PRENOTAZIONE
+// ═══════════════════════════════════
+function apriModalPrenota(eventoId) {
+  const evt = getEvento(eventoId);
+  if (!evt) return;
+  EVENTO_SELEZIONATO = evt;
+
+  const tier = UTENTE?.membership_level||'osservatore';
+  const pr = evt.pricing_event||{};
+  const isFree = pr.free_with_booking;
+  const prezzo = isFree ? 0 : (pr[tier] ?? pr.osservatore ?? 0);
+  const cap = evt.capacity||{};
+  const avail = cap.available??0;
+
+  // Immagine
+  const img = evt.media?.image_card||'';
+  const imgEl = document.getElementById('mp-img');
+  imgEl.innerHTML = img ? `<img src="${img}" alt="${evt.title}" style="width:100%;height:100%;object-fit:cover;">` : `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:var(--font-d);font-size:3rem;color:rgba(201,169,110,0.15);">✦</div>`;
+
+  // Dettagli
+  document.getElementById('mp-details').innerHTML = `
+    <div class="modal-detail-row"><span class="modal-detail-label">Evento</span><span class="modal-detail-value">${evt.title}</span></div>
+    <div class="modal-detail-row"><span class="modal-detail-label">Data</span><span class="modal-detail-value">${fmtDate(evt.date_start)}</span></div>
+    <div class="modal-detail-row"><span class="modal-detail-label">Luogo</span><span class="modal-detail-value">${evt.location?.name||evt.citta||'—'}</span></div>
+    <div class="modal-detail-row"><span class="modal-detail-label">Prezzo (${cap(tier)})</span><span class="modal-detail-value">${isFree?'Gratuito':`€${prezzo}`}</span></div>
+    <div class="modal-detail-row"><span class="modal-detail-label">Posti disponibili</span><span class="modal-detail-value">${avail}</span></div>
+  `;
+
+  // Avviso se Osservatore e pochi posti garantiti
+  const avvisoEl = document.getElementById('mp-avviso');
+  const postiGarantiti = parseInt(evt.posti_garantiti_osservatore||5);
+  if (tier==='osservatore') {
+    // Conta prenotazioni Osservatori per questo evento
+    const prenotatiOss = (window._prenotazioni||[]).filter(p=>p.evento_id===eventoId&&p.stato!=='cancellata').length;
+    if (prenotatiOss >= postiGarantiti) {
+      avvisoEl.style.display='block';
+      avvisoEl.style.background='rgba(201,169,110,0.08)';
+      avvisoEl.style.borderLeft='3px solid var(--oro)';
+      avvisoEl.style.color='var(--text-2)';
+      avvisoEl.innerHTML='⚠️ I posti garantiti per Osservatori sono esauriti. Verrai inserito in <strong>lista d\'attesa</strong> — conferma definitiva 6 ore prima dell\'evento.';
+      document.getElementById('mp-btn-label').textContent = 'Entra in lista d\'attesa';
+    } else {
+      avvisoEl.style.display='none';
+      document.getElementById('mp-btn-label').textContent = 'Conferma prenotazione';
+    }
+  } else {
+    avvisoEl.style.display='none';
+    document.getElementById('mp-btn-label').textContent = 'Conferma prenotazione';
+  }
+
+  document.getElementById('modal-prenota').classList.add('open');
+}
+
+async function confermaPrenota() {
+  if (!EVENTO_SELEZIONATO || !UTENTE) return;
+  const evt = EVENTO_SELEZIONATO;
+  const tier = UTENTE.membership_level||'osservatore';
+  const pr = evt.pricing_event||{};
+  const isFree = pr.free_with_booking;
+  const prezzo = isFree ? 0 : (pr[tier] ?? pr.osservatore ?? 0);
+  const postiGarantiti = parseInt(evt.posti_garantiti_osservatore||5);
+
+  // Conta prenotazioni Osservatori
+  const prenotatiOss = (window._prenotazioni||[]).filter(p=>p.evento_id===evt.id&&p.stato!=='cancellata').length;
+  const stato = (tier==='osservatore' && prenotatiOss>=postiGarantiti) ? 'attesa' : 'confermata';
+  const bloccante = tier !== 'osservatore' || stato === 'confermata';
+
+  const btnLabel = document.getElementById('mp-btn-label');
+  btnLabel.innerHTML = '<span class="loader" style="border-top-color:#0F0D0B"></span>';
+
+  try {
+    // 1. Crea prenotazione
+    await sbI('prenotazioni', {
+      id: 'pre_'+Date.now(),
+      iscritto_id: UTENTE.id,
+      evento_id: evt.id,
+      stato,
+      bloccante,
+      prezzo_pagato: prezzo,
+      prezzo_finale: prezzo,
+      dama_usati: 0,
+      sconto_applicato: 0,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString()
+    });
+
+    // 2. Decrementa posti disponibili
+    if (bloccante) {
+      const cap = evt.capacity||{};
+      const nuoviPosti = Math.max(0,(cap.available??0)-1);
+      await sbU('eventi','id=eq.'+evt.id,{capacity_available:nuoviPosti,updated_at:new Date().toISOString()});
+      // Aggiorna localmente
+      if (evt.capacity) evt.capacity.available = nuoviPosti;
+    }
+
+    // 3. Aggiorna cache
+    await loadPrenotazioni();
+
+    closeModal('modal-prenota');
+
+    const msg = stato==='confermata'
+      ? '✓ Prenotazione confermata — controlla la tua email'
+      : '⌛ Sei in lista d\'attesa — riceverai conferma 6 ore prima';
+
+    toast(msg, 'success');
+
+    // 4. Ricarica eventi per aggiornare i posti
+    await loadEventi();
+    loadDashboard();
+
+  } catch(err) {
+    toast('Errore: '+err.message, 'error');
+    btnLabel.textContent = 'Conferma prenotazione';
+  }
+}
+
+async function cancellaPrenotazione(id) {
+  if (!confirm('Vuoi annullare questa prenotazione?')) return;
+  try {
+    await sbU('prenotazioni','id=eq.'+id,{stato:'cancellata',updated_at:new Date().toISOString()});
+    toast('Prenotazione annullata','success');
+    await loadPrenotazioni();
+    loadDashboard();
+  } catch(e) { toast('Errore','error'); }
+}
+
+// ═══════════════════════════════════
+// DAMA
+// ═══════════════════════════════════
+async function loadDama() {
+  if (!UTENTE) return;
+  try {
+    const data = await sbQ('dama_log',`?iscritto_id=eq.${UTENTE.id}&order=created_at.desc`);
+    window._damaLog = data;
+    renderDamaFull(data);
+  } catch(e) { window._damaLog=[]; }
+}
+
+function renderDamaItem(d) {
+  const pos = parseFloat(d.importo)>=0;
+  const icons = {presenza:'🎭',benvenuto:'✦',referral:'👥',social:'📱',manuale:'⚡',utilizzo:'💳',bonus_frequenza:'🔥'};
+  return `<div class="dama-item">
+    <div class="dama-icon ${pos?'plus':'minus'}">${icons[d.tipo]||'✦'}</div>
+    <div class="dama-info">
+      <div class="dama-tipo">${labelDama(d.tipo)}</div>
+      <div class="dama-data">${fmtDateShort(d.created_at)}</div>
+    </div>
+    <div class="dama-importo ${pos?'plus':'minus'}">${pos?'+':''}${d.importo}</div>
+  </div>`;
+}
+
+function renderDamaFull(data) {
+  const em = data.filter(d=>parseFloat(d.importo)>0).reduce((s,d)=>s+parseFloat(d.importo),0);
+  const us = data.filter(d=>parseFloat(d.importo)<0).reduce((s,d)=>s+Math.abs(parseFloat(d.importo)),0);
+  const saldo = Math.round(em-us);
+  document.getElementById('dama-saldo').textContent = saldo;
+  document.getElementById('dama-totale').textContent = Math.round(em);
+  document.getElementById('dama-usati').textContent = Math.round(us);
+  const list = document.getElementById('dama-full-list');
+  list.innerHTML = data.length ? data.map(renderDamaItem).join('') : '<div class="empty-state"><p>Nessun movimento DAMA</p></div>';
+}
+
+function labelDama(tipo){
+  const m={presenza:'Presenza evento',benvenuto:'DAMA benvenuto',referral:'Referral',social:'Post social',manuale:'Assegnazione',utilizzo:'Utilizzo',bonus_frequenza:'Bonus frequenza'};
+  return m[tipo]||tipo;
+}
+
+// ═══════════════════════════════════
+// PRESENZE
+// ═══════════════════════════════════
+async function loadPresenze() {
+  if (!UTENTE) return;
+  try {
+    const data = await sbQ('presenze',`?iscritto_id=eq.${UTENTE.id}&order=timestamp_checkin.desc`);
+    window._presenze = data;
+  } catch(e) { window._presenze=[]; }
+}
+
+// ═══════════════════════════════════
+// PROFILO
+// ═══════════════════════════════════
+function renderProfilo() {
+  if (!UTENTE) return;
+  const tier = UTENTE.membership_level||'osservatore';
+  const tierDescs = {
+    osservatore:'Accesso agli eventi pubblici del Salotto',
+    custode:'Accesso prioritario + sconto del 10% su tutti gli eventi',
+    damascato:'Accesso assoluto + sconto del 25% + DAMA premium'
+  };
+
+  document.getElementById('profilo-dati').innerHTML = `
+    <div class="profilo-field"><div class="profilo-label">Nome</div><div class="profilo-value">${UTENTE.name||'—'} ${UTENTE.surname||''}</div></div>
+    <div class="profilo-field"><div class="profilo-label">Email</div><div class="profilo-value">${UTENTE.email||'—'}</div></div>
+    <div class="profilo-field"><div class="profilo-label">Città</div><div class="profilo-value">${UTENTE.city||'—'}</div></div>
+    <div class="profilo-field"><div class="profilo-label">Professione</div><div class="profilo-value">${UTENTE.attivita||'—'}</div></div>
+    <div class="profilo-field"><div class="profilo-label">Tratto</div><div class="profilo-value">${UTENTE.tratto||'—'}</div></div>
+    <div class="profilo-field"><div class="profilo-label">Iscritto il</div><div class="profilo-value">${fmtDateShort(UTENTE.created_at)}</div></div>
+  `;
+
+  const tierBadge = document.getElementById('profilo-tier-badge');
+  tierBadge.textContent = cap(tier);
+  tierBadge.className = `tier-badge tier-${tier}`;
+  document.getElementById('profilo-tier-desc').textContent = tierDescs[tier]||'';
+  document.getElementById('profilo-dsc-code').textContent = UTENTE.dsc_code||'';
+
+  // QR code personale
+  const qrWrap = document.getElementById('profilo-qr');
+  const qrCode = document.getElementById('profilo-qr-code');
+  const qrData = UTENTE.dsc_code || UTENTE.email;
+  qrWrap.innerHTML = '<div id="qr-render"></div>';
+  try {
+    new QRCode(document.getElementById('qr-render'),{
+      text: qrData, width:160, height:160,
+      colorDark:'#0F0D0B', colorLight:'#FFFFFF',
+      correctLevel:QRCode.CorrectLevel.H
+    });
+  } catch(e) {}
+  qrCode.textContent = qrData;
+}
+
+// ═══════════════════════════════════
+// UTILS
+// ═══════════════════════════════════
+function isExpired(e){const end=new Date(e.date_end||e.date_start);end.setHours(end.getHours()+2);return end<new Date();}
+function fmtDate(iso){if(!iso)return'—';return new Date(iso).toLocaleDateString('it-IT',{day:'2-digit',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit'});}
+function fmtDateShort(iso){if(!iso)return'—';return new Date(iso).toLocaleDateString('it-IT',{day:'2-digit',month:'2-digit',year:'2-digit'});}
+function cap(s){return s?s.charAt(0).toUpperCase()+s.slice(1):'—';}
+function closeModal(id){document.getElementById(id).classList.remove('open');}
+
+let toastT;
+function toast(msg,type=''){
+  const el=document.getElementById('toast');
+  el.textContent=msg;el.className='toast show'+(type?' '+type:'');
+  clearTimeout(toastT);toastT=setTimeout(()=>el.classList.remove('show'),4000);
+}
+
+document.querySelectorAll('.modal-overlay').forEach(o=>
+  o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open');}));
+
+document.getElementById('l-email').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
+document.getElementById('l-pass').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
+
+// ═══════════════════════════════════
+// BOOT
+// ═══════════════════════════════════
+(async function boot() {
+  // Tema
+  const savedTheme = localStorage.getItem('dsc_theme')||'dark';
+  document.body.dataset.theme = savedTheme;
+  document.getElementById('theme-btn').textContent = savedTheme==='dark'?'🌙':'☀️';
+
+  // Magic link callback
+  const fromMagic = await handleMagicLink();
+  if (fromMagic) { avviaApp(); return; }
+
+  // Sessione salvata
+  const saved = localStorage.getItem('dsc_session');
+  if (saved) {
+    try {
+      SESSION = JSON.parse(saved);
+      // Verifica che la sessione sia ancora valida
+      const r = await fetch(`${SB_URL}/auth/v1/user`,{
+        headers:{'apikey':SB_ANON,'Authorization':`Bearer ${SESSION.access_token}`}
+      });
+      if (r.ok) { avviaApp(); return; }
+    } catch(e) {}
+    localStorage.removeItem('dsc_session');
+  }
+
+  // Mostra login
+  document.getElementById('login-screen').style.display = 'flex';
+})();
+</script>
+</body>
+</html>
