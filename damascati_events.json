@@ -1,7 +1,11 @@
 {
   "club": "Il Salotto dei Damascati",
-  "last_updated": "2026-05-18T05:10:32.283Z",
-  "version": "2.0",
+  "last_updated": "2026-05-18T10:17:27.020Z",
+  "version": "2.1",
+  "config": {
+    "sconto_custode": 10,
+    "sconto_damascato": 25
+  },
   "pricing_tiers": {
     "osservatore": {
       "label": "Osservatore",
@@ -9,11 +13,11 @@
     },
     "custode": {
       "label": "Custode",
-      "description": "Sconto 15% su tutti gli eventi"
+      "description": "Sconto 10% su tutti gli eventi"
     },
     "damascato": {
       "label": "Damascato",
-      "description": "Sconto 33% su tutti gli eventi"
+      "description": "Sconto 25% su tutti gli eventi"
     }
   },
   "categories": [
@@ -34,8 +38,8 @@
       ],
       "pricing": {
         "osservatore": 35,
-        "custode": 30,
-        "damascato": 25
+        "custode": 32,
+        "damascato": 26
       },
       "price_variable": false,
       "duration_hours": 2.5,
@@ -56,6 +60,7 @@
       "id": "evt_1778962605190",
       "format_id": "custom",
       "title": "La scacchiera dei Re",
+      "citta": "",
       "date_start": "2026-05-19T16:30:00+00:00",
       "date_end": "2026-05-19T19:00:00+00:00",
       "publish_at": "2026-05-17T04:00:00+00:00",
@@ -93,6 +98,7 @@
       "id": "evt_1779012403078",
       "format_id": "custom",
       "title": "Il Salotto dei Damascati",
+      "citta": "Roma",
       "date_start": "2026-05-22T20:00:00+00:00",
       "date_end": "2026-05-22T23:30:00+00:00",
       "publish_at": "2026-05-17T12:00:00+00:00",
