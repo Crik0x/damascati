@@ -533,9 +533,9 @@ body { background:var(--ink); color:var(--avorio); font-family:var(--font-s); fo
       </div>
 
       <div class="nav-group-label">Persone</div>
-      <div class="nav-item" onclick="showPanel('iscritti')">
+      <div class="nav-item" onclick="showPanel('salotto')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
-        <span>Iscritti</span>
+        <span>salotto</span>
         <span class="nav-badge" id="badge-isc">0</span>
       </div>
       <div class="nav-item" onclick="showPanel('dama')">
@@ -588,7 +588,7 @@ body { background:var(--ink); color:var(--avorio); font-family:var(--font-s); fo
         </div>
 
         <div class="stats-grid">
-          <div class="stat-card"><div class="stat-l">Iscritti totali</div><div class="stat-v" id="s-iscritti">—</div><div class="stat-s" id="s-iscritti-sub">nel movimento</div></div>
+          <div class="stat-card"><div class="stat-l">salotto totali</div><div class="stat-v" id="s-salotto">—</div><div class="stat-s" id="s-salotto-sub">nel movimento</div></div>
           <div class="stat-card"><div class="stat-l">Template attivi</div><div class="stat-v" id="s-template">—</div><div class="stat-s">formati evento</div></div>
           <div class="stat-card"><div class="stat-l">Occorrenze programmate</div><div class="stat-v" id="s-occ">—</div><div class="stat-s">eventi futuri</div></div>
           <div class="stat-card"><div class="stat-l">DAMA circolanti</div><div class="stat-v" id="s-dama">—</div><div class="stat-s">crediti attivi</div></div>
@@ -617,7 +617,7 @@ body { background:var(--ink); color:var(--avorio); font-family:var(--font-s); fo
                 <th style="font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink-6);padding:0.7rem 1.2rem;text-align:left;border-bottom:1px solid rgba(201,169,110,0.08)">Tier</th>
                 <th style="font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink-6);padding:0.7rem 1.2rem;text-align:left;border-bottom:1px solid rgba(201,169,110,0.08)">Data</th>
               </tr></thead>
-              <tbody id="dash-recent-iscritti"></tbody>
+              <tbody id="dash-recent-salotto"></tbody>
             </table>
           </div>
         </div>
@@ -740,13 +740,13 @@ body { background:var(--ink); color:var(--avorio); font-family:var(--font-s); fo
         </div>
       </div>
 
-      <!-- ── ISCRITTI ── -->
-      <div class="panel" id="panel-iscritti">
+      <!-- ── salotto ── -->
+      <div class="panel" id="panel-salotto">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.2rem;">
-          <h2 style="font-family:var(--font-d);font-size:1.6rem;font-weight:400">Iscritti <span style="color:var(--oro);font-style:italic">al Salotto</span></h2>
+          <h2 style="font-family:var(--font-d);font-size:1.6rem;font-weight:400">salotto <span style="color:var(--oro);font-style:italic">al Salotto</span></h2>
           <div style="display:flex;gap:0.5rem;">
-            <input class="form-input" id="search-isc" placeholder="Cerca nome, email, città…" style="width:240px;padding:0.5rem 0.9rem;" oninput="filterIscritti(this.value)">
-            <select class="city-select" id="isc-city-filter" onchange="filterIscritti(document.getElementById('search-isc').value)" style="min-width:130px;">
+            <input class="form-input" id="search-isc" placeholder="Cerca nome, email, città…" style="width:240px;padding:0.5rem 0.9rem;" oninput="filtersalotto(this.value)">
+            <select class="city-select" id="isc-city-filter" onchange="filtersalotto(document.getElementById('search-isc').value)" style="min-width:130px;">
               <option value="all">Tutte le città</option>
             </select>
           </div>
@@ -755,7 +755,7 @@ body { background:var(--ink); color:var(--avorio); font-family:var(--font-s); fo
           <div style="overflow-x:auto;">
             <table>
               <thead><tr><th>Nome</th><th>Email</th><th>Città</th><th>Tier</th><th>DAMA</th><th>Presenze</th><th>Iscritto</th><th>Azioni</th></tr></thead>
-              <tbody id="iscritti-tbody"></tbody>
+              <tbody id="salotto-tbody"></tbody>
             </table>
           </div>
         </div>
@@ -1243,7 +1243,7 @@ async function doLogout() {
 // ═══════════════════════════════════
 // CACHE
 // ═══════════════════════════════════
-let C = { templates:[], occorrenze:[], iscritti:[], dama:[], presenze:[] };
+let C = { templates:[], occorrenze:[], salotto:[], dama:[], presenze:[] };
 let activeCity = 'all';
 let calYear = new Date().getFullYear();
 let calMonth = new Date().getMonth();
@@ -1259,7 +1259,7 @@ async function initApp(email) {
   document.getElementById('da-scad').value = `${new Date().getFullYear()}-12-31`;
 
   populateCityDropdowns();
-  await Promise.all([loadTemplates(), loadOccorrenze(), loadIscritti(), loadDama()]);
+  await Promise.all([loadTemplates(), loadOccorrenze(), loadsalotto(), loadDama()]);
   loadDashboard();
   renderCalendario();
 
@@ -1290,7 +1290,7 @@ function populateCityDropdowns() {
 // ═══════════════════════════════════
 const PANEL_TITLES = {
   dashboard:'Dashboard',analytics:'Analytics',calendario:'Calendario',
-  template:'Template Evento',occorrenze:'Occorrenze',iscritti:'Iscritti',
+  template:'Template Evento',occorrenze:'Occorrenze',salotto:'salotto',
   dama:'Crediti DAMA',checkin:'Check-in QR'
 };
 function showPanel(name) {
@@ -1310,10 +1310,10 @@ function showPanel(name) {
 // ═══════════════════════════════════
 async function loadDashboard() {
   // Stats
-  const filtIsc = activeCity==='all' ? C.iscritti : C.iscritti.filter(i=>i.citta===activeCity);
+  const filtIsc = activeCity==='all' ? C.salotto : C.salotto.filter(i=>i.citta===activeCity);
   const filtOcc = activeCity==='all' ? C.occorrenze : C.occorrenze.filter(e=>e.citta===activeCity);
 
-  document.getElementById('s-iscritti').textContent = filtIsc.length;
+  document.getElementById('s-salotto').textContent = filtIsc.length;
   document.getElementById('s-template').textContent = C.templates.length;
   document.getElementById('s-occ').textContent = filtOcc.filter(e=>e.published&&!isExpired(e)).length;
 
@@ -1335,8 +1335,8 @@ async function loadDashboard() {
     document.getElementById('s-occupazione').textContent = Math.round(avg*100)+'%';
   }
 
-  // Sub iscritti città
-  if(activeCity!=='all') document.getElementById('s-iscritti-sub').textContent = `a ${activeCity}`;
+  // Sub salotto città
+  if(activeCity!=='all') document.getElementById('s-salotto-sub').textContent = `a ${activeCity}`;
 
   // Prossimi eventi
   const prossimi = filtOcc.filter(e=>e.published&&!isExpired(e))
@@ -1366,7 +1366,7 @@ async function loadDashboard() {
 
   // Ultime iscrizioni
   const ultimi = [...filtIsc].sort((a,b)=>new Date(b.created_at)-new Date(a.created_at)).slice(0,8);
-  document.getElementById('dash-recent-iscritti').innerHTML = ultimi.map(i=>`
+  document.getElementById('dash-recent-salotto').innerHTML = ultimi.map(i=>`
     <tr>
       <td style="font-size:0.82rem;font-weight:500">${i.nome} ${i.cognome}</td>
       <td style="font-size:0.72rem;color:var(--ink-6)">${i.citta||'—'}</td>
@@ -1383,7 +1383,7 @@ function updateRealtime() {
   const settimanaFa = new Date(now-7*86400000);
   const meseFa = new Date(now.getFullYear(), now.getMonth(), 1);
 
-  const filtIsc = activeCity==='all' ? C.iscritti : C.iscritti.filter(i=>i.citta===activeCity);
+  const filtIsc = activeCity==='all' ? C.salotto : C.salotto.filter(i=>i.citta===activeCity);
   document.getElementById('rt-today').textContent  = filtIsc.filter(i=>new Date(i.created_at).toDateString()===oggi).length;
   document.getElementById('rt-week').textContent   = filtIsc.filter(i=>new Date(i.created_at)>=settimanaFa).length;
   document.getElementById('rt-month').textContent  = filtIsc.filter(i=>new Date(i.created_at)>=meseFa).length;
@@ -1438,7 +1438,7 @@ function initCharts() {
     const d=new Date(); d.setDate(d.getDate()-i);
     labels.push(d.toLocaleDateString('it-IT',{day:'2-digit',month:'2-digit'}));
     const ds=d.toDateString();
-    counts.push(C.iscritti.filter(x=>new Date(x.created_at).toDateString()===ds).length);
+    counts.push(C.salotto.filter(x=>new Date(x.created_at).toDateString()===ds).length);
   }
 
   // Iscrizioni nel tempo
@@ -1454,11 +1454,11 @@ function initCharts() {
   const ctx2=document.getElementById('chart-citta');
   if(charts.citta) charts.citta.destroy();
   const cityCounts={};
-  C.iscritti.forEach(i=>{const c=i.citta||'Altro';cityCounts[c]=(cityCounts[c]||0)+1;});
+  C.salotto.forEach(i=>{const c=i.citta||'Altro';cityCounts[c]=(cityCounts[c]||0)+1;});
   const sortedCities=Object.entries(cityCounts).sort((a,b)=>b[1]-a[1]).slice(0,8);
   if(ctx2) charts.citta = new Chart(ctx2,{
     type:'bar',
-    data:{labels:sortedCities.map(x=>x[0]),datasets:[{label:'Iscritti',data:sortedCities.map(x=>x[1]),backgroundColor:'rgba(201,169,110,0.6)',borderColor:'rgba(201,169,110,0.9)',borderWidth:1,borderRadius:3}]},
+    data:{labels:sortedCities.map(x=>x[0]),datasets:[{label:'salotto',data:sortedCities.map(x=>x[1]),backgroundColor:'rgba(201,169,110,0.6)',borderColor:'rgba(201,169,110,0.9)',borderWidth:1,borderRadius:3}]},
     options:{plugins:{legend:{display:false}},scales:{y:{beginAtZero:true}},indexAxis:'y'}
   });
 
@@ -1511,11 +1511,11 @@ function initCharts() {
     const d=new Date();d.setMonth(d.getMonth()-i);
     monthlyLabels.push(d.toLocaleDateString('it-IT',{month:'short'}));
     const m=d.getMonth(),y=d.getFullYear();
-    monthlyCounts.push(C.iscritti.filter(x=>{const cd=new Date(x.created_at);return cd.getMonth()===m&&cd.getFullYear()===y;}).length);
+    monthlyCounts.push(C.salotto.filter(x=>{const cd=new Date(x.created_at);return cd.getMonth()===m&&cd.getFullYear()===y;}).length);
   }
   if(ctx6) charts.crescita = new Chart(ctx6,{
     type:'line',
-    data:{labels:monthlyLabels,datasets:[{label:'Nuovi iscritti',data:monthlyCounts,borderColor:'#C9A96E',backgroundColor:'rgba(201,169,110,0.1)',fill:true,tension:0.4,pointRadius:4,pointBackgroundColor:'#C9A96E'}]},
+    data:{labels:monthlyLabels,datasets:[{label:'Nuovi salotto',data:monthlyCounts,borderColor:'#C9A96E',backgroundColor:'rgba(201,169,110,0.1)',fill:true,tension:0.4,pointRadius:4,pointBackgroundColor:'#C9A96E'}]},
     options:{plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,ticks:{stepSize:1}}}}
   });
 
@@ -1977,21 +1977,21 @@ async function deleteOcc(id){
 }
 
 // ═══════════════════════════════════
-// ISCRITTI
+// salotto
 // ═══════════════════════════════════
-async function loadIscritti() {
+async function loadsalotto() {
   try{
-    const data=await sbQ('iscritti','?order=created_at.desc');
-    C.iscritti=data;
-    renderIscritti(data);
+    const data=await sbQ('salotto','?order=created_at.desc');
+    C.salotto=data;
+    rendersalotto(data);
     document.getElementById('badge-isc').textContent=data.length;
     const sel=document.getElementById('da-isc');
     sel.innerHTML=data.map(i=>`<option value="${i.id}">${i.nome} ${i.cognome} — ${i.tier}</option>`).join('');
-  }catch(e){toast('Errore iscritti','error');}
+  }catch(e){toast('Errore salotto','error');}
 }
 
-function renderIscritti(data) {
-  const tbody=document.getElementById('iscritti-tbody');
+function rendersalotto(data) {
+  const tbody=document.getElementById('salotto-tbody');
   if(!data.length){tbody.innerHTML='<tr><td colspan="8" style="text-align:center;padding:3rem;color:var(--ink-6);font-style:italic;">Nessun iscritto</td></tr>';return;}
   tbody.innerHTML=data.map(i=>`<tr>
     <td style="font-weight:500;font-size:0.82rem">${i.nome} ${i.cognome}</td>
@@ -2006,12 +2006,12 @@ function renderIscritti(data) {
   data.forEach(i=>loadSaldo(i.id));
 }
 
-function filterIscritti(q) {
+function filtersalotto(q) {
   const city=document.getElementById('isc-city-filter').value;
-  let data=C.iscritti;
+  let data=C.salotto;
   if(city!=='all') data=data.filter(i=>i.citta===city);
   if(q) data=data.filter(i=>`${i.nome} ${i.cognome} ${i.email}`.toLowerCase().includes(q.toLowerCase()));
-  renderIscritti(data);
+  rendersalotto(data);
 }
 
 async function loadSaldo(id) {
@@ -2040,7 +2040,7 @@ function renderDamaTable(data) {
   const tbody=document.getElementById('dama-tbody');
   if(!data.length){tbody.innerHTML='<tr><td colspan="6" style="text-align:center;padding:3rem;color:var(--ink-6);font-style:italic;">Nessun movimento</td></tr>';return;}
   tbody.innerHTML=data.map(d=>{
-    const isc=C.iscritti.find(i=>i.id===d.iscritto_id);
+    const isc=C.salotto.find(i=>i.id===d.iscritto_id);
     const evt=C.occorrenze.find(e=>e.id===d.evento_id);
     const pos=parseFloat(d.importo)>=0;
     return `<tr>
@@ -2156,9 +2156,9 @@ async function processQr(data){
   const evtId=document.getElementById('scan-evt-sel').value;
   if(!evtId){showScanRes('error','Seleziona un evento prima');return;}
   try{
-    const iscritti=await sbQ('iscritti',`?qr_code_id=eq.${encodeURIComponent(data)}&select=*`);
-    if(!iscritti.length){showScanRes('error','QR non riconosciuto');return;}
-    const isc=iscritti[0];
+    const salotto=await sbQ('salotto',`?qr_code_id=eq.${encodeURIComponent(data)}&select=*`);
+    if(!salotto.length){showScanRes('error','QR non riconosciuto');return;}
+    const isc=salotto[0];
     const gia=await sbQ('presenze',`?iscritto_id=eq.${isc.id}&evento_id=eq.${evtId}`);
     if(gia.length){showScanRes('warning',`${isc.nome} ${isc.cognome}`,'Già registrato a questo evento');return;}
     const evt=C.occorrenze.find(e=>e.id===evtId);
