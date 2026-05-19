@@ -1,6 +1,6 @@
 {
   "club": "Il Salotto dei Damascati",
-  "last_updated": "2026-05-19T19:06:33.988Z",
+  "last_updated": "2026-05-19T21:25:29.118Z",
   "version": "2.1",
   "config": {
     "sconto_custode": 10,
@@ -56,44 +56,6 @@
     }
   ],
   "events": [
-    {
-      "id": "evt_1778962605190",
-      "format_id": "custom",
-      "title": "La scacchiera dei Re",
-      "citta": "",
-      "date_start": "2026-05-19T16:30:00+00:00",
-      "date_end": "2026-05-19T19:00:00+00:00",
-      "publish_at": "2026-05-17T04:00:00+00:00",
-      "visibility": "public",
-      "status": "available",
-      "published": true,
-      "featured": false,
-      "location": {
-        "name": "",
-        "address": "",
-        "maps_url": ""
-      },
-      "capacity": {
-        "total": 10,
-        "available": 3,
-        "osservatore": null,
-        "custode": null,
-        "damascato": null
-      },
-      "pricing_event": {
-        "osservatore": 35,
-        "custode": 30,
-        "damascato": 25
-      },
-      "description_override": "",
-      "media": {
-        "image_card": "https://static.tildacdn.com/tild3964-3531-4662-b765-663237333439/photo-1596507457972-.jpg"
-      },
-      "registration": {
-        "url": ""
-      },
-      "google_calendar_id": ""
-    },
     {
       "id": "evt_1779012403078",
       "format_id": "custom",
