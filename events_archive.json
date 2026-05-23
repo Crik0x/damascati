@@ -1,6 +1,6 @@
 {
   "club": "Il Salotto dei Damascati",
-  "last_updated": "2026-05-22T23:08:41.678Z",
+  "last_updated": "2026-05-23T03:51:36.263Z",
   "version": "2.1",
   "archive": [
     {
@@ -76,6 +76,42 @@
         "url": "https://api.whatsapp.com/send/?phone=393515182533&text=Ciao+vorrei+prenotare+la+Cena+dei+Membri"
       },
       "google_calendar_id": ""
+    },
+    {
+      "id": "evt_1779012403078",
+      "format_id": "custom",
+      "title": "Il Salotto dei Damascati",
+      "citta": "Roma",
+      "date_start": "2026-05-22T20:00:00+00:00",
+      "date_end": "2026-05-22T23:30:00+00:00",
+      "publish_at": "2026-05-17T12:00:00+00:00",
+      "visibility": "public",
+      "status": "available",
+      "published": true,
+      "featured": false,
+      "location": {
+        "name": "Vatican Privé",
+        "address": "Via della Conciliazione 44",
+        "maps_url": "https://maps.app.goo.gl/7onYiX7ZFN8Jfj2bA"
+      },
+      "capacity": {
+        "total": 15,
+        "available": 4,
+        "osservatore": 4,
+        "custode": 5,
+        "damascato": 6
+      },
+      "pricing_event": {
+        "free_with_booking": true
+      },
+      "description_override": "",
+      "media": {
+        "image_card": "https://static.tildacdn.com/tild3761-6537-4339-b361-323437666632/Salotto_dei_Damascat.jpg"
+      },
+      "registration": {
+        "url": "https://api.whatsapp.com/send/?phone=393515182533&text=Ciao+vorrei+prenotare+la+Cena+dei+Membri"
+      },
+      "google_calendar_id": "https://calendar.app.google/LwD4fxagR68dYcpj9"
     },
     {
       "id": "evt_1778962605190",
