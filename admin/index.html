@@ -461,6 +461,82 @@ body { background:var(--ink); color:var(--avorio); font-family:var(--font-s); fo
   .charts-grid,.charts-grid-3 { grid-template-columns:1fr; }
   .occ-row { grid-template-columns:1fr; }
 }
+
+/* ═══════════ GOVERNANCE ═══════════ */
+.gov-chain {
+  display:flex; align-items:center; gap:0.5rem; flex-wrap:wrap;
+  background:var(--ink-2); border:1px solid rgba(201,169,110,0.1);
+  border-radius:var(--r); padding:0.9rem 1.4rem; margin-bottom:1rem;
+  font-size:0.78rem; color:var(--ink-6);
+}
+.gov-chain b { color:var(--oro); }
+.gov-chain .sep { color:var(--ink-5); }
+
+.proposta-stato {
+  display:inline-block; font-size:0.62rem; letter-spacing:0.08em;
+  padding:0.2rem 0.6rem; border-radius:20px; border:1px solid;
+}
+.ps-bozza        { color:var(--ink-6); border-color:var(--ink-5); }
+.ps-raccolta     { color:var(--oro-d); border-color:rgba(201,169,110,0.3); }
+.ps-raggiunto    { color:var(--oro); border-color:rgba(201,169,110,0.5); }
+.ps-approvata    { color:#6dbe6d; border-color:rgba(109,190,109,0.4); }
+.ps-votazione    { color:#80b3ff; border-color:rgba(128,179,255,0.4); }
+.ps-chiusa       { color:var(--ink-6); border-color:var(--ink-5); }
+.ps-respinta     { color:#ff8080; border-color:rgba(255,128,128,0.3); }
+
+.velocita-cost { color:var(--rosso); }
+.velocita-pol  { color:var(--oro); }
+.velocita-ord  { color:var(--avorio); }
+
+.sim-box {
+  background:var(--ink-3); border:1px solid rgba(201,169,110,0.15);
+  border-radius:var(--r); padding:1.2rem 1.4rem; margin-top:1rem;
+  display:flex; align-items:flex-end; gap:1.2rem; flex-wrap:wrap;
+}
+.sim-out {
+  font-family:var(--font-d); font-size:2rem; color:var(--oro); line-height:1;
+  min-width:140px;
+}
+
+.cfg-row {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:0.75rem 0; border-bottom:1px solid rgba(201,169,110,0.06);
+}
+.cfg-row:last-child { border-bottom:none; }
+.cfg-row span { font-size:0.82rem; color:var(--avorio); }
+.cfg-row input[type="number"], .cfg-row input[type="text"] {
+  width:80px; background:var(--ink-3); border:1px solid rgba(201,169,110,0.15);
+  border-radius:var(--r); padding:0.4rem 0.6rem; color:var(--avorio);
+  font-family:var(--font-m); font-size:0.82rem; text-align:right; outline:none;
+  transition:border-color var(--transition);
+}
+.cfg-row input:focus { border-color:var(--oro); }
+.cfg-row input[type="checkbox"] { width:auto; accent-color:var(--oro); }
+
+.bar-row { display:flex; align-items:center; gap:0.8rem; margin-bottom:0.6rem; }
+.bar-label { font-size:0.75rem; color:var(--ink-6); min-width:120px; }
+.bar-track { flex:1; height:6px; background:var(--ink-4); border-radius:3px; overflow:hidden; }
+.bar-fill   { height:100%; background:var(--oro); border-radius:3px; transition:width 0.5s; }
+.bar-val    { font-family:var(--font-m); font-size:0.72rem; color:var(--ink-6); min-width:40px; text-align:right; }
+
+.obiettivo-row {
+  display:grid; grid-template-columns:1fr 120px 80px 80px 80px;
+  align-items:center; gap:1rem; padding:0.8rem 1.2rem;
+  border-bottom:1px solid rgba(201,169,110,0.05);
+  font-size:0.82rem;
+}
+.obiettivo-row:last-child { border-bottom:none; }
+
+.three-speed {
+  display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; margin-bottom:1rem;
+}
+.speed-card {
+  background:var(--ink-2); border:1px solid rgba(201,169,110,0.1);
+  border-radius:var(--r); padding:1.2rem 1.4rem;
+}
+.speed-card h4 { font-family:var(--font-d); font-size:1.1rem; font-weight:400; margin-bottom:0.2rem; }
+.speed-card .speed-sub { font-size:0.72rem; color:var(--ink-6); margin-bottom:0.5rem; font-style:italic; }
+.speed-card p  { font-size:0.78rem; color:var(--ink-6); line-height:1.5; }
 </style>
 </head>
 <body>
@@ -533,9 +609,9 @@ body { background:var(--ink); color:var(--avorio); font-family:var(--font-s); fo
       </div>
 
       <div class="nav-group-label">Persone</div>
-      <div class="nav-item" onclick="showPanel('salotto')">
+      <div class="nav-item" onclick="showPanel('iscritti')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
-        <span>salotto</span>
+        <span>Iscritti</span>
         <span class="nav-badge" id="badge-isc">0</span>
       </div>
       <div class="nav-item" onclick="showPanel('dama')">
@@ -547,6 +623,20 @@ body { background:var(--ink); color:var(--avorio); font-family:var(--font-s); fo
       <div class="nav-item" onclick="showPanel('checkin')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 7V5a2 2 0 012-2h2M17 3h2a2 2 0 012 2v2M21 17v2a2 2 0 01-2 2h-2M7 21H5a2 2 0 01-2-2v-2"/><path d="M9 12l2 2 4-4"/></svg>
         <span>Check-in QR</span>
+      </div>
+
+      <div class="nav-group-label">Governo</div>
+      <div class="nav-item" onclick="showPanel('voto')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+        <span>Proposte & Voto</span>
+      </div>
+      <div class="nav-item" onclick="showPanel('tesoreria')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/></svg>
+        <span>Tesoreria</span>
+      </div>
+      <div class="nav-item" onclick="showPanel('cariche')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M6 20v-2a6 6 0 0112 0v2"/><path d="M20 8l2 2-2 2M4 8l-2 2 2 2"/></svg>
+        <span>Cariche & Config</span>
       </div>
     </nav>
 
@@ -588,7 +678,7 @@ body { background:var(--ink); color:var(--avorio); font-family:var(--font-s); fo
         </div>
 
         <div class="stats-grid">
-          <div class="stat-card"><div class="stat-l">salotto totali</div><div class="stat-v" id="s-salotto">—</div><div class="stat-s" id="s-salotto-sub">nel movimento</div></div>
+          <div class="stat-card"><div class="stat-l">Iscritti totali</div><div class="stat-v" id="s-iscritti">—</div><div class="stat-s" id="s-iscritti-sub">nel movimento</div></div>
           <div class="stat-card"><div class="stat-l">Template attivi</div><div class="stat-v" id="s-template">—</div><div class="stat-s">formati evento</div></div>
           <div class="stat-card"><div class="stat-l">Occorrenze programmate</div><div class="stat-v" id="s-occ">—</div><div class="stat-s">eventi futuri</div></div>
           <div class="stat-card"><div class="stat-l">DAMA circolanti</div><div class="stat-v" id="s-dama">—</div><div class="stat-s">crediti attivi</div></div>
@@ -617,7 +707,7 @@ body { background:var(--ink); color:var(--avorio); font-family:var(--font-s); fo
                 <th style="font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink-6);padding:0.7rem 1.2rem;text-align:left;border-bottom:1px solid rgba(201,169,110,0.08)">Tier</th>
                 <th style="font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink-6);padding:0.7rem 1.2rem;text-align:left;border-bottom:1px solid rgba(201,169,110,0.08)">Data</th>
               </tr></thead>
-              <tbody id="dash-recent-salotto"></tbody>
+              <tbody id="dash-recent-iscritti"></tbody>
             </table>
           </div>
         </div>
@@ -740,13 +830,13 @@ body { background:var(--ink); color:var(--avorio); font-family:var(--font-s); fo
         </div>
       </div>
 
-      <!-- ── salotto ── -->
-      <div class="panel" id="panel-salotto">
+      <!-- ── ISCRITTI ── -->
+      <div class="panel" id="panel-iscritti">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.2rem;">
-          <h2 style="font-family:var(--font-d);font-size:1.6rem;font-weight:400">salotto <span style="color:var(--oro);font-style:italic">al Salotto</span></h2>
+          <h2 style="font-family:var(--font-d);font-size:1.6rem;font-weight:400">Iscritti <span style="color:var(--oro);font-style:italic">al Salotto</span></h2>
           <div style="display:flex;gap:0.5rem;">
-            <input class="form-input" id="search-isc" placeholder="Cerca nome, email, città…" style="width:240px;padding:0.5rem 0.9rem;" oninput="filtersalotto(this.value)">
-            <select class="city-select" id="isc-city-filter" onchange="filtersalotto(document.getElementById('search-isc').value)" style="min-width:130px;">
+            <input class="form-input" id="search-isc" placeholder="Cerca nome, email, città…" style="width:240px;padding:0.5rem 0.9rem;" oninput="filterIscritti(this.value)">
+            <select class="city-select" id="isc-city-filter" onchange="filterIscritti(document.getElementById('search-isc').value)" style="min-width:130px;">
               <option value="all">Tutte le città</option>
             </select>
           </div>
@@ -755,7 +845,7 @@ body { background:var(--ink); color:var(--avorio); font-family:var(--font-s); fo
           <div style="overflow-x:auto;">
             <table>
               <thead><tr><th>Nome</th><th>Email</th><th>Città</th><th>Tier</th><th>DAMA</th><th>Presenze</th><th>Iscritto</th><th>Azioni</th></tr></thead>
-              <tbody id="salotto-tbody"></tbody>
+              <tbody id="iscritti-tbody"></tbody>
             </table>
           </div>
         </div>
@@ -832,6 +922,169 @@ body { background:var(--ink); color:var(--avorio); font-family:var(--font-s); fo
           </div>
         </div>
       </div>
+
+
+      <!-- ── VOTO ── -->
+      <div class="panel" id="panel-voto">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.2rem;">
+          <div>
+            <h2 style="font-family:var(--font-d);font-size:1.6rem;font-weight:400">Proposte <span style="color:var(--oro);font-style:italic">&amp; Voto</span></h2>
+            <p style="font-size:0.78rem;color:var(--ink-6);margin-top:0.3rem;font-style:italic;">Nessun voto nasce senza la tua approvazione. La catena dei cancelli protegge l'istituzione.</p>
+          </div>
+        </div>
+        <div class="gov-chain">
+          <b>1 · Iniziativa</b><span class="sep">→</span>
+          <b>2 · Sostegno</b><span class="sep">→</span>
+          <b>3 · Tua approvazione</b><span class="sep">→</span>
+          <b>4 · Voto</b><span class="sep">·</span>
+          <span>Prerogativa fondatore: <b id="gov-pct">35%</b> del totale espresso</span>
+        </div>
+        <div class="three-speed">
+          <div class="speed-card"><h4 class="velocita-cost">Costituzionale</h4><div class="speed-sub">Non si vota — decidi tu</div><p>Statuto, espulsioni, nuove città, franchising, riti.</p></div>
+          <div class="speed-card"><h4 class="velocita-pol">Politica</h4><div class="speed-sub">35% fondatore + nomina</div><p>Promozioni, statuto città, budget, sanzioni.</p></div>
+          <div class="speed-card"><h4>Ordinaria</h4><div class="speed-sub">Democrazia piena</div><p>Organizzazione, temi, piccole spese.</p></div>
+        </div>
+        <div class="card" style="margin-bottom:1rem;">
+          <div class="card-head"><div class="card-title">Proposte in corso</div></div>
+          <div style="overflow-x:auto;">
+            <table style="width:100%;border-collapse:collapse;">
+              <thead><tr>
+                <th style="font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink-6);padding:0.7rem 1.2rem;text-align:left;border-bottom:1px solid rgba(201,169,110,0.08)">Proposta</th>
+                <th style="font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink-6);padding:0.7rem 1.2rem;text-align:left;border-bottom:1px solid rgba(201,169,110,0.08)">Velocità</th>
+                <th style="font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink-6);padding:0.7rem 1.2rem;text-align:left;border-bottom:1px solid rgba(201,169,110,0.08)">Ambito</th>
+                <th style="font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink-6);padding:0.7rem 1.2rem;text-align:left;border-bottom:1px solid rgba(201,169,110,0.08)">Sostegni</th>
+                <th style="font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink-6);padding:0.7rem 1.2rem;text-align:left;border-bottom:1px solid rgba(201,169,110,0.08)">SÌ %</th>
+                <th style="font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink-6);padding:0.7rem 1.2rem;text-align:left;border-bottom:1px solid rgba(201,169,110,0.08)">Stato</th>
+                <th style="font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink-6);padding:0.7rem 1.2rem;text-align:left;border-bottom:1px solid rgba(201,169,110,0.08)">Azione</th>
+              </tr></thead>
+              <tbody id="voto-tbody"><tr><td colspan="7" style="text-align:center;padding:3rem;color:var(--ink-6);font-style:italic;">Caricamento...</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-head"><div class="card-title">Simulatore · Regola del 35% reale</div></div>
+          <div class="card-body">
+            <p style="font-size:0.78rem;color:var(--ink-6);margin-bottom:1rem;font-style:italic;">Verifica l'esito prima di aprire un voto. Scale-invariant: il risultato non dipende dal numero di votanti.</p>
+            <div class="sim-box">
+              <div class="form-group" style="margin:0"><label class="form-label">SÌ comunità (%)</label><input type="number" class="form-input" id="sim-si" value="60" min="0" max="100" oninput="runSim()" style="width:80px;"></div>
+              <div class="form-group" style="margin:0"><label class="form-label">% fondatore</label><input type="number" class="form-input" id="sim-p" value="35" min="0" max="100" oninput="runSim()" style="width:80px;"></div>
+              <div class="form-group" style="margin:0"><label class="form-label">Fondatore vota</label><select class="form-select" id="sim-f" onchange="runSim()" style="width:120px;"><option value="no_vota">non vota</option><option value="si">SÌ</option><option value="no">NO</option></select></div>
+              <div class="sim-out" id="sim-out">—</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── TESORERIA ── -->
+      <div class="panel" id="panel-tesoreria">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.2rem;">
+          <div>
+            <h2 style="font-family:var(--font-d);font-size:1.6rem;font-weight:400">Tesoreria <span style="color:var(--oro);font-style:italic">&amp; Obiettivi</span></h2>
+            <p style="font-size:0.78rem;color:var(--ink-6);margin-top:0.3rem;font-style:italic;">Il foglio di trasparenza: quanto si raccoglie e come viene speso.</p>
+          </div>
+          <button class="btn btn-primary btn-sm">+ Registra contributo</button>
+        </div>
+        <div class="stats-grid" style="grid-template-columns:repeat(3,1fr);margin-bottom:1.2rem;">
+          <div class="stat-card"><div class="stat-l">Raccolto totale</div><div class="stat-v" id="tes-raccolto">—</div><div class="stat-s">verso gli obiettivi</div></div>
+          <div class="stat-card"><div class="stat-l">Speso rendicontato</div><div class="stat-v" id="tes-speso">—</div></div>
+          <div class="stat-card"><div class="stat-l">Saldo disponibile</div><div class="stat-v" id="tes-saldo">—</div></div>
+        </div>
+        <div class="card" style="margin-bottom:1rem;">
+          <div class="card-head"><div class="card-title">Obiettivi · Raccolto vs Target</div></div>
+          <div id="tes-obiettivi" style="padding:0.5rem 0;"><div style="text-align:center;padding:3rem;color:var(--ink-6);font-style:italic;">Caricamento...</div></div>
+        </div>
+        <div style="display:grid;grid-template-columns:2fr 1fr;gap:1rem;">
+          <div class="card">
+            <div class="card-head"><div class="card-title">Contributi recenti</div></div>
+            <div style="overflow-x:auto;">
+              <table style="width:100%;border-collapse:collapse;">
+                <thead><tr>
+                  <th style="font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink-6);padding:0.7rem 1.2rem;text-align:left;border-bottom:1px solid rgba(201,169,110,0.08)">Membro</th>
+                  <th style="font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink-6);padding:0.7rem 1.2rem;text-align:left;border-bottom:1px solid rgba(201,169,110,0.08)">Tipo</th>
+                  <th style="font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink-6);padding:0.7rem 1.2rem;text-align:left;border-bottom:1px solid rgba(201,169,110,0.08)">Importo</th>
+                  <th style="font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink-6);padding:0.7rem 1.2rem;text-align:left;border-bottom:1px solid rgba(201,169,110,0.08)">Città</th>
+                  <th style="font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink-6);padding:0.7rem 1.2rem;text-align:left;border-bottom:1px solid rgba(201,169,110,0.08)">Data</th>
+                </tr></thead>
+                <tbody id="tes-contributi"></tbody>
+              </table>
+            </div>
+          </div>
+          <div class="card"><div class="card-head"><div class="card-title">Composizione</div></div><div class="card-body"><canvas id="chart-contributi" height="200"></canvas></div></div>
+        </div>
+      </div>
+
+      <!-- ── CARICHE & CONFIG ── -->
+      <div class="panel" id="panel-cariche">
+        <div style="margin-bottom:1.5rem;">
+          <h2 style="font-family:var(--font-d);font-size:1.6rem;font-weight:400">Cariche <span style="color:var(--oro);font-style:italic">&amp; Configurazione</span></h2>
+          <p style="font-size:0.78rem;color:var(--ink-6);margin-top:0.3rem;font-style:italic;">La gerarchia è aperta. Crei nuove cariche senza riscrivere il sistema. I valori vivono nei dati, non nel codice.</p>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;">
+          <div class="card">
+            <div class="card-head"><div class="card-title">Cariche attive</div><button class="btn btn-primary btn-sm">+ Nuova carica</button></div>
+            <div style="overflow-x:auto;">
+              <table style="width:100%;border-collapse:collapse;">
+                <thead><tr>
+                  <th style="font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink-6);padding:0.7rem 1.2rem;text-align:left;border-bottom:1px solid rgba(201,169,110,0.08)">Carica</th>
+                  <th style="font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink-6);padding:0.7rem 1.2rem;text-align:left;border-bottom:1px solid rgba(201,169,110,0.08)">Ambito</th>
+                  <th style="font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink-6);padding:0.7rem 1.2rem;text-align:left;border-bottom:1px solid rgba(201,169,110,0.08)">Peso voto</th>
+                  <th style="font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink-6);padding:0.7rem 1.2rem;text-align:left;border-bottom:1px solid rgba(201,169,110,0.08)">Propone</th>
+                </tr></thead>
+                <tbody id="cariche-tbody"><tr><td colspan="4" style="text-align:center;padding:3rem;color:var(--ink-6);font-style:italic;">Caricamento...</td></tr></tbody>
+              </table>
+            </div>
+            <div style="padding:0.8rem 1.2rem;font-size:0.72rem;color:var(--ink-6);font-style:italic;border-top:1px solid rgba(201,169,110,0.06)">Future: sindaci, consoli, rappresentanti di regione, prelati — senza riscrivere il sistema.</div>
+          </div>
+          <div class="card">
+            <div class="card-head"><div class="card-title">Pesi di voto · Damascato</div></div>
+            <div class="card-body">
+              <div class="cfg-row"><span>Fondatore</span><input type="number" step="0.1" id="pw-fondatore" value="4.1"></div>
+              <div class="cfg-row"><span>Attivo</span><input type="number" step="0.1" id="pw-attivo" value="2.1"></div>
+              <div class="cfg-row"><span>Sostenitore</span><input type="number" step="0.1" id="pw-sostenitore" value="2.1"></div>
+              <div class="cfg-row"><span>Passivo</span><input type="number" step="0.1" id="pw-passivo" value="1.1"></div>
+            </div>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;">
+          <div class="card">
+            <div class="card-head"><div class="card-title">Prerogativa &amp; Voto</div></div>
+            <div class="card-body">
+              <div class="cfg-row"><span>Percentuale fondatore</span><span style="display:flex;align-items:center;gap:0.4rem;"><input type="number" id="cfg-fondatore-pct" value="35" min="1" max="99"> <span style="font-size:0.75rem;color:var(--ink-6)">%</span></span></div>
+              <div class="cfg-row"><span>Voto richiede verifica</span><input type="checkbox" id="cfg-voto-verifica" checked></div>
+              <div class="cfg-row"><span>Endorsement per avanzamento</span><input type="number" id="cfg-endorsement" value="3"></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-head"><div class="card-title">Soglie &amp; DAMA</div></div>
+            <div class="card-body">
+              <div class="cfg-row"><span>Cap sconto DAMA per evento</span><span style="display:flex;align-items:center;gap:0.4rem;"><input type="number" id="cfg-dama-cap" value="60"> <span style="font-size:0.75rem;color:var(--ink-6)">%</span></span></div>
+              <div class="cfg-row"><span>Posti garantiti Osservatori</span><input type="number" id="cfg-posti-oss" value="5"></div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-head"><div class="card-title">Regolamenti attivi · Tre velocità</div></div>
+          <div style="overflow-x:auto;">
+            <table style="width:100%;border-collapse:collapse;">
+              <thead><tr>
+                <th style="font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink-6);padding:0.7rem 1.2rem;text-align:left;border-bottom:1px solid rgba(201,169,110,0.08)">Ambito</th>
+                <th style="font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink-6);padding:0.7rem 1.2rem;text-align:left;border-bottom:1px solid rgba(201,169,110,0.08)">Velocità</th>
+                <th style="font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink-6);padding:0.7rem 1.2rem;text-align:left;border-bottom:1px solid rgba(201,169,110,0.08)">Tipo decisione</th>
+                <th style="font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink-6);padding:0.7rem 1.2rem;text-align:left;border-bottom:1px solid rgba(201,169,110,0.08)">Sostegno min.</th>
+                <th style="font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink-6);padding:0.7rem 1.2rem;text-align:left;border-bottom:1px solid rgba(201,169,110,0.08)">Quorum</th>
+                <th style="font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink-6);padding:0.7rem 1.2rem;text-align:left;border-bottom:1px solid rgba(201,169,110,0.08)">Maggioranza</th>
+              </tr></thead>
+              <tbody id="regolamenti-tbody"><tr><td colspan="6" style="text-align:center;padding:3rem;color:var(--ink-6);font-style:italic;">Caricamento...</td></tr></tbody>
+            </table>
+          </div>
+          <div style="padding:0.8rem 1.2rem;font-size:0.72rem;color:var(--ink-6);border-top:1px solid rgba(201,169,110,0.06)">Le regole sono <strong>versionate</strong>: all'apertura di un voto la versione viene congelata. Cambiarle dopo non altera le decisioni già prese.</div>
+        </div>
+        <div style="margin-top:1rem;display:flex;gap:0.6rem;align-items:center;">
+          <button class="btn btn-primary" onclick="saveConfig()">Salva configurazione</button>
+          <span style="font-size:0.72rem;color:var(--ink-6);font-style:italic;">Ogni modifica viene registrata in audit_log (chi, cosa, prima → dopo).</span>
+        </div>
+      </div>
+
 
     </div><!-- /content -->
   </div><!-- /main -->
@@ -1130,26 +1383,7 @@ body { background:var(--ink); color:var(--avorio); font-family:var(--font-s); fo
 const SB_URL  = 'https://plsthpdttewxkyilyyno.supabase.co';
 const SB_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBsc3RocGR0dGV3eGt5aWx5eW5vIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg2ODkyODIsImV4cCI6MjA5NDI2NTI4Mn0.D0nI7F1-xouepfRCOP5nqXwFrY96Q9urAuoHynj5KRw';
 const GA_ID   = 'G-9P2126F2PQ';
-const GH_REPO = 'Crik0x/damascati';
-const GH_PAT  = ''; // Inserisci il tuo GitHub PAT per il sync immediato
 let TOKEN = null;
-
-// Trigger sync GitHub Actions dopo modifica posti
-async function triggerSync() {
-  if (!GH_PAT) return; // Skip se PAT non configurato
-  try {
-    await fetch(`https://api.github.com/repos/${GH_REPO}/dispatches`, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${GH_PAT}`,
-        'Accept': 'application/vnd.github.v3+json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ event_type: 'sync-eventi' })
-    });
-    toast('Sync avviato — sito aggiornato in ~30 secondi', 'success');
-  } catch(e) { console.warn('Sync trigger fallito:', e.message); }
-}
 
 const CITIES = ['Roma','Milano','Napoli','Torino','Berlino','Monaco','Barcellona','Madrid'];
 
@@ -1243,7 +1477,7 @@ async function doLogout() {
 // ═══════════════════════════════════
 // CACHE
 // ═══════════════════════════════════
-let C = { templates:[], occorrenze:[], salotto:[], dama:[], presenze:[] };
+let C = { templates:[], occorrenze:[], iscritti:[], dama:[], presenze:[] };
 let activeCity = 'all';
 let calYear = new Date().getFullYear();
 let calMonth = new Date().getMonth();
@@ -1259,7 +1493,7 @@ async function initApp(email) {
   document.getElementById('da-scad').value = `${new Date().getFullYear()}-12-31`;
 
   populateCityDropdowns();
-  await Promise.all([loadTemplates(), loadOccorrenze(), loadsalotto(), loadDama()]);
+  await Promise.all([loadTemplates(), loadOccorrenze(), loadIscritti(), loadDama()]);
   loadDashboard();
   renderCalendario();
 
@@ -1290,8 +1524,9 @@ function populateCityDropdowns() {
 // ═══════════════════════════════════
 const PANEL_TITLES = {
   dashboard:'Dashboard',analytics:'Analytics',calendario:'Calendario',
-  template:'Template Evento',occorrenze:'Occorrenze',salotto:'salotto',
-  dama:'Crediti DAMA',checkin:'Check-in QR'
+  template:'Template Evento',occorrenze:'Occorrenze',iscritti:'Iscritti',
+  dama:'Crediti DAMA',checkin:'Check-in QR',
+  voto:'Proposte & Voto',tesoreria:'Tesoreria & Obiettivi',cariche:'Cariche & Configurazione'
 };
 function showPanel(name) {
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
@@ -1303,6 +1538,9 @@ function showPanel(name) {
   if(name==='analytics') initCharts();
   if(name==='dama') loadDamaStats();
   if(name==='checkin') populateScanSelects();
+  if(name==='voto') loadVoto();
+  if(name==='tesoreria') loadTesoreria();
+  if(name==='cariche') loadCariche();
 }
 
 // ═══════════════════════════════════
@@ -1310,10 +1548,10 @@ function showPanel(name) {
 // ═══════════════════════════════════
 async function loadDashboard() {
   // Stats
-  const filtIsc = activeCity==='all' ? C.salotto : C.salotto.filter(i=>((i.citta||i.city||'')===(activeCity)));
+  const filtIsc = activeCity==='all' ? C.iscritti : C.iscritti.filter(i=>i.citta===activeCity);
   const filtOcc = activeCity==='all' ? C.occorrenze : C.occorrenze.filter(e=>e.citta===activeCity);
 
-  document.getElementById('s-salotto').textContent = filtIsc.length;
+  document.getElementById('s-iscritti').textContent = filtIsc.length;
   document.getElementById('s-template').textContent = C.templates.length;
   document.getElementById('s-occ').textContent = filtOcc.filter(e=>e.published&&!isExpired(e)).length;
 
@@ -1335,8 +1573,8 @@ async function loadDashboard() {
     document.getElementById('s-occupazione').textContent = Math.round(avg*100)+'%';
   }
 
-  // Sub salotto città
-  if(activeCity!=='all') document.getElementById('s-salotto-sub').textContent = `a ${activeCity}`;
+  // Sub iscritti città
+  if(activeCity!=='all') document.getElementById('s-iscritti-sub').textContent = `a ${activeCity}`;
 
   // Prossimi eventi
   const prossimi = filtOcc.filter(e=>e.published&&!isExpired(e))
@@ -1361,16 +1599,16 @@ async function loadDashboard() {
 
   // Tier chart
   const tiers = {osservatore:0,custode:0,damascato:0};
-  filtIsc.forEach(i=>{ if(tiers[i.tier||i.membership_level||'osservatore']!==undefined) tiers[i.tier||i.membership_level||'osservatore']++; });
+  filtIsc.forEach(i=>{ if(tiers[i.tier]!==undefined) tiers[i.tier]++; });
   renderTierChart(Object.values(tiers));
 
   // Ultime iscrizioni
   const ultimi = [...filtIsc].sort((a,b)=>new Date(b.created_at)-new Date(a.created_at)).slice(0,8);
-  document.getElementById('dash-recent-salotto').innerHTML = ultimi.map(i=>`
+  document.getElementById('dash-recent-iscritti').innerHTML = ultimi.map(i=>`
     <tr>
-      <td style="font-size:0.82rem;font-weight:500">${i.nome||i.name||'—'} ${i.cognome||i.surname||''}</td>
-      <td style="font-size:0.72rem;color:var(--ink-6)">${i.citta||i.city||'—'}</td>
-      <td><span class="badge badge-${i.tier||i.membership_level||'osservatore'}">${cap(i.tier||i.membership_level||'osservatore')}</span></td>
+      <td style="font-size:0.82rem;font-weight:500">${i.nome} ${i.cognome}</td>
+      <td style="font-size:0.72rem;color:var(--ink-6)">${i.citta||'—'}</td>
+      <td><span class="badge badge-${i.tier}">${cap(i.tier)}</span></td>
       <td style="font-size:0.72rem;color:var(--ink-6);font-family:var(--font-m)">${fmtDate(i.created_at)}</td>
     </tr>`).join('');
 
@@ -1383,7 +1621,7 @@ function updateRealtime() {
   const settimanaFa = new Date(now-7*86400000);
   const meseFa = new Date(now.getFullYear(), now.getMonth(), 1);
 
-  const filtIsc = activeCity==='all' ? C.salotto : C.salotto.filter(i=>((i.citta||i.city||'')===(activeCity)));
+  const filtIsc = activeCity==='all' ? C.iscritti : C.iscritti.filter(i=>i.citta===activeCity);
   document.getElementById('rt-today').textContent  = filtIsc.filter(i=>new Date(i.created_at).toDateString()===oggi).length;
   document.getElementById('rt-week').textContent   = filtIsc.filter(i=>new Date(i.created_at)>=settimanaFa).length;
   document.getElementById('rt-month').textContent  = filtIsc.filter(i=>new Date(i.created_at)>=meseFa).length;
@@ -1438,7 +1676,7 @@ function initCharts() {
     const d=new Date(); d.setDate(d.getDate()-i);
     labels.push(d.toLocaleDateString('it-IT',{day:'2-digit',month:'2-digit'}));
     const ds=d.toDateString();
-    counts.push(C.salotto.filter(x=>new Date(x.created_at).toDateString()===ds).length);
+    counts.push(C.iscritti.filter(x=>new Date(x.created_at).toDateString()===ds).length);
   }
 
   // Iscrizioni nel tempo
@@ -1454,11 +1692,11 @@ function initCharts() {
   const ctx2=document.getElementById('chart-citta');
   if(charts.citta) charts.citta.destroy();
   const cityCounts={};
-  C.salotto.forEach(i=>{const c=i.citta||i.city||'Altro';cityCounts[c]=(cityCounts[c]||0)+1;});
+  C.iscritti.forEach(i=>{const c=i.citta||'Altro';cityCounts[c]=(cityCounts[c]||0)+1;});
   const sortedCities=Object.entries(cityCounts).sort((a,b)=>b[1]-a[1]).slice(0,8);
   if(ctx2) charts.citta = new Chart(ctx2,{
     type:'bar',
-    data:{labels:sortedCities.map(x=>x[0]),datasets:[{label:'salotto',data:sortedCities.map(x=>x[1]),backgroundColor:'rgba(201,169,110,0.6)',borderColor:'rgba(201,169,110,0.9)',borderWidth:1,borderRadius:3}]},
+    data:{labels:sortedCities.map(x=>x[0]),datasets:[{label:'Iscritti',data:sortedCities.map(x=>x[1]),backgroundColor:'rgba(201,169,110,0.6)',borderColor:'rgba(201,169,110,0.9)',borderWidth:1,borderRadius:3}]},
     options:{plugins:{legend:{display:false}},scales:{y:{beginAtZero:true}},indexAxis:'y'}
   });
 
@@ -1511,11 +1749,11 @@ function initCharts() {
     const d=new Date();d.setMonth(d.getMonth()-i);
     monthlyLabels.push(d.toLocaleDateString('it-IT',{month:'short'}));
     const m=d.getMonth(),y=d.getFullYear();
-    monthlyCounts.push(C.salotto.filter(x=>{const cd=new Date(x.created_at);return cd.getMonth()===m&&cd.getFullYear()===y;}).length);
+    monthlyCounts.push(C.iscritti.filter(x=>{const cd=new Date(x.created_at);return cd.getMonth()===m&&cd.getFullYear()===y;}).length);
   }
   if(ctx6) charts.crescita = new Chart(ctx6,{
     type:'line',
-    data:{labels:monthlyLabels,datasets:[{label:'Nuovi salotto',data:monthlyCounts,borderColor:'#C9A96E',backgroundColor:'rgba(201,169,110,0.1)',fill:true,tension:0.4,pointRadius:4,pointBackgroundColor:'#C9A96E'}]},
+    data:{labels:monthlyLabels,datasets:[{label:'Nuovi iscritti',data:monthlyCounts,borderColor:'#C9A96E',backgroundColor:'rgba(201,169,110,0.1)',fill:true,tension:0.4,pointRadius:4,pointBackgroundColor:'#C9A96E'}]},
     options:{plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,ticks:{stepSize:1}}}}
   });
 
@@ -1769,13 +2007,7 @@ function renderOccorrenze(data) {
         <span class="badge badge-${e.status}">${labelStatus(e.status)}</span>
       </div>
       <div>
-        <div class="posti-counter">
-          <button class="btn-posti" onclick="modificaPosti('${e.id}',-1,event)" title="Riduci posti disponibili">−</button>
-          <div class="posti-num ${(e.capacity_available??1)===0?'esauriti':(e.capacity_available??99)<=3?'pochi':''}" id="posti-${e.id}">
-            ${e.capacity_available??'—'}/${e.capacity_total??'—'}
-          </div>
-          <button class="btn-posti" onclick="modificaPosti('${e.id}',+1,event)" title="Aumenta posti disponibili">+</button>
-        </div>
+        <div style="font-size:0.78rem;color:var(--ink-6)">${e.capacity_available??'—'}/${e.capacity_total??'—'}</div>
         <div class="cap-bar"><div class="cap-fill" style="width:${pct}%"></div></div>
       </div>
       <div>
@@ -1977,27 +2209,27 @@ async function deleteOcc(id){
 }
 
 // ═══════════════════════════════════
-// salotto
+// ISCRITTI
 // ═══════════════════════════════════
-async function loadsalotto() {
+async function loadIscritti() {
   try{
-    const data=await sbQ('salotto','?order=created_at.desc');
-    C.salotto=data;
-    rendersalotto(data);
+    const data=await sbQ('iscritti','?order=created_at.desc');
+    C.iscritti=data;
+    renderIscritti(data);
     document.getElementById('badge-isc').textContent=data.length;
     const sel=document.getElementById('da-isc');
-    sel.innerHTML=data.map(i=>`<option value="${i.id}">${i.nome||i.name||'—'} ${i.cognome||i.surname||''} — ${cap(i.tier||i.membership_level||'osservatore')}</option>`).join('');
-  }catch(e){toast('Errore salotto','error');}
+    sel.innerHTML=data.map(i=>`<option value="${i.id}">${i.nome} ${i.cognome} — ${i.tier}</option>`).join('');
+  }catch(e){toast('Errore iscritti','error');}
 }
 
-function rendersalotto(data) {
-  const tbody=document.getElementById('salotto-tbody');
+function renderIscritti(data) {
+  const tbody=document.getElementById('iscritti-tbody');
   if(!data.length){tbody.innerHTML='<tr><td colspan="8" style="text-align:center;padding:3rem;color:var(--ink-6);font-style:italic;">Nessun iscritto</td></tr>';return;}
   tbody.innerHTML=data.map(i=>`<tr>
-    <td style="font-weight:500;font-size:0.82rem">${i.nome||i.name||'—'} ${i.cognome||i.surname||''}</td>
+    <td style="font-weight:500;font-size:0.82rem">${i.nome} ${i.cognome}</td>
     <td style="font-size:0.75rem;color:var(--ink-6)">${i.email}</td>
-    <td style="font-size:0.78rem">${i.citta||i.city||'—'}</td>
-    <td><span class="badge badge-${i.tier||i.membership_level||'osservatore'}">${cap(i.tier||i.membership_level||'osservatore')}</span></td>
+    <td style="font-size:0.78rem">${i.citta||'—'}</td>
+    <td><span class="badge badge-${i.tier}">${cap(i.tier)}</span></td>
     <td id="ds-${i.id}" style="font-family:var(--font-m);font-size:0.78rem">—</td>
     <td id="pres-${i.id}" style="font-size:0.78rem">—</td>
     <td style="font-size:0.72rem;color:var(--ink-6);font-family:var(--font-m)">${fmtDate(i.created_at)}</td>
@@ -2006,12 +2238,12 @@ function rendersalotto(data) {
   data.forEach(i=>loadSaldo(i.id));
 }
 
-function filtersalotto(q) {
+function filterIscritti(q) {
   const city=document.getElementById('isc-city-filter').value;
-  let data=C.salotto;
-  if(city!=='all') data=data.filter(i=>(i.citta||i.city||'')===(city));
-  if(q) data=data.filter(i=>`${i.nome||i.name||'—'} ${i.cognome||i.surname||''} ${i.email}`.toLowerCase().includes(q.toLowerCase()));
-  rendersalotto(data);
+  let data=C.iscritti;
+  if(city!=='all') data=data.filter(i=>i.citta===city);
+  if(q) data=data.filter(i=>`${i.nome} ${i.cognome} ${i.email}`.toLowerCase().includes(q.toLowerCase()));
+  renderIscritti(data);
 }
 
 async function loadSaldo(id) {
@@ -2040,7 +2272,7 @@ function renderDamaTable(data) {
   const tbody=document.getElementById('dama-tbody');
   if(!data.length){tbody.innerHTML='<tr><td colspan="6" style="text-align:center;padding:3rem;color:var(--ink-6);font-style:italic;">Nessun movimento</td></tr>';return;}
   tbody.innerHTML=data.map(d=>{
-    const isc=C.salotto.find(i=>i.id===d.iscritto_id);
+    const isc=C.iscritti.find(i=>i.id===d.iscritto_id);
     const evt=C.occorrenze.find(e=>e.id===d.evento_id);
     const pos=parseFloat(d.importo)>=0;
     return `<tr>
@@ -2156,9 +2388,9 @@ async function processQr(data){
   const evtId=document.getElementById('scan-evt-sel').value;
   if(!evtId){showScanRes('error','Seleziona un evento prima');return;}
   try{
-    const salotto=await sbQ('salotto',`?qr_code_id=eq.${encodeURIComponent(data)}&select=*`);
-    if(!salotto.length){showScanRes('error','QR non riconosciuto');return;}
-    const isc=salotto[0];
+    const iscritti=await sbQ('iscritti',`?qr_code_id=eq.${encodeURIComponent(data)}&select=*`);
+    if(!iscritti.length){showScanRes('error','QR non riconosciuto');return;}
+    const isc=iscritti[0];
     const gia=await sbQ('presenze',`?iscritto_id=eq.${isc.id}&evento_id=eq.${evtId}`);
     if(gia.length){showScanRes('warning',`${isc.nome} ${isc.cognome}`,'Già registrato a questo evento');return;}
     const evt=C.occorrenze.find(e=>e.id===evtId);
@@ -2177,47 +2409,6 @@ function addScanLog(isc,dama){const tb=document.getElementById('scan-log');const
 // ═══════════════════════════════════
 // UTILS
 // ═══════════════════════════════════
-// ── MODIFICA POSTI ──
-async function modificaPosti(id, delta, event) {
-  event.stopPropagation();
-  const occ = C.occorrenze.find(e => e.id === id);
-  if (!occ) return;
-
-  const attuale = occ.capacity_available ?? 0;
-  const totale  = occ.capacity_total ?? 0;
-  const nuovo   = Math.max(0, Math.min(totale, attuale + delta));
-
-  if (nuovo === attuale) return; // nessuna modifica
-
-  try {
-    await sbU('eventi', id, {
-      capacity_available: nuovo,
-      updated_at: new Date().toISOString()
-    });
-
-    // Aggiorna cache locale
-    occ.capacity_available = nuovo;
-
-    // Aggiorna UI senza ricaricare tutto
-    const el = document.getElementById('posti-' + id);
-    if (el) {
-      el.textContent = `${nuovo}/${totale}`;
-      el.className = 'posti-num ' + (nuovo === 0 ? 'esauriti' : nuovo <= 3 ? 'pochi' : '');
-    }
-
-    // Aggiorna barra capacità
-    const pct = totale ? Math.round((1 - nuovo/totale)*100) : 0;
-    const bar = el?.closest('.occ-row')?.querySelector('.cap-fill');
-    if (bar) bar.style.width = pct + '%';
-
-    toast(`Posti aggiornati: ${nuovo}/${totale}`, 'success');
-
-    // Trigger sync GitHub
-    triggerSync();
-
-  } catch(err) { toast('Errore: ' + err.message, 'error'); }
-}
-
 function isExpired(e){const end=new Date(e.date_end||e.date_start);end.setHours(end.getHours()+2);return end<new Date();}
 function fmtDate(iso){if(!iso)return'—';return new Date(iso).toLocaleDateString('it-IT',{day:'2-digit',month:'2-digit',year:'2-digit',hour:'2-digit',minute:'2-digit'});}
 function toLocal(iso){if(!iso)return'';const d=new Date(iso),p=n=>String(n).padStart(2,'0');return `${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())}T${p(d.getHours())}:${p(d.getMinutes())}`;}
@@ -2242,6 +2433,298 @@ document.querySelectorAll('.modal-overlay').forEach(o=>o.addEventListener('click
 })();
 
 setInterval(()=>{if(TOKEN)refreshToken();},50*60*1000);
-</script>
+
+// ═══════════════════════════════════
+// GOVERNO — VOTO
+// ═══════════════════════════════════
+
+// Dati demo (fallback se le tabelle governance non esistono ancora)
+const GOV_DEMO_PROPOSTE = [
+  {id:'gov-001',titolo:'Aprire un salotto a Firenze',velocita:'costituzionale',ambito:'globale',target:null,stato:'approvata_dal_fondatore',sostegni:62,si_pct:null},
+  {id:'gov-002',titolo:'Sindaco di Milano: rosa di candidati',velocita:'politica',ambito:'cittadino',target:'Milano',stato:'in_votazione',sostegni:54,si_pct:71},
+  {id:'gov-003',titolo:'Tema di settembre: la bellezza civica',velocita:'ordinaria',ambito:'cittadino',target:'Roma',stato:'in_raccolta_sostegni',sostegni:31,si_pct:null},
+  {id:'gov-004',titolo:'Ciclo di lectio sul Mediterraneo',velocita:'ordinaria',ambito:'nazionale',target:null,stato:'chiusa',sostegni:88,si_pct:67},
+];
+
+const GOV_DEMO_OBIETTIVI = [
+  {id:1,titolo:'Fondo Salotto di Milano',citta:'Milano',target_importo:15000,raccolto:9200,speso:3100},
+  {id:2,titolo:'Restauro sala Roma',citta:'Roma',target_importo:8000,raccolto:8000,speso:5400},
+  {id:3,titolo:'Rivista · primo numero',citta:null,target_importo:6000,raccolto:2350,speso:0},
+];
+
+const GOV_DEMO_CONTRIBUTI = [
+  {id:1,membro:'Elena V.',tipo:'fondo_franchising',importo:5000,citta:'Milano',data:'2026-05-02'},
+  {id:2,membro:'Paolo R.',tipo:'donazione',importo:1200,citta:'Milano',data:'2026-05-18'},
+  {id:3,membro:'Marco L.',tipo:'tessera',importo:300,citta:'Roma',data:'2026-06-01'},
+  {id:4,membro:'Anna F.',tipo:'donazione',importo:850,citta:'Berlino',data:'2026-06-04'},
+];
+
+const GOV_DEMO_CARICHE = [
+  {id:'sindaco',nome:'Sindaco',ambito:'cittadino',peso_voto:25,puo_proporre:true},
+  {id:'ministro',nome:'Ministro',ambito:'nazionale',peso_voto:30,puo_proporre:true},
+  {id:'console',nome:'Console',ambito:'globale',peso_voto:30,puo_proporre:true},
+];
+
+const GOV_DEMO_REGOLAMENTI = [
+  {ambito:'globale',target:'—',velocita:'ordinaria',tipo_decisione:'organizzazione',sostegno_min:'50 o 10%',quorum_percent:'20%',maggioranza_percent:'50%+1'},
+  {ambito:'globale',target:'—',velocita:'politica',tipo_decisione:'promozione',sostegno_min:'50 o 10%',quorum_percent:'50%',maggioranza_percent:'55%'},
+  {ambito:'cittadino',target:'Milano',velocita:'ordinaria',tipo_decisione:'organizzazione',sostegno_min:'20',quorum_percent:'40%',maggioranza_percent:'50%+1'},
+  {ambito:'globale',target:'—',velocita:'costituzionale',tipo_decisione:'espulsione',sostegno_min:'—',quorum_percent:'—',maggioranza_percent:'decide il fondatore'},
+];
+
+const STATO_MAP = {
+  bozza:            ['ps-bozza','Bozza'],
+  in_raccolta_sostegni:  ['ps-raccolta','In raccolta sostegni'],
+  sostegno_raggiunto:    ['ps-raggiunto','Sostegno raggiunto'],
+  approvata_dal_fondatore:['ps-approvata','Approvata dal fondatore'],
+  in_votazione:     ['ps-votazione','In votazione'],
+  chiusa:           ['ps-chiusa','Chiusa'],
+  respinta:         ['ps-risposta','Respinta'],
+};
+
+async function loadVoto() {
+  // Leggi la % fondatore da config (se esiste) o usa default 35
+  let pct = 35;
+  try {
+    const cfg = await sbQ('config','?chiave=eq.fondatore_percentuale&select=valore');
+    if(cfg&&cfg.length) pct = parseFloat(JSON.stringify(cfg[0].valore).replace(/"/g,''))||35;
+  } catch(e){}
+  const govPctEl = document.getElementById('gov-pct');
+  if(govPctEl) govPctEl.textContent = pct + '%';
+  const simP = document.getElementById('sim-p');
+  if(simP) simP.value = pct;
+
+  // Carica proposte reali, fallback su demo
+  let proposte = GOV_DEMO_PROPOSTE;
+  try {
+    const data = await sbQ('proposte','?order=created_at.desc');
+    if(data&&data.length) proposte = data;
+  } catch(e){}
+
+  renderProposte(proposte);
+  runSim();
+}
+
+function renderProposte(proposte) {
+  const tbody = document.getElementById('voto-tbody');
+  if(!tbody) return;
+  if(!proposte.length){tbody.innerHTML='<tr><td colspan="7" style="text-align:center;padding:3rem;color:var(--ink-6);font-style:italic;">Nessuna proposta</td></tr>';return;}
+  tbody.innerHTML = proposte.map(p=>{
+    const [cls,lbl] = STATO_MAP[p.stato]||['ps-bozza',p.stato];
+    const velCls = p.velocita==='costituzionale'?'velocita-cost':p.velocita==='politica'?'velocita-pol':'';
+    const azione = p.stato==='sostegno_raggiunto'
+      ? `<button class="btn btn-primary btn-sm" onclick="approvaPropostaFondatore('${p.id}')">Approva →</button>`
+      : p.velocita==='costituzionale' && p.stato==='approvata_dal_fondatore'
+      ? '<span style="font-size:0.72rem;color:var(--ink-6)">decidi tu</span>'
+      : '—';
+    return `<tr>
+      <td style="font-size:0.82rem;font-weight:500">${p.titolo}</td>
+      <td><span class="${velCls}" style="font-size:0.78rem;">${p.velocita}</span></td>
+      <td style="font-size:0.75rem;color:var(--ink-6)">${p.ambito}${p.target?' · '+p.target:''}</td>
+      <td style="font-family:var(--font-m);font-size:0.78rem;">${p.sostegni||0}</td>
+      <td style="font-family:var(--font-m);font-size:0.82rem;${p.si_pct!=null?'color:var(--oro)':''}">${p.si_pct!=null?p.si_pct+'%':'—'}</td>
+      <td><span class="proposta-stato ${cls}">${lbl}</span></td>
+      <td>${azione}</td>
+    </tr>`;
+  }).join('');
+}
+
+async function approvaPropostaFondatore(id) {
+  if(!confirm('Approvare questa proposta e aprire il voto?')) return;
+  try {
+    await sbU('proposte',id,{stato:'approvata_dal_fondatore',updated_at:new Date().toISOString()});
+    toast('Proposta approvata — ora in attesa di apertura voto','success');
+    loadVoto();
+  } catch(e){ toast('Errore: '+e.message,'error'); }
+}
+
+function runSim() {
+  const si = parseFloat(document.getElementById('sim-si')?.value)||60;
+  const P  = parseFloat(document.getElementById('sim-p')?.value)||35;
+  const f  = document.getElementById('sim-f')?.value||'no_vota';
+  const out = document.getElementById('sim-out');
+  if(!out) return;
+  let pct;
+  if(f==='no_vota') pct = si;
+  else pct = (si/100)*(100-P) + (f==='si'?P:0);
+  pct = Math.round(pct*10)/10;
+  out.textContent = pct + '% SÌ';
+  out.style.color = pct > 50 ? 'var(--oro)' : 'var(--rosso)';
+  out.style.fontSize = '1.6rem';
+  const passCls = pct > 50 ? ' · <span style="color:var(--oro)">passa</span>' : ' · <span style="color:var(--rosso)">non passa</span>';
+  out.innerHTML = pct + '% SÌ' + passCls;
+}
+
+// ═══════════════════════════════════
+// GOVERNO — TESORERIA
+// ═══════════════════════════════════
+async function loadTesoreria() {
+  let obiettivi = GOV_DEMO_OBIETTIVI;
+  let contributi = GOV_DEMO_CONTRIBUTI;
+
+  try {
+    const [o,c] = await Promise.all([
+      sbQ('obiettivi','?order=created_at.desc'),
+      sbQ('contributi','?order=created_at.desc&limit=50')
+    ]);
+    if(o&&o.length) obiettivi = o;
+    if(c&&c.length) contributi = c;
+  } catch(e){}
+
+  const raccolto = obiettivi.reduce((s,o)=>s+(parseFloat(o.raccolto||o.raccolto_importo)||0),0);
+  const speso    = obiettivi.reduce((s,o)=>s+(parseFloat(o.speso||o.speso_importo)||0),0);
+
+  const fmt = n => '€ ' + Math.round(n).toLocaleString('it-IT');
+  document.getElementById('tes-raccolto').textContent = fmt(raccolto);
+  document.getElementById('tes-speso').textContent    = fmt(speso);
+  document.getElementById('tes-saldo').textContent    = fmt(raccolto - speso);
+
+  // Obiettivi con barra progresso
+  const obEl = document.getElementById('tes-obiettivi');
+  obEl.innerHTML = obiettivi.map(o=>{
+    const target = parseFloat(o.target_importo||o.target)||0;
+    const racc   = parseFloat(o.raccolto||o.raccolto_importo)||0;
+    const sp     = parseFloat(o.speso||o.speso_importo)||0;
+    const pct    = target>0 ? Math.min(100,Math.round(racc/target*100)) : 0;
+    return `<div class="obiettivo-row">
+      <div>
+        <div style="font-size:0.82rem;font-weight:500">${o.titolo}</div>
+        <div style="font-size:0.68rem;color:var(--ink-6)">${o.citta||'globale'}</div>
+      </div>
+      <div>
+        <div class="cap-bar" style="height:6px"><div class="cap-fill" style="width:${pct}%"></div></div>
+        <div style="font-size:0.65rem;color:var(--ink-6);margin-top:2px">${pct}% di ${fmt(target)}</div>
+      </div>
+      <div style="font-size:0.78rem;font-family:var(--font-m);color:var(--oro)">${fmt(racc)}</div>
+      <div style="font-size:0.78rem;font-family:var(--font-m);color:var(--ink-6)">${fmt(sp)}</div>
+      <div style="font-size:0.78rem;font-family:var(--font-m)">${fmt(racc-sp)}</div>
+    </div>`;
+  }).join('');
+
+  // Contributi
+  const ctbTbody = document.getElementById('tes-contributi');
+  if(!contributi.length){ctbTbody.innerHTML='<tr><td colspan="5" style="text-align:center;padding:2rem;color:var(--ink-6);font-style:italic;">Nessun contributo</td></tr>';
+  } else {
+    ctbTbody.innerHTML = contributi.map(c=>`<tr>
+      <td style="font-size:0.82rem">${c.membro||c.iscritto_id||'—'}</td>
+      <td><span class="badge">${(c.tipo||'—').replace(/_/g,' ')}</span></td>
+      <td style="font-family:var(--font-m);font-size:0.82rem;color:var(--oro)">${fmt(c.importo)}</td>
+      <td style="font-size:0.75rem;color:var(--ink-6)">${c.citta||'—'}</td>
+      <td style="font-size:0.72rem;color:var(--ink-6);font-family:var(--font-m)">${c.data||fmtDate(c.created_at)}</td>
+    </tr>`).join('');
+  }
+
+  // Grafico composizione contributi
+  const tipi = [...new Set(contributi.map(c=>c.tipo||'altro'))];
+  const tipiTot = tipi.map(t=>contributi.filter(c=>(c.tipo||'altro')===t).reduce((s,c)=>s+parseFloat(c.importo||0),0));
+  chartDefaults();
+  const ctx = document.getElementById('chart-contributi');
+  if(ctx){
+    if(charts.contributi) charts.contributi.destroy();
+    charts.contributi = new Chart(ctx,{
+      type:'doughnut',
+      data:{
+        labels:tipi.map(t=>t.replace(/_/g,' ')),
+        datasets:[{data:tipiTot,backgroundColor:['rgba(201,169,110,0.7)','rgba(160,24,24,0.5)','rgba(107,96,80,0.6)','rgba(201,169,110,0.4)'],borderColor:'transparent'}]
+      },
+      options:{plugins:{legend:{position:'bottom',labels:{padding:10,boxWidth:10}}},cutout:'60%'}
+    });
+  }
+}
+
+// ═══════════════════════════════════
+// GOVERNO — CARICHE & CONFIG
+// ═══════════════════════════════════
+async function loadCariche() {
+  let cariche = GOV_DEMO_CARICHE;
+  let regolamenti = GOV_DEMO_REGOLAMENTI;
+  let config = {};
+
+  try {
+    const [c,r,cfg] = await Promise.all([
+      sbQ('cariche','?order=nome.asc'),
+      sbQ('regolamenti','?order=ambito.asc'),
+      sbQ('config','?select=chiave,valore')
+    ]);
+    if(c&&c.length) cariche = c;
+    if(r&&r.length) regolamenti = r;
+    if(cfg&&cfg.length) cfg.forEach(row=>{config[row.chiave]=row.valore;});
+  } catch(e){}
+
+  // Aggiorna input config con valori reali
+  const pctEl = document.getElementById('cfg-fondatore-pct');
+  if(pctEl && config.fondatore_percentuale) pctEl.value = config.fondatore_percentuale;
+
+  // Cariche
+  const ctbody = document.getElementById('cariche-tbody');
+  if(!cariche.length){ctbody.innerHTML='<tr><td colspan="4" style="text-align:center;padding:2rem;color:var(--ink-6);font-style:italic;">Nessuna carica</td></tr>';
+  } else {
+    ctbody.innerHTML = cariche.map(c=>`<tr>
+      <td style="font-size:0.82rem;font-weight:500">${c.nome}</td>
+      <td style="font-size:0.75rem;color:var(--ink-6)">${c.ambito}</td>
+      <td style="font-family:var(--font-m);font-size:0.78rem">${c.peso_voto||c.peso||'—'}</td>
+      <td>
+        ${(c.puo_proporre||c.propone)
+          ? '<span class="badge badge-available">sì</span>'
+          : '<span class="badge">no</span>'}
+      </td>
+    </tr>`).join('');
+  }
+
+  // Regolamenti
+  const rtbody = document.getElementById('regolamenti-tbody');
+  if(!regolamenti.length){rtbody.innerHTML='<tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--ink-6);font-style:italic;">Nessun regolamento</td></tr>';
+  } else {
+    rtbody.innerHTML = regolamenti.map(r=>{
+      const velCls = r.velocita==='costituzionale'?'velocita-cost':r.velocita==='politica'?'velocita-pol':'';
+      return `<tr>
+        <td style="font-size:0.78rem">${r.ambito}</td>
+        <td><span class="${velCls}" style="font-size:0.78rem;">${r.velocita}</span></td>
+        <td style="font-size:0.75rem;color:var(--ink-6)">${r.tipo_decisione||r.tipo||'—'}</td>
+        <td style="font-size:0.75rem;font-family:var(--font-m)">${r.sostegno_min||r.sostegno||'—'}</td>
+        <td style="font-size:0.75rem;font-family:var(--font-m)">${r.quorum_percent||r.quorum||'—'}</td>
+        <td style="font-size:0.75rem;font-family:var(--font-m)">${r.maggioranza_percent||r.magg||'—'}</td>
+      </tr>`;
+    }).join('');
+  }
+}
+
+async function saveConfig() {
+  const pct = parseInt(document.getElementById('cfg-fondatore-pct')?.value||35);
+  const endorsement = parseInt(document.getElementById('cfg-endorsement')?.value||3);
+  const damaCapPct = parseInt(document.getElementById('cfg-dama-cap')?.value||60);
+  const postiOss = parseInt(document.getElementById('cfg-posti-oss')?.value||5);
+
+  const updates = [
+    {chiave:'fondatore_percentuale', valore: pct},
+    {chiave:'endorsement_per_avanzamento', valore: endorsement},
+    {chiave:'dama_sconto_cap_pct', valore: damaCapPct},
+    {chiave:'posti_garantiti_osservatori', valore: postiOss},
+  ];
+
+  let ok = 0, fail = 0;
+  for(const u of updates) {
+    try {
+      // Upsert: prova update, se 0 righe inserisce
+      const existing = await sbQ('config',`?chiave=eq.${u.chiave}&select=chiave`);
+      if(existing&&existing.length) {
+        await sbU('config',null,{valore:u.valore});
+        // Supabase PATCH by chiave
+        await fetch(`${SB_URL}/rest/v1/config?chiave=eq.${u.chiave}`,{method:'PATCH',headers:H({'Prefer':'return=representation'}),body:JSON.stringify({valore:u.valore})});
+      } else {
+        await sbI('config',{chiave:u.chiave,valore:u.valore,descrizione:'Impostazione dal pannello',aggiornabile_da:'fondatore'});
+      }
+      ok++;
+    } catch(e){ fail++; }
+  }
+
+  if(fail===0) toast(`Configurazione salvata (${ok} valori)`, 'success');
+  else toast(`Salvati ${ok}, errori ${fail}`, 'error');
+
+  // Aggiorna la % nel pannello voto se visibile
+  const govPctEl = document.getElementById('gov-pct');
+  if(govPctEl) govPctEl.textContent = pct + '%';
+}
+
 </body>
 </html>
