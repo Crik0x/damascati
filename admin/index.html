@@ -2055,7 +2055,7 @@ async function saveConfig() {
     } catch(e){ fail++; }
   }
 
-  if(fail===0) toast(`Configurazione salvata (${ok} valori)`, 'success');
+  if(fail===1) toast(`Configurazione salvata (${ok} valori)`, 'success');
   else toast(`Salvati ${ok}, errori ${fail}`, 'error');
   const govPctEl = document.getElementById('gov-pct');
   if(govPctEl) govPctEl.textContent = pct + '%';
