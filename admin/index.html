@@ -8,552 +8,23 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jsQR/1.4.0/jsQR.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,600&family=Montserrat:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-
-:root {
-  --oro:        #C9A96E;
-  --oro-d:      #8B6914;
-  --oro-l:      #E8D5A8;
-  --oro-xl:     #F5ECD8;
-  --ink:        #0F0D0B;
-  --ink-2:      #1A1714;
-  --ink-3:      #252118;
-  --ink-4:      #332E24;
-  --ink-5:      #4A4336;
-  --ink-6:      #6B6050;
-  --avorio:     #F4F0E8;
-  --rosso:      #A01818;
-  --verde:      #1E5C1E;
-  --blu:        #1A3A5C;
-  --font-d: 'Cormorant Garamond', Georgia, serif;
-  --font-s: 'Montserrat', sans-serif;
-  --font-m: 'JetBrains Mono', monospace;
-  --sidebar: 260px;
-  --r: 6px;
-  --transition: 0.25s cubic-bezier(0.4,0,0.2,1);
-}
-
-body { background:var(--ink); color:var(--avorio); font-family:var(--font-s); font-size:14px; min-height:100vh; overflow-x:hidden; }
-
-/* ═══════════ SCROLLBAR ═══════════ */
-::-webkit-scrollbar { width:4px; height:4px; }
-::-webkit-scrollbar-track { background:transparent; }
-::-webkit-scrollbar-thumb { background:var(--ink-4); border-radius:2px; }
-
-/* ═══════════ LOGIN ═══════════ */
-#login-screen {
-  min-height:100vh; display:flex; align-items:center; justify-content:center;
-  background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(201,169,110,0.12) 0%, transparent 60%),
-              radial-gradient(ellipse 40% 40% at 80% 100%, rgba(201,169,110,0.06) 0%, transparent 50%),
-              var(--ink);
-}
-.login-wrap { width:100%; max-width:420px; padding:0 1.5rem; }
-.login-ornament {
-  text-align:center; margin-bottom:2.5rem;
-}
-.login-ornament .mark {
-  font-family:var(--font-d); font-size:3rem; color:var(--oro); letter-spacing:0.1em;
-  display:block; line-height:1;
-}
-.login-ornament .sub {
-  font-size:0.65rem; letter-spacing:0.35em; text-transform:uppercase;
-  color:var(--ink-6); margin-top:0.5rem; display:block;
-}
-.login-box {
-  background:var(--ink-2); border:1px solid rgba(201,169,110,0.15);
-  border-radius:var(--r); padding:2.5rem;
-  box-shadow: 0 40px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(201,169,110,0.05);
-}
-.login-box input {
-  width:100%; background:var(--ink-3); border:1px solid rgba(201,169,110,0.12);
-  border-radius:var(--r); padding:0.85rem 1rem; color:var(--avorio);
-  font-family:var(--font-s); font-size:0.88rem; outline:none;
-  transition:border-color var(--transition); margin-bottom:0.8rem;
-}
-.login-box input:focus { border-color:var(--oro); }
-.login-box input::placeholder { color:var(--ink-6); }
-.btn-login {
-  width:100%; background:var(--oro); color:var(--ink); border:none;
-  border-radius:var(--r); padding:0.9rem; font-family:var(--font-s);
-  font-size:0.78rem; font-weight:600; letter-spacing:0.15em;
-  text-transform:uppercase; cursor:pointer; transition:all var(--transition);
-  margin-top:0.4rem;
-}
-.btn-login:hover { background:var(--oro-l); transform:translateY(-1px); }
-.login-err { color:#ff8080; font-size:0.8rem; text-align:center; margin-top:0.8rem; display:none; }
-
-/* ═══════════ LAYOUT ═══════════ */
-#app { display:none; min-height:100vh; }
-
-.sidebar {
-  position:fixed; top:0; left:0; bottom:0; width:var(--sidebar);
-  background:var(--ink-2);
-  border-right:1px solid rgba(201,169,110,0.08);
-  display:flex; flex-direction:column; z-index:200;
-  transition:transform var(--transition);
-}
-.sb-logo {
-  padding:1.8rem 1.5rem 1.4rem;
-  border-bottom:1px solid rgba(201,169,110,0.08);
-}
-.sb-logo-mark {
-  font-family:var(--font-d); font-size:1rem; color:var(--oro);
-  letter-spacing:0.08em; text-transform:uppercase; display:block;
-}
-.sb-logo-sub {
-  font-size:0.6rem; letter-spacing:0.2em; text-transform:uppercase;
-  color:var(--ink-6); margin-top:0.2rem; display:block;
-}
-
-/* CITY SELECTOR */
-.city-selector {
-  padding:1rem 1.2rem;
-  border-bottom:1px solid rgba(201,169,110,0.08);
-}
-.city-label {
-  font-size:0.6rem; letter-spacing:0.2em; text-transform:uppercase;
-  color:var(--ink-6); margin-bottom:0.5rem; display:block;
-}
-.city-select {
-  width:100%; background:var(--ink-3); border:1px solid rgba(201,169,110,0.15);
-  border-radius:var(--r); padding:0.5rem 0.8rem; color:var(--avorio);
-  font-family:var(--font-s); font-size:0.82rem; outline:none; cursor:pointer;
-  transition:border-color var(--transition);
-}
-.city-select:focus { border-color:var(--oro); }
-.city-select option { background:var(--ink-3); }
-
-.sb-nav { flex:1; padding:0.8rem 0; overflow-y:auto; }
-.nav-group-label {
-  padding:1rem 1.5rem 0.3rem;
-  font-size:0.58rem; letter-spacing:0.22em; text-transform:uppercase;
-  color:var(--ink-5);
-}
-.nav-item {
-  display:flex; align-items:center; gap:0.7rem;
-  padding:0.65rem 1.5rem; color:var(--ink-6); cursor:pointer;
-  transition:all var(--transition); border-left:2px solid transparent;
-  font-size:0.82rem; letter-spacing:0.03em; user-select:none;
-  position:relative;
-}
-.nav-item:hover { color:var(--oro-l); background:rgba(201,169,110,0.04); }
-.nav-item.active { color:var(--oro); border-left-color:var(--oro); background:rgba(201,169,110,0.06); }
-.nav-item svg { width:15px; height:15px; flex-shrink:0; }
-.nav-badge {
-  margin-left:auto; background:var(--oro); color:var(--ink);
-  font-size:0.6rem; font-weight:600; padding:0.15rem 0.4rem;
-  border-radius:10px; line-height:1.4;
-}
-
-.sb-footer {
-  padding:1rem 1.5rem;
-  border-top:1px solid rgba(201,169,110,0.08);
-  display:flex; align-items:center; justify-content:space-between;
-}
-.sb-user { font-size:0.75rem; color:var(--ink-6); }
-.sb-user strong { color:var(--avorio); display:block; font-weight:500; }
-.btn-logout {
-  background:none; border:none; color:var(--ink-6); cursor:pointer;
-  font-size:0.72rem; transition:color var(--transition); letter-spacing:0.05em;
-}
-.btn-logout:hover { color:var(--rosso); }
-
-/* MAIN */
-.main { margin-left:var(--sidebar); min-height:100vh; }
-.topbar {
-  position:sticky; top:0; z-index:100;
-  background:rgba(15,13,11,0.9); backdrop-filter:blur(20px);
-  border-bottom:1px solid rgba(201,169,110,0.08);
-  padding:0.9rem 2rem;
-  display:flex; align-items:center; justify-content:space-between;
-}
-.topbar-title { font-family:var(--font-d); font-size:1.4rem; color:var(--avorio); }
-.topbar-title span { color:var(--oro); font-style:italic; }
-.topbar-right { display:flex; align-items:center; gap:1rem; }
-.topbar-date { font-size:0.72rem; color:var(--ink-6); letter-spacing:0.05em; }
-.topbar-city-badge {
-  background:rgba(201,169,110,0.12); border:1px solid rgba(201,169,110,0.2);
-  border-radius:var(--r); padding:0.3rem 0.8rem;
-  font-size:0.72rem; color:var(--oro); letter-spacing:0.08em;
-}
-
-.content { padding:2rem; }
-
-/* ═══════════ PANELS ═══════════ */
-.panel { display:none; animation:fadeIn 0.3s ease; }
-.panel.active { display:block; }
-@keyframes fadeIn { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:none} }
-
-/* ═══════════ STATS GRID ═══════════ */
-.stats-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:1rem; margin-bottom:1.5rem; }
-.stat-card {
-  background:var(--ink-2); border:1px solid rgba(201,169,110,0.1);
-  border-radius:var(--r); padding:1.4rem 1.6rem;
-  position:relative; overflow:hidden;
-  transition:border-color var(--transition), transform var(--transition);
-}
-.stat-card:hover { border-color:rgba(201,169,110,0.25); transform:translateY(-2px); }
-.stat-card::before {
-  content:''; position:absolute; top:0; left:0; right:0; height:2px;
-  background:linear-gradient(90deg, transparent, var(--oro), transparent);
-  opacity:0; transition:opacity var(--transition);
-}
-.stat-card:hover::before { opacity:1; }
-.stat-l { font-size:0.62rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--ink-6); margin-bottom:0.5rem; }
-.stat-v { font-family:var(--font-d); font-size:2.2rem; color:var(--oro); line-height:1; }
-.stat-s { font-size:0.72rem; color:var(--ink-6); margin-top:0.3rem; }
-.stat-trend { position:absolute; top:1.4rem; right:1.6rem; font-size:0.72rem; }
-.stat-trend.up { color:#6dbe6d; }
-.stat-trend.down { color:#ff8080; }
-
-/* ═══════════ CARDS GENERICHE ═══════════ */
-.card {
-  background:var(--ink-2); border:1px solid rgba(201,169,110,0.1);
-  border-radius:var(--r); overflow:hidden;
-  transition:border-color var(--transition);
-}
-.card:hover { border-color:rgba(201,169,110,0.2); }
-.card-head {
-  display:flex; align-items:center; justify-content:space-between;
-  padding:1rem 1.4rem; border-bottom:1px solid rgba(201,169,110,0.08);
-}
-.card-title { font-size:0.68rem; letter-spacing:0.18em; text-transform:uppercase; color:var(--oro-d); font-weight:500; }
-.card-body { padding:1.4rem; }
-
-/* ═══════════ GRAFICI ═══════════ */
-.charts-grid { display:grid; grid-template-columns:2fr 1fr; gap:1rem; margin-bottom:1rem; }
-.charts-grid-3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:1rem; margin-bottom:1rem; }
-.chart-container { position:relative; }
-.chart-container canvas { max-height:240px; }
-
-/* REALTIME PULSE */
-.realtime-bar {
-  background:var(--ink-2); border:1px solid rgba(201,169,110,0.1);
-  border-radius:var(--r); padding:1rem 1.4rem; margin-bottom:1rem;
-  display:flex; align-items:center; gap:2rem;
-}
-.pulse-dot {
-  width:8px; height:8px; background:#6dbe6d; border-radius:50%;
-  animation:pulse 2s infinite; flex-shrink:0;
-}
-@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(1.3)} }
-.realtime-label { font-size:0.65rem; letter-spacing:0.18em; text-transform:uppercase; color:var(--ink-6); }
-.realtime-value { font-family:var(--font-d); font-size:1.6rem; color:var(--oro); line-height:1; }
-.realtime-items { display:flex; gap:2rem; flex:1; }
-.realtime-item { text-align:center; }
-
-/* ═══════════ CALENDARIO ═══════════ */
-.cal-header {
-  display:flex; align-items:center; justify-content:space-between;
-  margin-bottom:1rem;
-}
-.cal-nav { display:flex; align-items:center; gap:0.5rem; }
-.cal-month { font-family:var(--font-d); font-size:1.4rem; color:var(--avorio); min-width:160px; text-align:center; }
-.cal-grid {
-  display:grid; grid-template-columns:repeat(7,1fr); gap:2px;
-}
-.cal-day-header {
-  text-align:center; font-size:0.6rem; letter-spacing:0.15em;
-  text-transform:uppercase; color:var(--ink-6); padding:0.5rem 0;
-}
-.cal-day {
-  min-height:80px; background:var(--ink-3); border-radius:4px;
-  padding:0.4rem; cursor:pointer; transition:background var(--transition);
-  border:1px solid transparent;
-}
-.cal-day:hover { background:var(--ink-4); border-color:rgba(201,169,110,0.15); }
-.cal-day.today { border-color:var(--oro); }
-.cal-day.other-month { opacity:0.3; }
-.cal-day-num { font-size:0.72rem; color:var(--ink-6); margin-bottom:0.3rem; }
-.cal-day.today .cal-day-num { color:var(--oro); font-weight:600; }
-.cal-event-pill {
-  font-size:0.6rem; padding:0.15rem 0.4rem; border-radius:2px;
-  margin-bottom:2px; white-space:nowrap; overflow:hidden;
-  text-overflow:ellipsis; cursor:pointer;
-}
-.cal-event-pill.public { background:rgba(201,169,110,0.2); color:var(--oro); }
-.cal-event-pill.members { background:rgba(138,100,20,0.3); color:var(--oro-l); }
-.cal-event-pill.sold_out { background:rgba(160,24,24,0.3); color:#ffaaaa; }
-
-/* ═══════════ TEMPLATE CARDS ═══════════ */
-.template-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:1rem; }
-.tpl-card {
-  background:var(--ink-2); border:1px solid rgba(201,169,110,0.1);
-  border-radius:var(--r); overflow:hidden;
-  transition:all var(--transition);
-}
-.tpl-card:hover { border-color:rgba(201,169,110,0.3); transform:translateY(-2px); box-shadow:0 8px 32px rgba(0,0,0,0.4); }
-.tpl-img { height:120px; background:var(--ink-3); position:relative; overflow:hidden; }
-.tpl-img img { width:100%; height:100%; object-fit:cover; opacity:0.7; transition:opacity var(--transition); }
-.tpl-card:hover .tpl-img img { opacity:0.9; }
-.tpl-img-placeholder { width:100%; height:100%; display:flex; align-items:center; justify-content:center; font-family:var(--font-d); font-size:2.5rem; color:rgba(201,169,110,0.15); }
-.tpl-id-badge {
-  position:absolute; top:0.6rem; left:0.6rem;
-  background:rgba(15,13,11,0.8); border:1px solid rgba(201,169,110,0.2);
-  font-family:var(--font-m); font-size:0.6rem; color:var(--oro);
-  padding:0.2rem 0.5rem; border-radius:2px; backdrop-filter:blur(8px);
-}
-.tpl-body { padding:1rem 1.2rem; }
-.tpl-name { font-family:var(--font-d); font-size:1.1rem; margin-bottom:0.3rem; }
-.tpl-desc { font-size:0.78rem; color:var(--ink-6); line-height:1.5; margin-bottom:0.8rem; font-style:italic; }
-.tpl-meta { display:flex; gap:0.4rem; flex-wrap:wrap; margin-bottom:0.8rem; }
-.tpl-actions {
-  display:flex; gap:0.5rem; padding-top:0.8rem;
-  border-top:1px solid rgba(201,169,110,0.08);
-}
-.tpl-occurrences {
-  font-size:0.68rem; color:var(--ink-6); margin-left:auto;
-  display:flex; align-items:center; gap:0.3rem;
-}
-
-/* ═══════════ OCCORRENZE ═══════════ */
-.occurrence-list { display:flex; flex-direction:column; gap:0.5rem; }
-.occ-row {
-  background:var(--ink-2); border:1px solid rgba(201,169,110,0.08);
-  border-radius:var(--r); padding:0.9rem 1.2rem;
-  display:grid; grid-template-columns:140px 1fr 100px 100px 80px 80px auto;
-  align-items:center; gap:1rem;
-  transition:border-color var(--transition);
-}
-.occ-row:hover { border-color:rgba(201,169,110,0.2); }
-.occ-date { font-family:var(--font-m); font-size:0.72rem; color:var(--ink-6); }
-.occ-title { font-size:0.88rem; font-weight:500; }
-.occ-city { font-size:0.78rem; color:var(--ink-6); }
-.occ-cap { font-size:0.78rem; }
-.cap-bar { height:3px; background:var(--ink-4); border-radius:2px; margin-top:3px; overflow:hidden; }
-.cap-fill { height:100%; background:var(--oro); border-radius:2px; transition:width 0.5s; }
-.occ-actions { display:flex; gap:0.4rem; }
-
-/* ═══════════ BADGE ═══════════ */
-.badge { display:inline-flex; align-items:center; gap:0.25rem; font-size:0.62rem; letter-spacing:0.1em; text-transform:uppercase; padding:0.2rem 0.55rem; border-radius:2px; border:1px solid; white-space:nowrap; }
-.badge-public    { color:#80b3ff; border-color:rgba(128,179,255,0.3); background:rgba(128,179,255,0.08); }
-.badge-members   { color:var(--oro-l); border-color:rgba(201,169,110,0.3); background:rgba(201,169,110,0.08); }
-.badge-available { color:#6dbe6d; border-color:rgba(109,190,109,0.3); background:rgba(109,190,109,0.08); }
-.badge-sold_out  { color:#ff8080; border-color:rgba(255,128,128,0.3); background:rgba(255,128,128,0.08); }
-.badge-coming    { color:var(--oro); border-color:rgba(201,169,110,0.3); background:rgba(201,169,110,0.08); }
-.badge-oss  { color:var(--ink-6); border-color:var(--ink-5); }
-.badge-cus  { color:var(--oro-l); border-color:rgba(201,169,110,0.4); }
-.badge-dam  { color:var(--oro); border-color:var(--oro); }
-.badge-socialita  { color:#b3d9ff; border-color:rgba(179,217,255,0.3); }
-.badge-cultura    { color:#d4b3ff; border-color:rgba(212,179,255,0.3); }
-.badge-esperienza { color:#b3ffd4; border-color:rgba(179,255,212,0.3); }
-.badge-esclusivo  { color:var(--oro); border-color:var(--oro); }
-
-/* ═══════════ BOTTONI ═══════════ */
-.btn {
-  display:inline-flex; align-items:center; gap:0.4rem;
-  font-family:var(--font-s); font-size:0.72rem; font-weight:500;
-  letter-spacing:0.1em; text-transform:uppercase;
-  padding:0.5rem 1rem; border-radius:var(--r); border:1px solid;
-  cursor:pointer; transition:all var(--transition); text-decoration:none;
-  white-space:nowrap;
-}
-.btn-primary { background:var(--oro); color:var(--ink); border-color:var(--oro); }
-.btn-primary:hover { background:var(--oro-l); transform:translateY(-1px); }
-.btn-ghost { background:transparent; color:var(--ink-6); border-color:rgba(201,169,110,0.15); }
-.btn-ghost:hover { color:var(--oro); border-color:rgba(201,169,110,0.4); }
-.btn-danger { background:transparent; color:#ff8080; border-color:rgba(255,128,128,0.2); }
-.btn-danger:hover { background:rgba(255,128,128,0.08); }
-.btn-sm { padding:0.3rem 0.65rem; font-size:0.65rem; }
-.btn-icon { padding:0.4rem; }
-.btn svg { width:13px; height:13px; }
-
-/* ═══════════ TABELLA ═══════════ */
-.table-wrap { background:var(--ink-2); border:1px solid rgba(201,169,110,0.1); border-radius:var(--r); overflow:hidden; }
-.table-wrap table { width:100%; border-collapse:collapse; }
-.table-wrap th { font-size:0.6rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--ink-6); padding:0.7rem 1.2rem; text-align:left; border-bottom:1px solid rgba(201,169,110,0.08); font-weight:500; }
-.table-wrap td { padding:0.8rem 1.2rem; font-size:0.82rem; border-bottom:1px solid rgba(201,169,110,0.05); vertical-align:middle; }
-.table-wrap tr:last-child td { border-bottom:none; }
-.table-wrap tr:hover td { background:rgba(201,169,110,0.02); }
-
-/* ═══════════ FORM / MODAL ═══════════ */
-.modal-overlay { position:fixed; inset:0; z-index:1000; background:rgba(0,0,0,0.75); display:none; align-items:center; justify-content:center; padding:1rem; backdrop-filter:blur(4px); }
-.modal-overlay.open { display:flex; }
-.modal {
-  background:var(--ink-2); border:1px solid rgba(201,169,110,0.15);
-  border-radius:var(--r); width:100%; max-width:680px; max-height:92vh;
-  overflow-y:auto; box-shadow:0 40px 80px rgba(0,0,0,0.7);
-  animation:modalIn 0.25s cubic-bezier(0.34,1.56,0.64,1);
-}
-@keyframes modalIn { from{opacity:0;transform:scale(0.96)translateY(10px)} to{opacity:1;transform:none} }
-.modal-head {
-  display:flex; align-items:center; justify-content:space-between;
-  padding:1.2rem 1.6rem; border-bottom:1px solid rgba(201,169,110,0.08);
-  position:sticky; top:0; background:var(--ink-2); z-index:1;
-}
-.modal-head h3 { font-family:var(--font-d); font-size:1.3rem; font-weight:400; }
-.modal-close { background:none; border:none; color:var(--ink-6); font-size:1.4rem; cursor:pointer; transition:color var(--transition); line-height:1; }
-.modal-close:hover { color:var(--avorio); }
-.modal-body { padding:1.6rem; }
-.modal-foot { padding:1rem 1.6rem; border-top:1px solid rgba(201,169,110,0.08); display:flex; gap:0.6rem; justify-content:flex-end; }
-
-.form-group { margin-bottom:1rem; }
-.form-label { display:block; font-size:0.62rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--ink-6); margin-bottom:0.35rem; font-weight:500; }
-.form-input,.form-select,.form-textarea {
-  width:100%; background:var(--ink-3); border:1px solid rgba(201,169,110,0.12);
-  border-radius:var(--r); padding:0.7rem 0.9rem; color:var(--avorio);
-  font-family:var(--font-s); font-size:0.85rem; outline:none;
-  transition:border-color var(--transition);
-}
-.form-input:focus,.form-select:focus,.form-textarea:focus { border-color:var(--oro); }
-.form-input::placeholder { color:var(--ink-6); }
-.form-input.error { border-color:#ff8080; }
-.form-select option { background:var(--ink-3); }
-.form-textarea { resize:vertical; min-height:80px; line-height:1.5; }
-.form-row { display:grid; grid-template-columns:1fr 1fr; gap:0.8rem; }
-.form-row-3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:0.8rem; }
-.form-hint { font-size:0.7rem; color:var(--ink-6); margin-top:0.25rem; font-style:italic; }
-.form-section {
-  font-size:0.6rem; letter-spacing:0.2em; text-transform:uppercase;
-  color:var(--oro-d); margin:1.4rem 0 0.7rem; padding-bottom:0.4rem;
-  border-bottom:1px solid rgba(201,169,110,0.08); font-weight:600;
-}
-
-/* ID PREVIEW */
-.id-preview {
-  background:var(--ink-3); border:1px solid rgba(201,169,110,0.15);
-  border-radius:var(--r); padding:0.9rem 1.1rem; margin-bottom:1rem;
-}
-.id-preview-label { font-size:0.6rem; letter-spacing:0.18em; text-transform:uppercase; color:var(--ink-6); margin-bottom:0.3rem; }
-.id-preview-value { font-family:var(--font-m); font-size:0.95rem; color:var(--oro); }
-.id-preview-value.checking { color:var(--ink-6); }
-.id-preview-value.ok { color:#6dbe6d; }
-.id-preview-value.error { color:#ff8080; }
-.id-sub { font-size:0.68rem; color:var(--ink-6); margin-top:0.2rem; }
-
-/* QR SCANNER */
-#qr-video-container { position:relative; width:100%; max-width:380px; margin:0 auto; border-radius:var(--r); overflow:hidden; background:#000; aspect-ratio:1; }
-#qr-video { width:100%; height:100%; object-fit:cover; display:block; }
-.scanner-overlay { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; pointer-events:none; }
-.scanner-frame { width:180px; height:180px; border:2px solid var(--oro); border-radius:8px; box-shadow:0 0 0 2000px rgba(0,0,0,0.45); position:relative; }
-.scanner-line { position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,transparent,var(--oro),transparent); animation:scan 2s linear infinite; }
-@keyframes scan { 0%{top:0} 100%{top:100%} }
-
-/* TOAST */
-.toast {
-  position:fixed; bottom:1.5rem; right:1.5rem;
-  background:var(--ink-2); color:var(--avorio); padding:0.8rem 1.4rem;
-  border-radius:var(--r); border:1px solid rgba(201,169,110,0.15);
-  font-size:0.82rem; z-index:9999; opacity:0;
-  transform:translateY(8px) scale(0.98);
-  transition:all 0.3s cubic-bezier(0.34,1.56,0.64,1);
-  pointer-events:none; max-width:300px; box-shadow:0 8px 32px rgba(0,0,0,0.5);
-}
-.toast.show { opacity:1; transform:none; }
-.toast.success { border-color:rgba(109,190,109,0.4); }
-.toast.error   { border-color:rgba(255,128,128,0.4); }
-
-/* LOADER */
-.loader { display:inline-block; width:14px; height:14px; border:2px solid rgba(201,169,110,0.2); border-top-color:var(--oro); border-radius:50%; animation:spin 0.7s linear infinite; }
-@keyframes spin { to { transform:rotate(360deg); } }
-
-/* SCAN RESULT */
-.scan-result { margin-top:1rem; padding:1rem 1.2rem; border-radius:var(--r); display:none; }
-.scan-result.success { background:rgba(109,190,109,0.08); border:1px solid rgba(109,190,109,0.25); }
-.scan-result.error   { background:rgba(255,128,128,0.08); border:1px solid rgba(255,128,128,0.25); }
-.scan-result.warning { background:rgba(201,169,110,0.08); border:1px solid rgba(201,169,110,0.25); }
-
-@media (max-width:900px) {
-  :root { --sidebar:60px; }
-  .sb-logo-mark,.city-selector,.nav-item span,.nav-group-label,.sb-footer .sb-user,.nav-badge { display:none; }
-  .content { padding:1rem; }
-  .charts-grid,.charts-grid-3 { grid-template-columns:1fr; }
-  .occ-row { grid-template-columns:1fr; }
-}
-
-/* ═══════════ GOVERNANCE ═══════════ */
-.gov-chain {
-  display:flex; align-items:center; gap:0.5rem; flex-wrap:wrap;
-  background:var(--ink-2); border:1px solid rgba(201,169,110,0.1);
-  border-radius:var(--r); padding:0.9rem 1.4rem; margin-bottom:1rem;
-  font-size:0.78rem; color:var(--ink-6);
-}
-.gov-chain b { color:var(--oro); }
-.gov-chain .sep { color:var(--ink-5); }
-
-.proposta-stato {
-  display:inline-block; font-size:0.62rem; letter-spacing:0.08em;
-  padding:0.2rem 0.6rem; border-radius:20px; border:1px solid;
-}
-.ps-bozza        { color:var(--ink-6); border-color:var(--ink-5); }
-.ps-raccolta     { color:var(--oro-d); border-color:rgba(201,169,110,0.3); }
-.ps-raggiunto    { color:var(--oro); border-color:rgba(201,169,110,0.5); }
-.ps-approvata    { color:#6dbe6d; border-color:rgba(109,190,109,0.4); }
-.ps-votazione    { color:#80b3ff; border-color:rgba(128,179,255,0.4); }
-.ps-chiusa       { color:var(--ink-6); border-color:var(--ink-5); }
-.ps-respinta     { color:#ff8080; border-color:rgba(255,128,128,0.3); }
-
-.velocita-cost { color:var(--rosso); }
-.velocita-pol  { color:var(--oro); }
-.velocita-ord  { color:var(--avorio); }
-
-.sim-box {
-  background:var(--ink-3); border:1px solid rgba(201,169,110,0.15);
-  border-radius:var(--r); padding:1.2rem 1.4rem; margin-top:1rem;
-  display:flex; align-items:flex-end; gap:1.2rem; flex-wrap:wrap;
-}
-.sim-out {
-  font-family:var(--font-d); font-size:2rem; color:var(--oro); line-height:1;
-  min-width:140px;
-}
-
-.cfg-row {
-  display:flex; align-items:center; justify-content:space-between;
-  padding:0.75rem 0; border-bottom:1px solid rgba(201,169,110,0.06);
-}
-.cfg-row:last-child { border-bottom:none; }
-.cfg-row span { font-size:0.82rem; color:var(--avorio); }
-.cfg-row input[type="number"], .cfg-row input[type="text"] {
-  width:80px; background:var(--ink-3); border:1px solid rgba(201,169,110,0.15);
-  border-radius:var(--r); padding:0.4rem 0.6rem; color:var(--avorio);
-  font-family:var(--font-m); font-size:0.82rem; text-align:right; outline:none;
-  transition:border-color var(--transition);
-}
-.cfg-row input:focus { border-color:var(--oro); }
-.cfg-row input[type="checkbox"] { width:auto; accent-color:var(--oro); }
-
-.bar-row { display:flex; align-items:center; gap:0.8rem; margin-bottom:0.6rem; }
-.bar-label { font-size:0.75rem; color:var(--ink-6); min-width:120px; }
-.bar-track { flex:1; height:6px; background:var(--ink-4); border-radius:3px; overflow:hidden; }
-.bar-fill   { height:100%; background:var(--oro); border-radius:3px; transition:width 0.5s; }
-.bar-val    { font-family:var(--font-m); font-size:0.72rem; color:var(--ink-6); min-width:40px; text-align:right; }
-
-.obiettivo-row {
-  display:grid; grid-template-columns:1fr 120px 80px 80px 80px;
-  align-items:center; gap:1rem; padding:0.8rem 1.2rem;
-  border-bottom:1px solid rgba(201,169,110,0.05);
-  font-size:0.82rem;
-}
-.obiettivo-row:last-child { border-bottom:none; }
-
-.three-speed {
-  display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; margin-bottom:1rem;
-}
-.speed-card {
-  background:var(--ink-2); border:1px solid rgba(201,169,110,0.1);
-  border-radius:var(--r); padding:1.2rem 1.4rem;
-}
-.speed-card h4 { font-family:var(--font-d); font-size:1.1rem; font-weight:400; margin-bottom:0.2rem; }
-.speed-card .speed-sub { font-size:0.72rem; color:var(--ink-6); margin-bottom:0.5rem; font-style:italic; }
-.speed-card p  { font-size:0.78rem; color:var(--ink-6); line-height:1.5; }
-</style>
+<style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}:root{--oro:#C9A96E;--oro-d:#8B6914;--oro-l:#E8D5A8;--oro-xl:#F5ECD8;--ink:#0F0D0B;--ink-2:#1A1714;--ink-3:#252118;--ink-4:#332E24;--ink-5:#4A4336;--ink-6:#6B6050;--avorio:#F4F0E8;--rosso:#A01818;--verde:#1E5C1E;--blu:#1A3A5C;--font-d:'Cormorant Garamond',Georgia,serif;--font-s:'Montserrat',sans-serif;--font-m:'JetBrains Mono',monospace;--sidebar:260px;--r:6px;--transition:0.25s cubic-bezier(0.4,0,0.2,1);}body{background:var(--ink);color:var(--avorio);font-family:var(--font-s);font-size:14px;min-height:100vh;overflow-x:hidden;}::-webkit-scrollbar{width:4px;height:4px;}::-webkit-scrollbar-track{background:transparent;}::-webkit-scrollbar-thumb{background:var(--ink-4);border-radius:2px;}#login-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(201,169,110,0.12) 0%,transparent 60%),radial-gradient(ellipse 40% 40% at 80% 100%,rgba(201,169,110,0.06) 0%,transparent 50%),var(--ink);}.login-wrap{width:100%;max-width:420px;padding:0 1.5rem;}.login-ornament{text-align:center;margin-bottom:2.5rem;}.login-ornament .mark{font-family:var(--font-d);font-size:3rem;color:var(--oro);letter-spacing:0.1em;display:block;line-height:1;}.login-ornament .sub{font-size:0.65rem;letter-spacing:0.35em;text-transform:uppercase;color:var(--ink-6);margin-top:0.5rem;display:block;}.login-box{background:var(--ink-2);border:1px solid rgba(201,169,110,0.15);border-radius:var(--r);padding:2.5rem;box-shadow:0 40px 80px rgba(0,0,0,0.6),0 0 0 1px rgba(201,169,110,0.05);}.login-box input{width:100%;background:var(--ink-3);border:1px solid rgba(201,169,110,0.12);border-radius:var(--r);padding:0.85rem 1rem;color:var(--avorio);font-family:var(--font-s);font-size:0.88rem;outline:none;transition:border-color var(--transition);margin-bottom:0.8rem;}.login-box input:focus{border-color:var(--oro);}.login-box input::placeholder{color:var(--ink-6);}.btn-login{width:100%;background:var(--oro);color:var(--ink);border:none;border-radius:var(--r);padding:0.9rem;font-family:var(--font-s);font-size:0.78rem;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;cursor:pointer;transition:all var(--transition);margin-top:0.4rem;}.btn-login:hover{background:var(--oro-l);transform:translateY(-1px);}.login-err{color:#ff8080;font-size:0.8rem;text-align:center;margin-top:0.8rem;display:none;}#app{display:none;min-height:100vh;}.sidebar{position:fixed;top:0;left:0;bottom:0;width:var(--sidebar);background:var(--ink-2);border-right:1px solid rgba(201,169,110,0.08);display:flex;flex-direction:column;z-index:200;transition:transform var(--transition);}.sb-logo{padding:1.8rem 1.5rem 1.4rem;border-bottom:1px solid rgba(201,169,110,0.08);}.sb-logo-mark{font-family:var(--font-d);font-size:1rem;color:var(--oro);letter-spacing:0.08em;text-transform:uppercase;display:block;}.sb-logo-sub{font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--ink-6);margin-top:0.2rem;display:block;}.city-selector{padding:1rem 1.2rem;border-bottom:1px solid rgba(201,169,110,0.08);}.city-label{font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--ink-6);margin-bottom:0.5rem;display:block;}.city-select{width:100%;background:var(--ink-3);border:1px solid rgba(201,169,110,0.15);border-radius:var(--r);padding:0.5rem 0.8rem;color:var(--avorio);font-family:var(--font-s);font-size:0.82rem;outline:none;cursor:pointer;transition:border-color var(--transition);}.city-select:focus{border-color:var(--oro);}.city-select option{background:var(--ink-3);}.sb-nav{flex:1;padding:0.8rem 0;overflow-y:auto;}.nav-group-label{padding:1rem 1.5rem 0.3rem;font-size:0.58rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--ink-5);}.nav-item{display:flex;align-items:center;gap:0.7rem;padding:0.65rem 1.5rem;color:var(--ink-6);cursor:pointer;transition:all var(--transition);border-left:2px solid transparent;font-size:0.82rem;letter-spacing:0.03em;user-select:none;position:relative;}.nav-item:hover{color:var(--oro-l);background:rgba(201,169,110,0.04);}.nav-item.active{color:var(--oro);border-left-color:var(--oro);background:rgba(201,169,110,0.06);}.nav-item svg{width:15px;height:15px;flex-shrink:0;}.nav-badge{margin-left:auto;background:var(--oro);color:var(--ink);font-size:0.6rem;font-weight:600;padding:0.15rem 0.4rem;border-radius:10px;line-height:1.4;}.sb-footer{padding:1rem 1.5rem;border-top:1px solid rgba(201,169,110,0.08);display:flex;align-items:center;justify-content:space-between;}.sb-user{font-size:0.75rem;color:var(--ink-6);}.sb-user strong{color:var(--avorio);display:block;font-weight:500;}.btn-logout{background:none;border:none;color:var(--ink-6);cursor:pointer;font-size:0.72rem;transition:color var(--transition);letter-spacing:0.05em;}.btn-logout:hover{color:var(--rosso);}.main{margin-left:var(--sidebar);min-height:100vh;}.topbar{position:sticky;top:0;z-index:100;background:rgba(15,13,11,0.9);backdrop-filter:blur(20px);border-bottom:1px solid rgba(201,169,110,0.08);padding:0.9rem 2rem;display:flex;align-items:center;justify-content:space-between;}.topbar-title{font-family:var(--font-d);font-size:1.4rem;color:var(--avorio);}.topbar-title span{color:var(--oro);font-style:italic;}.topbar-right{display:flex;align-items:center;gap:1rem;}.topbar-date{font-size:0.72rem;color:var(--ink-6);letter-spacing:0.05em;}.topbar-city-badge{background:rgba(201,169,110,0.12);border:1px solid rgba(201,169,110,0.2);border-radius:var(--r);padding:0.3rem 0.8rem;font-size:0.72rem;color:var(--oro);letter-spacing:0.08em;}.content{padding:2rem;}.panel{display:none;animation:fadeIn 0.3s ease;}.panel.active{display:block;}@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}.stats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1rem;margin-bottom:1.5rem;}.stat-card{background:var(--ink-2);border:1px solid rgba(201,169,110,0.1);border-radius:var(--r);padding:1.4rem 1.6rem;position:relative;overflow:hidden;transition:border-color var(--transition),transform var(--transition);}.stat-card:hover{border-color:rgba(201,169,110,0.25);transform:translateY(-2px);}.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--oro),transparent);opacity:0;transition:opacity var(--transition);}.stat-card:hover::before{opacity:1;}.stat-l{font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--ink-6);margin-bottom:0.5rem;}.stat-v{font-family:var(--font-d);font-size:2.2rem;color:var(--oro);line-height:1;}.stat-s{font-size:0.72rem;color:var(--ink-6);margin-top:0.3rem;}.stat-trend{position:absolute;top:1.4rem;right:1.6rem;font-size:0.72rem;}.stat-trend.up{color:#6dbe6d;}.stat-trend.down{color:#ff8080;}.card{background:var(--ink-2);border:1px solid rgba(201,169,110,0.1);border-radius:var(--r);overflow:hidden;transition:border-color var(--transition);}.card:hover{border-color:rgba(201,169,110,0.2);}.card-head{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.4rem;border-bottom:1px solid rgba(201,169,110,0.08);}.card-title{font-size:0.68rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--oro-d);font-weight:500;}.card-body{padding:1.4rem;}.charts-grid{display:grid;grid-template-columns:2fr 1fr;gap:1rem;margin-bottom:1rem;}.charts-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;margin-bottom:1rem;}.chart-container{position:relative;}.chart-container canvas{max-height:240px;}.realtime-bar{background:var(--ink-2);border:1px solid rgba(201,169,110,0.1);border-radius:var(--r);padding:1rem 1.4rem;margin-bottom:1rem;display:flex;align-items:center;gap:2rem;}.pulse-dot{width:8px;height:8px;background:#6dbe6d;border-radius:50%;animation:pulse 2s infinite;flex-shrink:0;}@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.5;transform:scale(1.3)}}.realtime-label{font-size:0.65rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink-6);}.realtime-value{font-family:var(--font-d);font-size:1.6rem;color:var(--oro);line-height:1;}.realtime-items{display:flex;gap:2rem;flex:1;}.realtime-item{text-align:center;}.cal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;}.cal-nav{display:flex;align-items:center;gap:0.5rem;}.cal-month{font-family:var(--font-d);font-size:1.4rem;color:var(--avorio);min-width:160px;text-align:center;}.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;}.cal-day-header{text-align:center;font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink-6);padding:0.5rem 0;}.cal-day{min-height:80px;background:var(--ink-3);border-radius:4px;padding:0.4rem;cursor:pointer;transition:background var(--transition);border:1px solid transparent;}.cal-day:hover{background:var(--ink-4);border-color:rgba(201,169,110,0.15);}.cal-day.today{border-color:var(--oro);}.cal-day.other-month{opacity:0.3;}.cal-day-num{font-size:0.72rem;color:var(--ink-6);margin-bottom:0.3rem;}.cal-day.today .cal-day-num{color:var(--oro);font-weight:600;}.cal-event-pill{font-size:0.6rem;padding:0.15rem 0.4rem;border-radius:2px;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer;}.cal-event-pill.public{background:rgba(201,169,110,0.2);color:var(--oro);}.cal-event-pill.members{background:rgba(138,100,20,0.3);color:var(--oro-l);}.cal-event-pill.sold_out{background:rgba(160,24,24,0.3);color:#ffaaaa;}.template-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1rem;}.tpl-card{background:var(--ink-2);border:1px solid rgba(201,169,110,0.1);border-radius:var(--r);overflow:hidden;transition:all var(--transition);}.tpl-card:hover{border-color:rgba(201,169,110,0.3);transform:translateY(-2px);box-shadow:0 8px 32px rgba(0,0,0,0.4);}.tpl-img{height:120px;background:var(--ink-3);position:relative;overflow:hidden;}.tpl-img img{width:100%;height:100%;object-fit:cover;opacity:0.7;transition:opacity var(--transition);}.tpl-card:hover .tpl-img img{opacity:0.9;}.tpl-img-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:var(--font-d);font-size:2.5rem;color:rgba(201,169,110,0.15);}.tpl-id-badge{position:absolute;top:0.6rem;left:0.6rem;background:rgba(15,13,11,0.8);border:1px solid rgba(201,169,110,0.2);font-family:var(--font-m);font-size:0.6rem;color:var(--oro);padding:0.2rem 0.5rem;border-radius:2px;backdrop-filter:blur(8px);}.tpl-body{padding:1rem 1.2rem;}.tpl-name{font-family:var(--font-d);font-size:1.1rem;margin-bottom:0.3rem;}.tpl-desc{font-size:0.78rem;color:var(--ink-6);line-height:1.5;margin-bottom:0.8rem;font-style:italic;}.tpl-meta{display:flex;gap:0.4rem;flex-wrap:wrap;margin-bottom:0.8rem;}.tpl-actions{display:flex;gap:0.5rem;padding-top:0.8rem;border-top:1px solid rgba(201,169,110,0.08);}.tpl-occurrences{font-size:0.68rem;color:var(--ink-6);margin-left:auto;display:flex;align-items:center;gap:0.3rem;}.occurrence-list{display:flex;flex-direction:column;gap:0.5rem;}.occ-row{background:var(--ink-2);border:1px solid rgba(201,169,110,0.08);border-radius:var(--r);padding:0.9rem 1.2rem;display:grid;grid-template-columns:140px 1fr 100px 100px 80px 80px auto;align-items:center;gap:1rem;transition:border-color var(--transition);}.occ-row:hover{border-color:rgba(201,169,110,0.2);}.occ-date{font-family:var(--font-m);font-size:0.72rem;color:var(--ink-6);}.occ-title{font-size:0.88rem;font-weight:500;}.occ-city{font-size:0.78rem;color:var(--ink-6);}.occ-cap{font-size:0.78rem;}.cap-bar{height:3px;background:var(--ink-4);border-radius:2px;margin-top:3px;overflow:hidden;}.cap-fill{height:100%;background:var(--oro);border-radius:2px;transition:width 0.5s;}.occ-actions{display:flex;gap:0.4rem;}.badge{display:inline-flex;align-items:center;gap:0.25rem;font-size:0.62rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.2rem 0.55rem;border-radius:2px;border:1px solid;white-space:nowrap;}.badge-public{color:#80b3ff;border-color:rgba(128,179,255,0.3);background:rgba(128,179,255,0.08);}.badge-members{color:var(--oro-l);border-color:rgba(201,169,110,0.3);background:rgba(201,169,110,0.08);}.badge-available{color:#6dbe6d;border-color:rgba(109,190,109,0.3);background:rgba(109,190,109,0.08);}.badge-sold_out{color:#ff8080;border-color:rgba(255,128,128,0.3);background:rgba(255,128,128,0.08);}.badge-coming{color:var(--oro);border-color:rgba(201,169,110,0.3);background:rgba(201,169,110,0.08);}.badge-oss{color:var(--ink-6);border-color:var(--ink-5);}.badge-cus{color:var(--oro-l);border-color:rgba(201,169,110,0.4);}.badge-dam{color:var(--oro);border-color:var(--oro);}.badge-socialita{color:#b3d9ff;border-color:rgba(179,217,255,0.3);}.badge-cultura{color:#d4b3ff;border-color:rgba(212,179,255,0.3);}.badge-esperienza{color:#b3ffd4;border-color:rgba(179,255,212,0.3);}.badge-esclusivo{color:var(--oro);border-color:var(--oro);}.btn{display:inline-flex;align-items:center;gap:0.4rem;font-family:var(--font-s);font-size:0.72rem;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;padding:0.5rem 1rem;border-radius:var(--r);border:1px solid;cursor:pointer;transition:all var(--transition);text-decoration:none;white-space:nowrap;}.btn-primary{background:var(--oro);color:var(--ink);border-color:var(--oro);}.btn-primary:hover{background:var(--oro-l);transform:translateY(-1px);}.btn-ghost{background:transparent;color:var(--ink-6);border-color:rgba(201,169,110,0.15);}.btn-ghost:hover{color:var(--oro);border-color:rgba(201,169,110,0.4);}.btn-danger{background:transparent;color:#ff8080;border-color:rgba(255,128,128,0.2);}.btn-danger:hover{background:rgba(255,128,128,0.08);}.btn-sm{padding:0.3rem 0.65rem;font-size:0.65rem;}.btn-icon{padding:0.4rem;}.btn svg{width:13px;height:13px;}.table-wrap{background:var(--ink-2);border:1px solid rgba(201,169,110,0.1);border-radius:var(--r);overflow:hidden;}.table-wrap table{width:100%;border-collapse:collapse;}.table-wrap th{font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink-6);padding:0.7rem 1.2rem;text-align:left;border-bottom:1px solid rgba(201,169,110,0.08);font-weight:500;}.table-wrap td{padding:0.8rem 1.2rem;font-size:0.82rem;border-bottom:1px solid rgba(201,169,110,0.05);vertical-align:middle;}.table-wrap tr:last-child td{border-bottom:none;}.table-wrap tr:hover td{background:rgba(201,169,110,0.02);}.modal-overlay{position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,0.75);display:none;align-items:center;justify-content:center;padding:1rem;backdrop-filter:blur(4px);}.modal-overlay.open{display:flex;}.modal{background:var(--ink-2);border:1px solid rgba(201,169,110,0.15);border-radius:var(--r);width:100%;max-width:680px;max-height:92vh;overflow-y:auto;box-shadow:0 40px 80px rgba(0,0,0,0.7);animation:modalIn 0.25s cubic-bezier(0.34,1.56,0.64,1);}@keyframes modalIn{from{opacity:0;transform:scale(0.96)translateY(10px)}to{opacity:1;transform:none}}.modal-head{display:flex;align-items:center;justify-content:space-between;padding:1.2rem 1.6rem;border-bottom:1px solid rgba(201,169,110,0.08);position:sticky;top:0;background:var(--ink-2);z-index:1;}.modal-head h3{font-family:var(--font-d);font-size:1.3rem;font-weight:400;}.modal-close{background:none;border:none;color:var(--ink-6);font-size:1.4rem;cursor:pointer;transition:color var(--transition);line-height:1;}.modal-close:hover{color:var(--avorio);}.modal-body{padding:1.6rem;}.modal-foot{padding:1rem 1.6rem;border-top:1px solid rgba(201,169,110,0.08);display:flex;gap:0.6rem;justify-content:flex-end;}.form-group{margin-bottom:1rem;}.form-label{display:block;font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink-6);margin-bottom:0.35rem;font-weight:500;}.form-input,.form-select,.form-textarea{width:100%;background:var(--ink-3);border:1px solid rgba(201,169,110,0.12);border-radius:var(--r);padding:0.7rem 0.9rem;color:var(--avorio);font-family:var(--font-s);font-size:0.85rem;outline:none;transition:border-color var(--transition);}.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--oro);}.form-input::placeholder{color:var(--ink-6);}.form-input.error{border-color:#ff8080;}.form-select option{background:var(--ink-3);}.form-textarea{resize:vertical;min-height:80px;line-height:1.5;}.form-row{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;}.form-row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.8rem;}.form-hint{font-size:0.7rem;color:var(--ink-6);margin-top:0.25rem;font-style:italic;}.form-section{font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--oro-d);margin:1.4rem 0 0.7rem;padding-bottom:0.4rem;border-bottom:1px solid rgba(201,169,110,0.08);font-weight:600;}.id-preview{background:var(--ink-3);border:1px solid rgba(201,169,110,0.15);border-radius:var(--r);padding:0.9rem 1.1rem;margin-bottom:1rem;}.id-preview-label{font-size:0.6rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink-6);margin-bottom:0.3rem;}.id-preview-value{font-family:var(--font-m);font-size:0.95rem;color:var(--oro);}.id-preview-value.checking{color:var(--ink-6);}.id-preview-value.ok{color:#6dbe6d;}.id-preview-value.error{color:#ff8080;}.id-sub{font-size:0.68rem;color:var(--ink-6);margin-top:0.2rem;}#qr-video-container{position:relative;width:100%;max-width:380px;margin:0 auto;border-radius:var(--r);overflow:hidden;background:#000;aspect-ratio:1;}#qr-video{width:100%;height:100%;object-fit:cover;display:block;}.scanner-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;}.scanner-frame{width:180px;height:180px;border:2px solid var(--oro);border-radius:8px;box-shadow:0 0 0 2000px rgba(0,0,0,0.45);position:relative;}.scanner-line{position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--oro),transparent);animation:scan 2s linear infinite;}@keyframes scan{0%{top:0}100%{top:100%}}.toast{position:fixed;bottom:1.5rem;right:1.5rem;background:var(--ink-2);color:var(--avorio);padding:0.8rem 1.4rem;border-radius:var(--r);border:1px solid rgba(201,169,110,0.15);font-size:0.82rem;z-index:9999;opacity:0;transform:translateY(8px) scale(0.98);transition:all 0.3s cubic-bezier(0.34,1.56,0.64,1);pointer-events:none;max-width:300px;box-shadow:0 8px 32px rgba(0,0,0,0.5);}.toast.show{opacity:1;transform:none;}.toast.success{border-color:rgba(109,190,109,0.4);}.toast.error{border-color:rgba(255,128,128,0.4);}.loader{display:inline-block;width:14px;height:14px;border:2px solid rgba(201,169,110,0.2);border-top-color:var(--oro);border-radius:50%;animation:spin 0.7s linear infinite;}@keyframes spin{to{transform:rotate(360deg);}}.scan-result{margin-top:1rem;padding:1rem 1.2rem;border-radius:var(--r);display:none;}.scan-result.success{background:rgba(109,190,109,0.08);border:1px solid rgba(109,190,109,0.25);}.scan-result.error{background:rgba(255,128,128,0.08);border:1px solid rgba(255,128,128,0.25);}.scan-result.warning{background:rgba(201,169,110,0.08);border:1px solid rgba(201,169,110,0.25);}@media (max-width:900px){:root{--sidebar:60px;}.sb-logo-mark,.city-selector,.nav-item span,.nav-group-label,.sb-footer .sb-user,.nav-badge{display:none;}.content{padding:1rem;}.charts-grid,.charts-grid-3{grid-template-columns:1fr;}.occ-row{grid-template-columns:1fr;}}.gov-chain{display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap;background:var(--ink-2);border:1px solid rgba(201,169,110,0.1);border-radius:var(--r);padding:0.9rem 1.4rem;margin-bottom:1rem;font-size:0.78rem;color:var(--ink-6);}.gov-chain b{color:var(--oro);}.gov-chain .sep{color:var(--ink-5);}.proposta-stato{display:inline-block;font-size:0.62rem;letter-spacing:0.08em;padding:0.2rem 0.6rem;border-radius:20px;border:1px solid;}.ps-bozza{color:var(--ink-6);border-color:var(--ink-5);}.ps-raccolta{color:var(--oro-d);border-color:rgba(201,169,110,0.3);}.ps-raggiunto{color:var(--oro);border-color:rgba(201,169,110,0.5);}.ps-approvata{color:#6dbe6d;border-color:rgba(109,190,109,0.4);}.ps-votazione{color:#80b3ff;border-color:rgba(128,179,255,0.4);}.ps-chiusa{color:var(--ink-6);border-color:var(--ink-5);}.ps-respinta{color:#ff8080;border-color:rgba(255,128,128,0.3);}.velocita-cost{color:var(--rosso);}.velocita-pol{color:var(--oro);}.velocita-ord{color:var(--avorio);}.sim-box{background:var(--ink-3);border:1px solid rgba(201,169,110,0.15);border-radius:var(--r);padding:1.2rem 1.4rem;margin-top:1rem;display:flex;align-items:flex-end;gap:1.2rem;flex-wrap:wrap;}.sim-out{font-family:var(--font-d);font-size:2rem;color:var(--oro);line-height:1;min-width:140px;}.cfg-row{display:flex;align-items:center;justify-content:space-between;padding:0.75rem 0;border-bottom:1px solid rgba(201,169,110,0.06);}.cfg-row:last-child{border-bottom:none;}.cfg-row span{font-size:0.82rem;color:var(--avorio);}.cfg-row input[type="number"],.cfg-row input[type="text"]{width:80px;background:var(--ink-3);border:1px solid rgba(201,169,110,0.15);border-radius:var(--r);padding:0.4rem 0.6rem;color:var(--avorio);font-family:var(--font-m);font-size:0.82rem;text-align:right;outline:none;transition:border-color var(--transition);}.cfg-row input:focus{border-color:var(--oro);}.cfg-row input[type="checkbox"]{width:auto;accent-color:var(--oro);}.bar-row{display:flex;align-items:center;gap:0.8rem;margin-bottom:0.6rem;}.bar-label{font-size:0.75rem;color:var(--ink-6);min-width:120px;}.bar-track{flex:1;height:6px;background:var(--ink-4);border-radius:3px;overflow:hidden;}.bar-fill{height:100%;background:var(--oro);border-radius:3px;transition:width 0.5s;}.bar-val{font-family:var(--font-m);font-size:0.72rem;color:var(--ink-6);min-width:40px;text-align:right;}.obiettivo-row{display:grid;grid-template-columns:1fr 120px 80px 80px 80px;align-items:center;gap:1rem;padding:0.8rem 1.2rem;border-bottom:1px solid rgba(201,169,110,0.05);font-size:0.82rem;}.obiettivo-row:last-child{border-bottom:none;}.three-speed{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:1rem;}.speed-card{background:var(--ink-2);border:1px solid rgba(201,169,110,0.1);border-radius:var(--r);padding:1.2rem 1.4rem;}.speed-card h4{font-family:var(--font-d);font-size:1.1rem;font-weight:400;margin-bottom:0.2rem;}.speed-card .speed-sub{font-size:0.72rem;color:var(--ink-6);margin-bottom:0.5rem;font-style:italic;}.speed-card p{font-size:0.78rem;color:var(--ink-6);line-height:1.5;}</style>
 </head>
 <body>
 
 <!-- LOGIN -->
 <div id="login-screen">
   <div class="login-wrap">
-    <div class="login-ornament">
-      <span class="mark">✦ DSC</span>
-      <span class="sub">Il Salotto dei Damascati · Admin</span>
-    </div>
-    <div class="login-box">
-      <input type="email" id="l-email" placeholder="Email amministratore" autocomplete="email">
-      <input type="password" id="l-pass" placeholder="Password" autocomplete="current-password">
-      <button class="btn-login" onclick="doLogin()">Accedi al Pannello</button>
-      <div class="login-err" id="l-err">Credenziali non riconosciute</div>
-    </div>
+  <div class="login-ornament">
+  <span class="mark">✦ DSC</span>
+  <span class="sub">Il Salotto dei Damascati · Admin</span>
+  </div>
+  <div class="login-box">
+  <input type="email" id="l-email" placeholder="Email amministratore" autocomplete="email">
+  <input type="password" id="l-pass" placeholder="Password" autocomplete="current-password">
+  <button class="btn-login" onclick="doLogin()">Accedi al Pannello</button>
+  <div class="login-err" id="l-err">Credenziali non riconosciute</div>
+  </div>
   </div>
 </div>
 
@@ -562,531 +33,529 @@ body { background:var(--ink); color:var(--avorio); font-family:var(--font-s); fo
 
   <!-- SIDEBAR -->
   <aside class="sidebar">
-    <div class="sb-logo">
-      <span class="sb-logo-mark">Il Salotto dei Damascati</span>
-      <span class="sb-logo-sub">Pannello di Controllo</span>
-    </div>
+  <div class="sb-logo">
+  <span class="sb-logo-mark">Il Salotto dei Damascati</span>
+  <span class="sb-logo-sub">Pannello di Controllo</span>
+  </div>
 
-    <div class="city-selector">
-      <span class="city-label">Città attiva</span>
-      <select class="city-select" id="global-city" onchange="onCityChange()">
-        <option value="all">Tutte le città</option>
-        <option value="Roma">Roma</option>
-        <option value="Milano">Milano</option>
-        <option value="Napoli">Napoli</option>
-        <option value="Torino">Torino</option>
-        <option value="Berlino">Berlino</option>
-        <option value="Monaco">Monaco</option>
-        <option value="Barcellona">Barcellona</option>
-        <option value="Madrid">Madrid</option>
-      </select>
-    </div>
+  <div class="city-selector">
+  <span class="city-label">Città attiva</span>
+  <select class="city-select" id="global-city" onchange="onCityChange()">
+  <option value="all">Tutte le città</option>
+  <option value="Roma">Roma</option>
+  <option value="Milano">Milano</option>
+  <option value="Napoli">Napoli</option>
+  <option value="Torino">Torino</option>
+  <option value="Berlino">Berlino</option>
+  <option value="Monaco">Monaco</option>
+  <option value="Barcellona">Barcellona</option>
+  <option value="Madrid">Madrid</option>
+  </select>
+  </div>
 
-    <nav class="sb-nav">
-      <div class="nav-group-label">Panoramica</div>
-      <div class="nav-item active" onclick="showPanel('dashboard')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
-        <span>Dashboard</span>
-      </div>
-      <div class="nav-item" onclick="showPanel('analytics')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-        <span>Analytics</span>
-      </div>
+  <nav class="sb-nav">
+  <div class="nav-group-label">Panoramica</div>
+  <div class="nav-item active" onclick="showPanel('dashboard')">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+  <span>Dashboard</span>
+  </div>
+  <div class="nav-item" onclick="showPanel('analytics')">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+  <span>Analytics</span>
+  </div>
 
-      <div class="nav-group-label">Calendario</div>
-      <div class="nav-item" onclick="showPanel('calendario')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-        <span>Calendario</span>
-      </div>
-      <div class="nav-item" onclick="showPanel('template')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
-        <span>Template Evento</span>
-      </div>
-      <div class="nav-item" onclick="showPanel('occorrenze')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-        <span>Occorrenze</span>
-        <span class="nav-badge" id="badge-occ">0</span>
-      </div>
+  <div class="nav-group-label">Calendario</div>
+  <div class="nav-item" onclick="showPanel('calendario')">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+  <span>Calendario</span>
+  </div>
+  <div class="nav-item" onclick="showPanel('template')">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+  <span>Template Evento</span>
+  </div>
+  <div class="nav-item" onclick="showPanel('occorrenze')">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+  <span>Occorrenze</span>
+  <span class="nav-badge" id="badge-occ">0</span>
+  </div>
 
-      <div class="nav-group-label">Persone</div>
-      <div class="nav-item" onclick="showPanel('iscritti')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
-        <span>Iscritti</span>
-        <span class="nav-badge" id="badge-isc">0</span>
-      </div>
-      <div class="nav-item" onclick="showPanel('dama')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-        <span>Crediti DAMA</span>
-      </div>
+  <div class="nav-group-label">Persone</div>
+  <div class="nav-item" onclick="showPanel('iscritti')">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+  <span>Iscritti</span>
+  <span class="nav-badge" id="badge-isc">0</span>
+  </div>
+  <div class="nav-item" onclick="showPanel('dama')">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+  <span>Crediti DAMA</span>
+  </div>
 
-      <div class="nav-group-label">Operativo</div>
-      <div class="nav-item" onclick="showPanel('checkin')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 7V5a2 2 0 012-2h2M17 3h2a2 2 0 012 2v2M21 17v2a2 2 0 01-2 2h-2M7 21H5a2 2 0 01-2-2v-2"/><path d="M9 12l2 2 4-4"/></svg>
-        <span>Check-in QR</span>
-      </div>
+  <div class="nav-group-label">Operativo</div>
+  <div class="nav-item" onclick="showPanel('checkin')">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 7V5a2 2 0 012-2h2M17 3h2a2 2 0 012 2v2M21 17v2a2 2 0 01-2 2h-2M7 21H5a2 2 0 01-2-2v-2"/><path d="M9 12l2 2 4-4"/></svg>
+  <span>Check-in QR</span>
+  </div>
 
-      <div class="nav-group-label">Governo</div>
-      <div class="nav-item" onclick="showPanel('voto')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
-        <span>Proposte & Voto</span>
-      </div>
-      <div class="nav-item" onclick="showPanel('tesoreria')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/></svg>
-        <span>Tesoreria</span>
-      </div>
-      <div class="nav-item" onclick="showPanel('cariche')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M6 20v-2a6 6 0 0112 0v2"/><path d="M20 8l2 2-2 2M4 8l-2 2 2 2"/></svg>
-        <span>Cariche & Config</span>
-      </div>
-    </nav>
+  <div class="nav-group-label">Governo</div>
+  <div class="nav-item" onclick="showPanel('voto')">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+  <span>Proposte & Voto</span>
+  </div>
+  <div class="nav-item" onclick="showPanel('tesoreria')">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/></svg>
+  <span>Tesoreria</span>
+  </div>
+  <div class="nav-item" onclick="showPanel('cariche')">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M6 20v-2a6 6 0 0112 0v2"/><path d="M20 8l2 2-2 2M4 8l-2 2 2 2"/></svg>
+  <span>Cariche & Config</span>
+  </div>
+  </nav>
 
-    <div class="sb-footer">
-      <div class="sb-user">
-        <strong id="sb-user-name">Admin</strong>
-        <span id="sb-user-email"></span>
-      </div>
-      <button class="btn-logout" onclick="doLogout()">Esci</button>
-    </div>
+  <div class="sb-footer">
+  <div class="sb-user">
+  <strong id="sb-user-name">Admin</strong>
+  <span id="sb-user-email"></span>
+  </div>
+  <button class="btn-logout" onclick="doLogout()">Esci</button>
+  </div>
   </aside>
 
   <!-- MAIN -->
   <div class="main">
-    <div class="topbar">
-      <div class="topbar-title" id="topbar-title">Dashboard <span>· Il Salotto</span></div>
-      <div class="topbar-right">
-        <div class="topbar-date" id="topbar-date"></div>
-        <div class="topbar-city-badge" id="topbar-city">Tutte le città</div>
-      </div>
-    </div>
+  <div class="topbar">
+  <div class="topbar-title" id="topbar-title">Dashboard <span>· Il Salotto</span></div>
+  <div class="topbar-right">
+  <div class="topbar-date" id="topbar-date"></div>
+  <div class="topbar-city-badge" id="topbar-city">Tutte le città</div>
+  </div>
+  </div>
 
-    <div class="content">
+  <div class="content">
 
-      <!-- ── DASHBOARD ── -->
-      <div class="panel active" id="panel-dashboard">
-        <div class="realtime-bar">
-          <div class="pulse-dot"></div>
-          <div>
-            <div class="realtime-label">Monitoraggio live</div>
-            <div style="font-size:0.72rem;color:var(--ink-6)" id="last-update">Aggiornamento in corso...</div>
-          </div>
-          <div class="realtime-items">
-            <div class="realtime-item"><div class="realtime-label">Iscrizioni oggi</div><div class="realtime-value" id="rt-today">—</div></div>
-            <div class="realtime-item"><div class="realtime-label">Questa settimana</div><div class="realtime-value" id="rt-week">—</div></div>
-            <div class="realtime-item"><div class="realtime-label">Questo mese</div><div class="realtime-value" id="rt-month">—</div></div>
-            <div class="realtime-item"><div class="realtime-label">Prossimo evento</div><div class="realtime-value" id="rt-next-event" style="font-size:1rem">—</div></div>
-          </div>
-        </div>
+  <!-- ── DASHBOARD ── -->
+  <div class="panel active" id="panel-dashboard">
+  <div class="realtime-bar">
+  <div class="pulse-dot"></div>
+  <div>
+  <div class="realtime-label">Monitoraggio live</div>
+  <div style="font-size:0.72rem;color:var(--ink-6)" id="last-update">Aggiornamento in corso...</div>
+  </div>
+  <div class="realtime-items">
+  <div class="realtime-item"><div class="realtime-label">Iscrizioni oggi</div><div class="realtime-value" id="rt-today">—</div></div>
+  <div class="realtime-item"><div class="realtime-label">Questa settimana</div><div class="realtime-value" id="rt-week">—</div></div>
+  <div class="realtime-item"><div class="realtime-label">Questo mese</div><div class="realtime-value" id="rt-month">—</div></div>
+  <div class="realtime-item"><div class="realtime-label">Prossimo evento</div><div class="realtime-value" id="rt-next-event" style="font-size:1rem">—</div></div>
+  </div>
+  </div>
 
-        <div class="stats-grid">
-          <div class="stat-card"><div class="stat-l">Iscritti totali</div><div class="stat-v" id="s-iscritti">—</div><div class="stat-s" id="s-iscritti-sub">nel movimento</div></div>
-          <div class="stat-card"><div class="stat-l">Template attivi</div><div class="stat-v" id="s-template">—</div><div class="stat-s">formati evento</div></div>
-          <div class="stat-card"><div class="stat-l">Occorrenze programmate</div><div class="stat-v" id="s-occ">—</div><div class="stat-s">eventi futuri</div></div>
-          <div class="stat-card"><div class="stat-l">DAMA circolanti</div><div class="stat-v" id="s-dama">—</div><div class="stat-s">crediti attivi</div></div>
-          <div class="stat-card"><div class="stat-l">Presenze totali</div><div class="stat-v" id="s-presenze">—</div><div class="stat-s">check-in effettuati</div></div>
-          <div class="stat-card"><div class="stat-l">Tasso occupazione</div><div class="stat-v" id="s-occupazione">—</div><div class="stat-s">media eventi</div></div>
-        </div>
+  <div class="stats-grid">
+  <div class="stat-card"><div class="stat-l">Iscritti totali</div><div class="stat-v" id="s-iscritti">—</div><div class="stat-s" id="s-iscritti-sub">nel movimento</div></div>
+  <div class="stat-card"><div class="stat-l">Template attivi</div><div class="stat-v" id="s-template">—</div><div class="stat-s">formati evento</div></div>
+  <div class="stat-card"><div class="stat-l">Occorrenze programmate</div><div class="stat-v" id="s-occ">—</div><div class="stat-s">eventi futuri</div></div>
+  <div class="stat-card"><div class="stat-l">DAMA circolanti</div><div class="stat-v" id="s-dama">—</div><div class="stat-s">crediti attivi</div></div>
+  <div class="stat-card"><div class="stat-l">Presenze totali</div><div class="stat-v" id="s-presenze">—</div><div class="stat-s">check-in effettuati</div></div>
+  <div class="stat-card"><div class="stat-l">Tasso occupazione</div><div class="stat-v" id="s-occupazione">—</div><div class="stat-s">media eventi</div></div>
+  </div>
 
-        <div style="display:grid;grid-template-columns:2fr 1fr;gap:1rem;margin-bottom:1rem;">
-          <div class="card">
-            <div class="card-head"><div class="card-title">Prossimi eventi</div><button class="btn btn-primary btn-sm" onclick="showPanel('occorrenze')">Vedi tutti</button></div>
-            <div id="dash-next-events" style="padding:0.5rem 0;"></div>
-          </div>
-          <div class="card">
-            <div class="card-head"><div class="card-title">Distribuzione tier</div></div>
-            <div class="card-body"><canvas id="chart-tier" height="180"></canvas></div>
-          </div>
-        </div>
+  <div style="display:grid;grid-template-columns:2fr 1fr;gap:1rem;margin-bottom:1rem;">
+  <div class="card">
+  <div class="card-head"><div class="card-title">Prossimi eventi</div><button class="btn btn-primary btn-sm" onclick="showPanel('occorrenze')">Vedi tutti</button></div>
+  <div id="dash-next-events" style="padding:0.5rem 0;"></div>
+  </div>
+  <div class="card">
+  <div class="card-head"><div class="card-title">Distribuzione tier</div></div>
+  <div class="card-body"><canvas id="chart-tier" height="180"></canvas></div>
+  </div>
+  </div>
 
-        <div class="card">
-          <div class="card-head"><div class="card-title">Ultime iscrizioni</div></div>
-          <div style="overflow-x:auto;">
-            <table style="width:100%;border-collapse:collapse;">
-              <thead><tr>
-                <th style="font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink-6);padding:0.7rem 1.2rem;text-align:left;border-bottom:1px solid rgba(201,169,110,0.08)">Nome</th>
-                <th style="font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink-6);padding:0.7rem 1.2rem;text-align:left;border-bottom:1px solid rgba(201,169,110,0.08)">Città</th>
-                <th style="font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink-6);padding:0.7rem 1.2rem;text-align:left;border-bottom:1px solid rgba(201,169,110,0.08)">Tier</th>
-                <th style="font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink-6);padding:0.7rem 1.2rem;text-align:left;border-bottom:1px solid rgba(201,169,110,0.08)">Data</th>
-              </tr></thead>
-              <tbody id="dash-recent-iscritti"></tbody>
-            </table>
-          </div>
-        </div>
-      </div>
+  <div class="card">
+  <div class="card-head"><div class="card-title">Ultime iscrizioni</div></div>
+  <div style="overflow-x:auto;">
+  <table style="width:100%;border-collapse:collapse;">
+  <thead><tr>
+  <th style="font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink-6);padding:0.7rem 1.2rem;text-align:left;border-bottom:1px solid rgba(201,169,110,0.08)">Nome</th>
+  <th style="font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink-6);padding:0.7rem 1.2rem;text-align:left;border-bottom:1px solid rgba(201,169,110,0.08)">Città</th>
+  <th style="font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink-6);padding:0.7rem 1.2rem;text-align:left;border-bottom:1px solid rgba(201,169,110,0.08)">Tier</th>
+  <th style="font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink-6);padding:0.7rem 1.2rem;text-align:left;border-bottom:1px solid rgba(201,169,110,0.08)">Data</th>
+  </tr></thead>
+  <tbody id="dash-recent-iscritti"></tbody>
+  </table>
+  </div>
+  </div>
+  </div>
 
-      <!-- ── ANALYTICS ── -->
-      <div class="panel" id="panel-analytics">
-        <div class="realtime-bar" style="margin-bottom:1.5rem;">
-          <div class="pulse-dot"></div>
-          <div><div class="realtime-label">Analytics in tempo reale</div><div style="font-size:0.72rem;color:var(--ink-6)">Dati da Supabase + Google Analytics 4</div></div>
-        </div>
+  <!-- ── ANALYTICS ── -->
+  <div class="panel" id="panel-analytics">
+  <div class="realtime-bar" style="margin-bottom:1.5rem;">
+  <div class="pulse-dot"></div>
+  <div><div class="realtime-label">Analytics in tempo reale</div><div style="font-size:0.72rem;color:var(--ink-6)">Dati da Supabase + Google Analytics 4</div></div>
+  </div>
 
-        <div class="charts-grid" style="margin-bottom:1rem;">
-          <div class="card">
-            <div class="card-head"><div class="card-title">Iscrizioni nel tempo</div>
-              <div style="display:flex;gap:0.4rem;">
-                <button class="btn btn-ghost btn-sm" onclick="changeChartPeriod('7d')" id="btn-7d">7g</button>
-                <button class="btn btn-primary btn-sm" onclick="changeChartPeriod('30d')" id="btn-30d">30g</button>
-                <button class="btn btn-ghost btn-sm" onclick="changeChartPeriod('90d')" id="btn-90d">90g</button>
-              </div>
-            </div>
-            <div class="card-body"><canvas id="chart-iscrizioni" height="200"></canvas></div>
-          </div>
-          <div class="card">
-            <div class="card-head"><div class="card-title">Iscrizioni per città</div></div>
-            <div class="card-body"><canvas id="chart-citta" height="200"></canvas></div>
-          </div>
-        </div>
+  <div class="charts-grid" style="margin-bottom:1rem;">
+  <div class="card">
+  <div class="card-head"><div class="card-title">Iscrizioni nel tempo</div>
+  <div style="display:flex;gap:0.4rem;">
+  <button class="btn btn-ghost btn-sm" onclick="changeChartPeriod('7d')" id="btn-7d">7g</button>
+  <button class="btn btn-primary btn-sm" onclick="changeChartPeriod('30d')" id="btn-30d">30g</button>
+  <button class="btn btn-ghost btn-sm" onclick="changeChartPeriod('90d')" id="btn-90d">90g</button>
+  </div>
+  </div>
+  <div class="card-body"><canvas id="chart-iscrizioni" height="200"></canvas></div>
+  </div>
+  <div class="card">
+  <div class="card-head"><div class="card-title">Iscrizioni per città</div></div>
+  <div class="card-body"><canvas id="chart-citta" height="200"></canvas></div>
+  </div>
+  </div>
 
-        <div class="charts-grid-3">
-          <div class="card">
-            <div class="card-head"><div class="card-title">Presenze per evento</div></div>
-            <div class="card-body"><canvas id="chart-presenze" height="180"></canvas></div>
-          </div>
-          <div class="card">
-            <div class="card-head"><div class="card-title">DAMA emessi vs utilizzati</div></div>
-            <div class="card-body"><canvas id="chart-dama" height="180"></canvas></div>
-          </div>
-          <div class="card">
-            <div class="card-head"><div class="card-title">Tasso occupazione eventi</div></div>
-            <div class="card-body"><canvas id="chart-occupazione" height="180"></canvas></div>
-          </div>
-        </div>
+  <div class="charts-grid-3">
+  <div class="card">
+  <div class="card-head"><div class="card-title">Presenze per evento</div></div>
+  <div class="card-body"><canvas id="chart-presenze" height="180"></canvas></div>
+  </div>
+  <div class="card">
+  <div class="card-head"><div class="card-title">DAMA emessi vs utilizzati</div></div>
+  <div class="card-body"><canvas id="chart-dama" height="180"></canvas></div>
+  </div>
+  <div class="card">
+  <div class="card-head"><div class="card-title">Tasso occupazione eventi</div></div>
+  <div class="card-body"><canvas id="chart-occupazione" height="180"></canvas></div>
+  </div>
+  </div>
 
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
-          <div class="card">
-            <div class="card-head"><div class="card-title">Top eventi per presenze</div></div>
-            <div id="top-eventi" style="padding:0.5rem 0;"></div>
-          </div>
-          <div class="card">
-            <div class="card-head"><div class="card-title">Crescita membership</div></div>
-            <div class="card-body"><canvas id="chart-crescita" height="160"></canvas></div>
-          </div>
-        </div>
-      </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
+  <div class="card">
+  <div class="card-head"><div class="card-title">Top eventi per presenze</div></div>
+  <div id="top-eventi" style="padding:0.5rem 0;"></div>
+  </div>
+  <div class="card">
+  <div class="card-head"><div class="card-title">Crescita membership</div></div>
+  <div class="card-body"><canvas id="chart-crescita" height="160"></canvas></div>
+  </div>
+  </div>
+  </div>
 
-      <!-- ── CALENDARIO ── -->
-      <div class="panel" id="panel-calendario">
-        <div class="cal-header">
-          <div class="cal-nav">
-            <button class="btn btn-ghost btn-sm" onclick="calPrev()">←</button>
-            <div class="cal-month" id="cal-month-label">Maggio 2026</div>
-            <button class="btn btn-ghost btn-sm" onclick="calNext()">→</button>
-          </div>
-          <div style="display:flex;gap:0.5rem;align-items:center;">
-            <select class="city-select" id="cal-city-filter" onchange="renderCalendario()" style="min-width:140px;">
-              <option value="all">Tutte le città</option>
-            </select>
-            <button class="btn btn-primary btn-sm" onclick="openModalOccorrenza()">+ Nuovo Evento</button>
-          </div>
-        </div>
-        <div class="card" style="padding:1rem;">
-          <div class="cal-grid" id="cal-grid">
-            <div class="cal-day-header">Lun</div>
-            <div class="cal-day-header">Mar</div>
-            <div class="cal-day-header">Mer</div>
-            <div class="cal-day-header">Gio</div>
-            <div class="cal-day-header">Ven</div>
-            <div class="cal-day-header">Sab</div>
-            <div class="cal-day-header">Dom</div>
-          </div>
-        </div>
-      </div>
+  <!-- ── CALENDARIO ── -->
+  <div class="panel" id="panel-calendario">
+  <div class="cal-header">
+  <div class="cal-nav">
+  <button class="btn btn-ghost btn-sm" onclick="calPrev()">←</button>
+  <div class="cal-month" id="cal-month-label">Maggio 2026</div>
+  <button class="btn btn-ghost btn-sm" onclick="calNext()">→</button>
+  </div>
+  <div style="display:flex;gap:0.5rem;align-items:center;">
+  <select class="city-select" id="cal-city-filter" onchange="renderCalendario()" style="min-width:140px;">
+  <option value="all">Tutte le città</option>
+  </select>
+  <button class="btn btn-primary btn-sm" onclick="openModalOccorrenza()">+ Nuovo Evento</button>
+  </div>
+  </div>
+  <div class="card" style="padding:1rem;">
+  <div class="cal-grid" id="cal-grid">
+  <div class="cal-day-header">Lun</div>
+  <div class="cal-day-header">Mar</div>
+  <div class="cal-day-header">Mer</div>
+  <div class="cal-day-header">Gio</div>
+  <div class="cal-day-header">Ven</div>
+  <div class="cal-day-header">Sab</div>
+  <div class="cal-day-header">Dom</div>
+  </div>
+  </div>
+  </div>
 
-      <!-- ── TEMPLATE ── -->
-      <div class="panel" id="panel-template">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;">
-          <div>
-            <h2 style="font-family:var(--font-d);font-size:1.6rem;font-weight:400">Template <span style="color:var(--oro);font-style:italic">Evento</span></h2>
-            <p style="font-size:0.78rem;color:var(--ink-6);margin-top:0.3rem;font-style:italic">Schede master riusabili — ogni evento è un'istanza di un template</p>
-          </div>
-          <button class="btn btn-primary" onclick="openModalTemplate()">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+  <!-- ── TEMPLATE ── -->
+  <div class="panel" id="panel-template">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;">
+  <div>
+  <h2 style="font-family:var(--font-d);font-size:1.6rem;font-weight:400">Template <span style="color:var(--oro);font-style:italic">Evento</span></h2>
+  <p style="font-size:0.78rem;color:var(--ink-6);margin-top:0.3rem;font-style:italic">Schede master riusabili — ogni evento è un'istanza di un template</p>
+  </div>
+  <button class="btn btn-primary" onclick="openModalTemplate()">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
             Nuovo Template
-          </button>
-        </div>
-        <div class="template-grid" id="template-grid">
-          <div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--ink-6);font-style:italic;">Caricamento...</div>
-        </div>
-      </div>
+  </button>
+  </div>
+  <div class="template-grid" id="template-grid">
+  <div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--ink-6);font-style:italic;">Caricamento...</div>
+  </div>
+  </div>
 
-      <!-- ── OCCORRENZE ── -->
-      <div class="panel" id="panel-occorrenze">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.2rem;">
-          <div>
-            <h2 style="font-family:var(--font-d);font-size:1.6rem;font-weight:400">Occorrenze <span style="color:var(--oro);font-style:italic">Programmate</span></h2>
-          </div>
-          <div style="display:flex;gap:0.5rem;align-items:center;">
-            <select class="city-select" id="occ-city-filter" onchange="filterOccorrenze()" style="min-width:140px;">
-              <option value="all">Tutte le città</option>
-            </select>
-            <select class="city-select" id="occ-template-filter" onchange="filterOccorrenze()" style="min-width:160px;">
-              <option value="all">Tutti i template</option>
-            </select>
-            <button class="btn btn-primary" onclick="openModalOccorrenza()">+ Nuova Occorrenza</button>
-          </div>
-        </div>
-        <div class="occurrence-list" id="occorrenze-list">
-          <div style="text-align:center;padding:3rem;color:var(--ink-6);font-style:italic;">Caricamento...</div>
-        </div>
-      </div>
+  <!-- ── OCCORRENZE ── -->
+  <div class="panel" id="panel-occorrenze">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.2rem;">
+  <div>
+  <h2 style="font-family:var(--font-d);font-size:1.6rem;font-weight:400">Occorrenze <span style="color:var(--oro);font-style:italic">Programmate</span></h2>
+  </div>
+  <div style="display:flex;gap:0.5rem;align-items:center;">
+  <select class="city-select" id="occ-city-filter" onchange="filterOccorrenze()" style="min-width:140px;">
+  <option value="all">Tutte le città</option>
+  </select>
+  <select class="city-select" id="occ-template-filter" onchange="filterOccorrenze()" style="min-width:160px;">
+  <option value="all">Tutti i template</option>
+  </select>
+  <button class="btn btn-primary" onclick="openModalOccorrenza()">+ Nuova Occorrenza</button>
+  </div>
+  </div>
+  <div class="occurrence-list" id="occorrenze-list">
+  <div style="text-align:center;padding:3rem;color:var(--ink-6);font-style:italic;">Caricamento...</div>
+  </div>
+  </div>
 
-      <!-- ── ISCRITTI ── -->
-      <div class="panel" id="panel-iscritti">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.2rem;">
-          <h2 style="font-family:var(--font-d);font-size:1.6rem;font-weight:400">Iscritti <span style="color:var(--oro);font-style:italic">al Salotto</span></h2>
-          <div style="display:flex;gap:0.5rem;">
-            <input class="form-input" id="search-isc" placeholder="Cerca nome, email, città…" style="width:240px;padding:0.5rem 0.9rem;" oninput="filterIscritti(this.value)">
-            <select class="city-select" id="isc-city-filter" onchange="filterIscritti(document.getElementById('search-isc').value)" style="min-width:130px;">
-              <option value="all">Tutte le città</option>
-            </select>
-          </div>
-        </div>
-        <div class="table-wrap">
-          <div style="overflow-x:auto;">
-            <table>
-              <thead><tr><th>Nome</th><th>Email</th><th>Città</th><th>Tier</th><th>DAMA</th><th>Presenze</th><th>Iscritto</th><th>Azioni</th></tr></thead>
-              <tbody id="iscritti-tbody"></tbody>
-            </table>
-          </div>
-        </div>
-      </div>
+  <!-- ── ISCRITTI ── -->
+  <div class="panel" id="panel-iscritti">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.2rem;">
+  <h2 style="font-family:var(--font-d);font-size:1.6rem;font-weight:400">Iscritti <span style="color:var(--oro);font-style:italic">al Salotto</span></h2>
+  <div style="display:flex;gap:0.5rem;">
+  <input class="form-input" id="search-isc" placeholder="Cerca nome, email, città…" style="width:240px;padding:0.5rem 0.9rem;" oninput="filterIscritti(this.value)">
+  <select class="city-select" id="isc-city-filter" onchange="filterIscritti(document.getElementById('search-isc').value)" style="min-width:130px;">
+  <option value="all">Tutte le città</option>
+  </select>
+  </div>
+  </div>
+  <div class="table-wrap">
+  <div style="overflow-x:auto;">
+  <table>
+  <thead><tr><th>Nome</th><th>Email</th><th>Città</th><th>Tier</th><th>DAMA</th><th>Presenze</th><th>Iscritto</th><th>Azioni</th></tr></thead>
+  <tbody id="iscritti-tbody"></tbody>
+  </table>
+  </div>
+  </div>
+  </div>
 
-      <!-- ── DAMA ── -->
-      <div class="panel" id="panel-dama">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.2rem;">
-          <h2 style="font-family:var(--font-d);font-size:1.6rem;font-weight:400">Crediti <span style="color:var(--oro);font-style:italic">DAMA</span></h2>
-          <button class="btn btn-primary btn-sm" onclick="openModalDama()">+ Assegna DAMA</button>
-        </div>
-        <div class="stats-grid" style="grid-template-columns:repeat(3,1fr);margin-bottom:1.2rem;">
-          <div class="stat-card"><div class="stat-l">Emessi totali</div><div class="stat-v" id="d-emessi">—</div></div>
-          <div class="stat-card"><div class="stat-l">Utilizzati</div><div class="stat-v" id="d-usati">—</div></div>
-          <div class="stat-card"><div class="stat-l">In circolazione</div><div class="stat-v" id="d-circ">—</div></div>
-        </div>
-        <div class="table-wrap">
-          <div style="overflow-x:auto;">
-            <table>
-              <thead><tr><th>Iscritto</th><th>Tipo</th><th>Importo</th><th>Evento</th><th>Scadenza</th><th>Data</th></tr></thead>
-              <tbody id="dama-tbody"></tbody>
-            </table>
-          </div>
-        </div>
-      </div>
+  <!-- ── DAMA ── -->
+  <div class="panel" id="panel-dama">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.2rem;">
+  <h2 style="font-family:var(--font-d);font-size:1.6rem;font-weight:400">Crediti <span style="color:var(--oro);font-style:italic">DAMA</span></h2>
+  <button class="btn btn-primary btn-sm" onclick="openModalDama()">+ Assegna DAMA</button>
+  </div>
+  <div class="stats-grid" style="grid-template-columns:repeat(3,1fr);margin-bottom:1.2rem;">
+  <div class="stat-card"><div class="stat-l">Emessi totali</div><div class="stat-v" id="d-emessi">—</div></div>
+  <div class="stat-card"><div class="stat-l">Utilizzati</div><div class="stat-v" id="d-usati">—</div></div>
+  <div class="stat-card"><div class="stat-l">In circolazione</div><div class="stat-v" id="d-circ">—</div></div>
+  </div>
+  <div class="table-wrap">
+  <div style="overflow-x:auto;">
+  <table>
+  <thead><tr><th>Iscritto</th><th>Tipo</th><th>Importo</th><th>Evento</th><th>Scadenza</th><th>Data</th></tr></thead>
+  <tbody id="dama-tbody"></tbody>
+  </table>
+  </div>
+  </div>
+  </div>
 
-      <!-- ── CHECK-IN ── -->
-      <div class="panel" id="panel-checkin">
-        <h2 style="font-family:var(--font-d);font-size:1.6rem;font-weight:400;margin-bottom:1.2rem;">Check-in <span style="color:var(--oro);font-style:italic">QR</span></h2>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;">
-          <div class="card">
-            <div class="card-head">
-              <div class="card-title">Scanner QR Iscritto</div>
-              <select class="city-select" id="scan-evt-sel" style="min-width:180px;padding:0.35rem 0.7rem;font-size:0.78rem;">
-                <option value="">— seleziona evento —</option>
-              </select>
-            </div>
-            <div class="card-body">
-              <div id="qr-video-container">
-                <video id="qr-video" autoplay playsinline muted></video>
-                <div class="scanner-overlay"><div class="scanner-frame"><div class="scanner-line"></div></div></div>
-              </div>
-              <div style="display:flex;gap:0.6rem;justify-content:center;margin-top:1rem;">
-                <button class="btn btn-primary btn-sm" onclick="startScanner()">▶ Avvia camera</button>
-                <button class="btn btn-ghost btn-sm" onclick="stopScanner()">■ Stop</button>
-              </div>
-              <div class="scan-result" id="scan-result"></div>
-            </div>
-          </div>
-          <div>
-            <div class="card" style="margin-bottom:1rem;">
-              <div class="card-head"><div class="card-title">QR Evento</div></div>
-              <div class="card-body">
-                <div class="form-group">
-                  <select class="form-select" id="qr-evt-sel" onchange="loadQrEvento()">
-                    <option value="">— seleziona evento —</option>
-                  </select>
-                </div>
-                <div id="qr-container" style="text-align:center;min-height:160px;display:flex;align-items:center;justify-content:center;">
-                  <span style="color:var(--ink-6);font-style:italic;font-size:0.82rem;">Seleziona un evento</span>
-                </div>
-                <div id="qr-info" style="margin-top:0.8rem;font-size:0.72rem;color:var(--ink-6);text-align:center;"></div>
-                <div style="display:flex;gap:0.6rem;justify-content:center;margin-top:0.8rem;">
-                  <button class="btn btn-ghost btn-sm" onclick="downloadQr()">↓ Scarica</button>
-                  <button class="btn btn-primary btn-sm" onclick="regenQr()">↺ Rigenera</button>
-                </div>
-              </div>
-            </div>
-            <div class="table-wrap">
-              <div class="card-head" style="padding:0.8rem 1.2rem;"><div class="card-title">Ultime scansioni</div></div>
-              <table><thead><tr><th>Iscritto</th><th>Ora</th><th>DAMA</th></tr></thead>
-              <tbody id="scan-log"></tbody></table>
-            </div>
-          </div>
-        </div>
-      </div>
+  <!-- ── CHECK-IN ── -->
+  <div class="panel" id="panel-checkin">
+  <h2 style="font-family:var(--font-d);font-size:1.6rem;font-weight:400;margin-bottom:1.2rem;">Check-in <span style="color:var(--oro);font-style:italic">QR</span></h2>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;">
+  <div class="card">
+  <div class="card-head">
+  <div class="card-title">Scanner QR Iscritto</div>
+  <select class="city-select" id="scan-evt-sel" style="min-width:180px;padding:0.35rem 0.7rem;font-size:0.78rem;">
+  <option value="">— seleziona evento —</option>
+  </select>
+  </div>
+  <div class="card-body">
+  <div id="qr-video-container">
+  <video id="qr-video" autoplay playsinline muted></video>
+  <div class="scanner-overlay"><div class="scanner-frame"><div class="scanner-line"></div></div></div>
+  </div>
+  <div style="display:flex;gap:0.6rem;justify-content:center;margin-top:1rem;">
+  <button class="btn btn-primary btn-sm" onclick="startScanner()">▶ Avvia camera</button>
+  <button class="btn btn-ghost btn-sm" onclick="stopScanner()">■ Stop</button>
+  </div>
+  <div class="scan-result" id="scan-result"></div>
+  </div>
+  </div>
+  <div>
+  <div class="card" style="margin-bottom:1rem;">
+  <div class="card-head"><div class="card-title">QR Evento</div></div>
+  <div class="card-body">
+  <div class="form-group">
+  <select class="form-select" id="qr-evt-sel" onchange="loadQrEvento()">
+  <option value="">— seleziona evento —</option>
+  </select>
+  </div>
+  <div id="qr-container" style="text-align:center;min-height:160px;display:flex;align-items:center;justify-content:center;">
+  <span style="color:var(--ink-6);font-style:italic;font-size:0.82rem;">Seleziona un evento</span>
+  </div>
+  <div id="qr-info" style="margin-top:0.8rem;font-size:0.72rem;color:var(--ink-6);text-align:center;"></div>
+  <div style="display:flex;gap:0.6rem;justify-content:center;margin-top:0.8rem;">
+  <button class="btn btn-ghost btn-sm" onclick="downloadQr()">↓ Scarica</button>
+  <button class="btn btn-primary btn-sm" onclick="regenQr()">↺ Rigenera</button>
+  </div>
+  </div>
+  </div>
+  <div class="table-wrap">
+  <div class="card-head" style="padding:0.8rem 1.2rem;"><div class="card-title">Ultime scansioni</div></div>
+  <table><thead><tr><th>Iscritto</th><th>Ora</th><th>DAMA</th></tr></thead>
+  <tbody id="scan-log"></tbody></table>
+  </div>
+  </div>
+  </div>
+  </div>
 
+  <!-- ── VOTO ── -->
+  <div class="panel" id="panel-voto">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.2rem;">
+  <div>
+  <h2 style="font-family:var(--font-d);font-size:1.6rem;font-weight:400">Proposte <span style="color:var(--oro);font-style:italic">&amp; Voto</span></h2>
+  <p style="font-size:0.78rem;color:var(--ink-6);margin-top:0.3rem;font-style:italic;">Nessun voto nasce senza la tua approvazione. La catena dei cancelli protegge l'istituzione.</p>
+  </div>
+  </div>
+  <div class="gov-chain">
+  <b>1 · Iniziativa</b><span class="sep">→</span>
+  <b>2 · Sostegno</b><span class="sep">→</span>
+  <b>3 · Tua approvazione</b><span class="sep">→</span>
+  <b>4 · Voto</b><span class="sep">·</span>
+  <span>Prerogativa fondatore: <b id="gov-pct">35%</b> del totale espresso</span>
+  </div>
+  <div class="three-speed">
+  <div class="speed-card"><h4 class="velocita-cost">Costituzionale</h4><div class="speed-sub">Non si vota — decidi tu</div><p>Statuto, espulsioni, nuove città, franchising, riti.</p></div>
+  <div class="speed-card"><h4 class="velocita-pol">Politica</h4><div class="speed-sub">35% fondatore + nomina</div><p>Promozioni, statuto città, budget, sanzioni.</p></div>
+  <div class="speed-card"><h4>Ordinaria</h4><div class="speed-sub">Democrazia piena</div><p>Organizzazione, temi, piccole spese.</p></div>
+  </div>
+  <div class="card" style="margin-bottom:1rem;">
+  <div class="card-head"><div class="card-title">Proposte in corso</div></div>
+  <div style="overflow-x:auto;">
+  <table style="width:100%;border-collapse:collapse;">
+  <thead><tr>
+  <th style="font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink-6);padding:0.7rem 1.2rem;text-align:left;border-bottom:1px solid rgba(201,169,110,0.08)">Proposta</th>
+  <th style="font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink-6);padding:0.7rem 1.2rem;text-align:left;border-bottom:1px solid rgba(201,169,110,0.08)">Velocità</th>
+  <th style="font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink-6);padding:0.7rem 1.2rem;text-align:left;border-bottom:1px solid rgba(201,169,110,0.08)">Ambito</th>
+  <th style="font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink-6);padding:0.7rem 1.2rem;text-align:left;border-bottom:1px solid rgba(201,169,110,0.08)">Sostegni</th>
+  <th style="font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink-6);padding:0.7rem 1.2rem;text-align:left;border-bottom:1px solid rgba(201,169,110,0.08)">SÌ %</th>
+  <th style="font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink-6);padding:0.7rem 1.2rem;text-align:left;border-bottom:1px solid rgba(201,169,110,0.08)">Stato</th>
+  <th style="font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink-6);padding:0.7rem 1.2rem;text-align:left;border-bottom:1px solid rgba(201,169,110,0.08)">Azione</th>
+  </tr></thead>
+  <tbody id="voto-tbody"><tr><td colspan="7" style="text-align:center;padding:3rem;color:var(--ink-6);font-style:italic;">Caricamento...</td></tr></tbody>
+  </table>
+  </div>
+  </div>
+  <div class="card">
+  <div class="card-head"><div class="card-title">Simulatore · Regola del 35% reale</div></div>
+  <div class="card-body">
+  <p style="font-size:0.78rem;color:var(--ink-6);margin-bottom:1rem;font-style:italic;">Verifica l'esito prima di aprire un voto. Scale-invariant: il risultato non dipende dal numero di votanti.</p>
+  <div class="sim-box">
+  <div class="form-group" style="margin:0"><label class="form-label">SÌ comunità (%)</label><input type="number" class="form-input" id="sim-si" value="60" min="0" max="100" oninput="runSim()" style="width:80px;"></div>
+  <div class="form-group" style="margin:0"><label class="form-label">% fondatore</label><input type="number" class="form-input" id="sim-p" value="35" min="0" max="100" oninput="runSim()" style="width:80px;"></div>
+  <div class="form-group" style="margin:0"><label class="form-label">Fondatore vota</label><select class="form-select" id="sim-f" onchange="runSim()" style="width:120px;"><option value="no_vota">non vota</option><option value="si">SÌ</option><option value="no">NO</option></select></div>
+  <div class="sim-out" id="sim-out">—</div>
+  </div>
+  </div>
+  </div>
+  </div>
 
-      <!-- ── VOTO ── -->
-      <div class="panel" id="panel-voto">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.2rem;">
-          <div>
-            <h2 style="font-family:var(--font-d);font-size:1.6rem;font-weight:400">Proposte <span style="color:var(--oro);font-style:italic">&amp; Voto</span></h2>
-            <p style="font-size:0.78rem;color:var(--ink-6);margin-top:0.3rem;font-style:italic;">Nessun voto nasce senza la tua approvazione. La catena dei cancelli protegge l'istituzione.</p>
-          </div>
-        </div>
-        <div class="gov-chain">
-          <b>1 · Iniziativa</b><span class="sep">→</span>
-          <b>2 · Sostegno</b><span class="sep">→</span>
-          <b>3 · Tua approvazione</b><span class="sep">→</span>
-          <b>4 · Voto</b><span class="sep">·</span>
-          <span>Prerogativa fondatore: <b id="gov-pct">35%</b> del totale espresso</span>
-        </div>
-        <div class="three-speed">
-          <div class="speed-card"><h4 class="velocita-cost">Costituzionale</h4><div class="speed-sub">Non si vota — decidi tu</div><p>Statuto, espulsioni, nuove città, franchising, riti.</p></div>
-          <div class="speed-card"><h4 class="velocita-pol">Politica</h4><div class="speed-sub">35% fondatore + nomina</div><p>Promozioni, statuto città, budget, sanzioni.</p></div>
-          <div class="speed-card"><h4>Ordinaria</h4><div class="speed-sub">Democrazia piena</div><p>Organizzazione, temi, piccole spese.</p></div>
-        </div>
-        <div class="card" style="margin-bottom:1rem;">
-          <div class="card-head"><div class="card-title">Proposte in corso</div></div>
-          <div style="overflow-x:auto;">
-            <table style="width:100%;border-collapse:collapse;">
-              <thead><tr>
-                <th style="font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink-6);padding:0.7rem 1.2rem;text-align:left;border-bottom:1px solid rgba(201,169,110,0.08)">Proposta</th>
-                <th style="font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink-6);padding:0.7rem 1.2rem;text-align:left;border-bottom:1px solid rgba(201,169,110,0.08)">Velocità</th>
-                <th style="font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink-6);padding:0.7rem 1.2rem;text-align:left;border-bottom:1px solid rgba(201,169,110,0.08)">Ambito</th>
-                <th style="font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink-6);padding:0.7rem 1.2rem;text-align:left;border-bottom:1px solid rgba(201,169,110,0.08)">Sostegni</th>
-                <th style="font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink-6);padding:0.7rem 1.2rem;text-align:left;border-bottom:1px solid rgba(201,169,110,0.08)">SÌ %</th>
-                <th style="font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink-6);padding:0.7rem 1.2rem;text-align:left;border-bottom:1px solid rgba(201,169,110,0.08)">Stato</th>
-                <th style="font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink-6);padding:0.7rem 1.2rem;text-align:left;border-bottom:1px solid rgba(201,169,110,0.08)">Azione</th>
-              </tr></thead>
-              <tbody id="voto-tbody"><tr><td colspan="7" style="text-align:center;padding:3rem;color:var(--ink-6);font-style:italic;">Caricamento...</td></tr></tbody>
-            </table>
-          </div>
-        </div>
-        <div class="card">
-          <div class="card-head"><div class="card-title">Simulatore · Regola del 35% reale</div></div>
-          <div class="card-body">
-            <p style="font-size:0.78rem;color:var(--ink-6);margin-bottom:1rem;font-style:italic;">Verifica l'esito prima di aprire un voto. Scale-invariant: il risultato non dipende dal numero di votanti.</p>
-            <div class="sim-box">
-              <div class="form-group" style="margin:0"><label class="form-label">SÌ comunità (%)</label><input type="number" class="form-input" id="sim-si" value="60" min="0" max="100" oninput="runSim()" style="width:80px;"></div>
-              <div class="form-group" style="margin:0"><label class="form-label">% fondatore</label><input type="number" class="form-input" id="sim-p" value="35" min="0" max="100" oninput="runSim()" style="width:80px;"></div>
-              <div class="form-group" style="margin:0"><label class="form-label">Fondatore vota</label><select class="form-select" id="sim-f" onchange="runSim()" style="width:120px;"><option value="no_vota">non vota</option><option value="si">SÌ</option><option value="no">NO</option></select></div>
-              <div class="sim-out" id="sim-out">—</div>
-            </div>
-          </div>
-        </div>
-      </div>
+  <!-- ── TESORERIA ── -->
+  <div class="panel" id="panel-tesoreria">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.2rem;">
+  <div>
+  <h2 style="font-family:var(--font-d);font-size:1.6rem;font-weight:400">Tesoreria <span style="color:var(--oro);font-style:italic">&amp; Obiettivi</span></h2>
+  <p style="font-size:0.78rem;color:var(--ink-6);margin-top:0.3rem;font-style:italic;">Il foglio di trasparenza: quanto si raccoglie e come viene speso.</p>
+  </div>
+  <button class="btn btn-primary btn-sm">+ Registra contributo</button>
+  </div>
+  <div class="stats-grid" style="grid-template-columns:repeat(3,1fr);margin-bottom:1.2rem;">
+  <div class="stat-card"><div class="stat-l">Raccolto totale</div><div class="stat-v" id="tes-raccolto">—</div><div class="stat-s">verso gli obiettivi</div></div>
+  <div class="stat-card"><div class="stat-l">Speso rendicontato</div><div class="stat-v" id="tes-speso">—</div></div>
+  <div class="stat-card"><div class="stat-l">Saldo disponibile</div><div class="stat-v" id="tes-saldo">—</div></div>
+  </div>
+  <div class="card" style="margin-bottom:1rem;">
+  <div class="card-head"><div class="card-title">Obiettivi · Raccolto vs Target</div></div>
+  <div id="tes-obiettivi" style="padding:0.5rem 0;"><div style="text-align:center;padding:3rem;color:var(--ink-6);font-style:italic;">Caricamento...</div></div>
+  </div>
+  <div style="display:grid;grid-template-columns:2fr 1fr;gap:1rem;">
+  <div class="card">
+  <div class="card-head"><div class="card-title">Contributi recenti</div></div>
+  <div style="overflow-x:auto;">
+  <table style="width:100%;border-collapse:collapse;">
+  <thead><tr>
+  <th style="font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink-6);padding:0.7rem 1.2rem;text-align:left;border-bottom:1px solid rgba(201,169,110,0.08)">Membro</th>
+  <th style="font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink-6);padding:0.7rem 1.2rem;text-align:left;border-bottom:1px solid rgba(201,169,110,0.08)">Tipo</th>
+  <th style="font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink-6);padding:0.7rem 1.2rem;text-align:left;border-bottom:1px solid rgba(201,169,110,0.08)">Importo</th>
+  <th style="font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink-6);padding:0.7rem 1.2rem;text-align:left;border-bottom:1px solid rgba(201,169,110,0.08)">Città</th>
+  <th style="font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink-6);padding:0.7rem 1.2rem;text-align:left;border-bottom:1px solid rgba(201,169,110,0.08)">Data</th>
+  </tr></thead>
+  <tbody id="tes-contributi"></tbody>
+  </table>
+  </div>
+  </div>
+  <div class="card"><div class="card-head"><div class="card-title">Composizione</div></div><div class="card-body"><canvas id="chart-contributi" height="200"></canvas></div></div>
+  </div>
+  </div>
 
-      <!-- ── TESORERIA ── -->
-      <div class="panel" id="panel-tesoreria">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.2rem;">
-          <div>
-            <h2 style="font-family:var(--font-d);font-size:1.6rem;font-weight:400">Tesoreria <span style="color:var(--oro);font-style:italic">&amp; Obiettivi</span></h2>
-            <p style="font-size:0.78rem;color:var(--ink-6);margin-top:0.3rem;font-style:italic;">Il foglio di trasparenza: quanto si raccoglie e come viene speso.</p>
-          </div>
-          <button class="btn btn-primary btn-sm">+ Registra contributo</button>
-        </div>
-        <div class="stats-grid" style="grid-template-columns:repeat(3,1fr);margin-bottom:1.2rem;">
-          <div class="stat-card"><div class="stat-l">Raccolto totale</div><div class="stat-v" id="tes-raccolto">—</div><div class="stat-s">verso gli obiettivi</div></div>
-          <div class="stat-card"><div class="stat-l">Speso rendicontato</div><div class="stat-v" id="tes-speso">—</div></div>
-          <div class="stat-card"><div class="stat-l">Saldo disponibile</div><div class="stat-v" id="tes-saldo">—</div></div>
-        </div>
-        <div class="card" style="margin-bottom:1rem;">
-          <div class="card-head"><div class="card-title">Obiettivi · Raccolto vs Target</div></div>
-          <div id="tes-obiettivi" style="padding:0.5rem 0;"><div style="text-align:center;padding:3rem;color:var(--ink-6);font-style:italic;">Caricamento...</div></div>
-        </div>
-        <div style="display:grid;grid-template-columns:2fr 1fr;gap:1rem;">
-          <div class="card">
-            <div class="card-head"><div class="card-title">Contributi recenti</div></div>
-            <div style="overflow-x:auto;">
-              <table style="width:100%;border-collapse:collapse;">
-                <thead><tr>
-                  <th style="font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink-6);padding:0.7rem 1.2rem;text-align:left;border-bottom:1px solid rgba(201,169,110,0.08)">Membro</th>
-                  <th style="font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink-6);padding:0.7rem 1.2rem;text-align:left;border-bottom:1px solid rgba(201,169,110,0.08)">Tipo</th>
-                  <th style="font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink-6);padding:0.7rem 1.2rem;text-align:left;border-bottom:1px solid rgba(201,169,110,0.08)">Importo</th>
-                  <th style="font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink-6);padding:0.7rem 1.2rem;text-align:left;border-bottom:1px solid rgba(201,169,110,0.08)">Città</th>
-                  <th style="font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink-6);padding:0.7rem 1.2rem;text-align:left;border-bottom:1px solid rgba(201,169,110,0.08)">Data</th>
-                </tr></thead>
-                <tbody id="tes-contributi"></tbody>
-              </table>
-            </div>
-          </div>
-          <div class="card"><div class="card-head"><div class="card-title">Composizione</div></div><div class="card-body"><canvas id="chart-contributi" height="200"></canvas></div></div>
-        </div>
-      </div>
+  <!-- ── CARICHE & CONFIG ── -->
+  <div class="panel" id="panel-cariche">
+  <div style="margin-bottom:1.5rem;">
+  <h2 style="font-family:var(--font-d);font-size:1.6rem;font-weight:400">Cariche <span style="color:var(--oro);font-style:italic">&amp; Configurazione</span></h2>
+  <p style="font-size:0.78rem;color:var(--ink-6);margin-top:0.3rem;font-style:italic;">La gerarchia è aperta. Crei nuove cariche senza riscrivere il sistema. I valori vivono nei dati, non nel codice.</p>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;">
+  <div class="card">
+  <div class="card-head"><div class="card-title">Cariche attive</div><button class="btn btn-primary btn-sm">+ Nuova carica</button></div>
+  <div style="overflow-x:auto;">
+  <table style="width:100%;border-collapse:collapse;">
+  <thead><tr>
+  <th style="font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink-6);padding:0.7rem 1.2rem;text-align:left;border-bottom:1px solid rgba(201,169,110,0.08)">Carica</th>
+  <th style="font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink-6);padding:0.7rem 1.2rem;text-align:left;border-bottom:1px solid rgba(201,169,110,0.08)">Ambito</th>
+  <th style="font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink-6);padding:0.7rem 1.2rem;text-align:left;border-bottom:1px solid rgba(201,169,110,0.08)">Peso voto</th>
+  <th style="font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink-6);padding:0.7rem 1.2rem;text-align:left;border-bottom:1px solid rgba(201,169,110,0.08)">Propone</th>
+  </tr></thead>
+  <tbody id="cariche-tbody"><tr><td colspan="4" style="text-align:center;padding:3rem;color:var(--ink-6);font-style:italic;">Caricamento...</td></tr></tbody>
+  </table>
+  </div>
+  <div style="padding:0.8rem 1.2rem;font-size:0.72rem;color:var(--ink-6);font-style:italic;border-top:1px solid rgba(201,169,110,0.06)">Future: sindaci, consoli, rappresentanti di regione, prelati — senza riscrivere il sistema.</div>
+  </div>
+  <div class="card">
+  <div class="card-head"><div class="card-title">Pesi di voto · Damascato</div></div>
+  <div class="card-body">
+  <div class="cfg-row"><span>Fondatore</span><input type="number" step="0.1" id="pw-fondatore" value="4.1"></div>
+  <div class="cfg-row"><span>Attivo</span><input type="number" step="0.1" id="pw-attivo" value="2.1"></div>
+  <div class="cfg-row"><span>Sostenitore</span><input type="number" step="0.1" id="pw-sostenitore" value="2.1"></div>
+  <div class="cfg-row"><span>Passivo</span><input type="number" step="0.1" id="pw-passivo" value="1.1"></div>
+  </div>
+  </div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;">
+  <div class="card">
+  <div class="card-head"><div class="card-title">Prerogativa &amp; Voto</div></div>
+  <div class="card-body">
+  <div class="cfg-row"><span>Percentuale fondatore</span><span style="display:flex;align-items:center;gap:0.4rem;"><input type="number" id="cfg-fondatore-pct" value="35" min="1" max="99"> <span style="font-size:0.75rem;color:var(--ink-6)">%</span></span></div>
+  <div class="cfg-row"><span>Voto richiede verifica</span><input type="checkbox" id="cfg-voto-verifica" checked></div>
+  <div class="cfg-row"><span>Endorsement per avanzamento</span><input type="number" id="cfg-endorsement" value="3"></div>
+  </div>
+  </div>
+  <div class="card">
+  <div class="card-head"><div class="card-title">Soglie &amp; DAMA</div></div>
+  <div class="card-body">
+  <div class="cfg-row"><span>Cap sconto DAMA per evento</span><span style="display:flex;align-items:center;gap:0.4rem;"><input type="number" id="cfg-dama-cap" value="60"> <span style="font-size:0.75rem;color:var(--ink-6)">%</span></span></div>
+  <div class="cfg-row"><span>Posti garantiti Osservatori</span><input type="number" id="cfg-posti-oss" value="5"></div>
+  </div>
+  </div>
+  </div>
+  <div class="card">
+  <div class="card-head"><div class="card-title">Regolamenti attivi · Tre velocità</div></div>
+  <div style="overflow-x:auto;">
+  <table style="width:100%;border-collapse:collapse;">
+  <thead><tr>
+  <th style="font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink-6);padding:0.7rem 1.2rem;text-align:left;border-bottom:1px solid rgba(201,169,110,0.08)">Ambito</th>
+  <th style="font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink-6);padding:0.7rem 1.2rem;text-align:left;border-bottom:1px solid rgba(201,169,110,0.08)">Velocità</th>
+  <th style="font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink-6);padding:0.7rem 1.2rem;text-align:left;border-bottom:1px solid rgba(201,169,110,0.08)">Tipo decisione</th>
+  <th style="font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink-6);padding:0.7rem 1.2rem;text-align:left;border-bottom:1px solid rgba(201,169,110,0.08)">Sostegno min.</th>
+  <th style="font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink-6);padding:0.7rem 1.2rem;text-align:left;border-bottom:1px solid rgba(201,169,110,0.08)">Quorum</th>
+  <th style="font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink-6);padding:0.7rem 1.2rem;text-align:left;border-bottom:1px solid rgba(201,169,110,0.08)">Maggioranza</th>
+  </tr></thead>
+  <tbody id="regolamenti-tbody"><tr><td colspan="6" style="text-align:center;padding:3rem;color:var(--ink-6);font-style:italic;">Caricamento...</td></tr></tbody>
+  </table>
+  </div>
+  <div style="padding:0.8rem 1.2rem;font-size:0.72rem;color:var(--ink-6);border-top:1px solid rgba(201,169,110,0.06)">Le regole sono <strong>versionate</strong>: all'apertura di un voto la versione viene congelata. Cambiarle dopo non altera le decisioni già prese.</div>
+  </div>
+  <div style="margin-top:1rem;display:flex;gap:0.6rem;align-items:center;">
+  <button class="btn btn-primary" onclick="saveConfig()">Salva configurazione</button>
+  <span style="font-size:0.72rem;color:var(--ink-6);font-style:italic;">Ogni modifica viene registrata in audit_log (chi, cosa, prima → dopo).</span>
+  </div>
+  </div>
 
-      <!-- ── CARICHE & CONFIG ── -->
-      <div class="panel" id="panel-cariche">
-        <div style="margin-bottom:1.5rem;">
-          <h2 style="font-family:var(--font-d);font-size:1.6rem;font-weight:400">Cariche <span style="color:var(--oro);font-style:italic">&amp; Configurazione</span></h2>
-          <p style="font-size:0.78rem;color:var(--ink-6);margin-top:0.3rem;font-style:italic;">La gerarchia è aperta. Crei nuove cariche senza riscrivere il sistema. I valori vivono nei dati, non nel codice.</p>
-        </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;">
-          <div class="card">
-            <div class="card-head"><div class="card-title">Cariche attive</div><button class="btn btn-primary btn-sm">+ Nuova carica</button></div>
-            <div style="overflow-x:auto;">
-              <table style="width:100%;border-collapse:collapse;">
-                <thead><tr>
-                  <th style="font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink-6);padding:0.7rem 1.2rem;text-align:left;border-bottom:1px solid rgba(201,169,110,0.08)">Carica</th>
-                  <th style="font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink-6);padding:0.7rem 1.2rem;text-align:left;border-bottom:1px solid rgba(201,169,110,0.08)">Ambito</th>
-                  <th style="font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink-6);padding:0.7rem 1.2rem;text-align:left;border-bottom:1px solid rgba(201,169,110,0.08)">Peso voto</th>
-                  <th style="font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink-6);padding:0.7rem 1.2rem;text-align:left;border-bottom:1px solid rgba(201,169,110,0.08)">Propone</th>
-                </tr></thead>
-                <tbody id="cariche-tbody"><tr><td colspan="4" style="text-align:center;padding:3rem;color:var(--ink-6);font-style:italic;">Caricamento...</td></tr></tbody>
-              </table>
-            </div>
-            <div style="padding:0.8rem 1.2rem;font-size:0.72rem;color:var(--ink-6);font-style:italic;border-top:1px solid rgba(201,169,110,0.06)">Future: sindaci, consoli, rappresentanti di regione, prelati — senza riscrivere il sistema.</div>
-          </div>
-          <div class="card">
-            <div class="card-head"><div class="card-title">Pesi di voto · Damascato</div></div>
-            <div class="card-body">
-              <div class="cfg-row"><span>Fondatore</span><input type="number" step="0.1" id="pw-fondatore" value="4.1"></div>
-              <div class="cfg-row"><span>Attivo</span><input type="number" step="0.1" id="pw-attivo" value="2.1"></div>
-              <div class="cfg-row"><span>Sostenitore</span><input type="number" step="0.1" id="pw-sostenitore" value="2.1"></div>
-              <div class="cfg-row"><span>Passivo</span><input type="number" step="0.1" id="pw-passivo" value="1.1"></div>
-            </div>
-          </div>
-        </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;">
-          <div class="card">
-            <div class="card-head"><div class="card-title">Prerogativa &amp; Voto</div></div>
-            <div class="card-body">
-              <div class="cfg-row"><span>Percentuale fondatore</span><span style="display:flex;align-items:center;gap:0.4rem;"><input type="number" id="cfg-fondatore-pct" value="35" min="1" max="99"> <span style="font-size:0.75rem;color:var(--ink-6)">%</span></span></div>
-              <div class="cfg-row"><span>Voto richiede verifica</span><input type="checkbox" id="cfg-voto-verifica" checked></div>
-              <div class="cfg-row"><span>Endorsement per avanzamento</span><input type="number" id="cfg-endorsement" value="3"></div>
-            </div>
-          </div>
-          <div class="card">
-            <div class="card-head"><div class="card-title">Soglie &amp; DAMA</div></div>
-            <div class="card-body">
-              <div class="cfg-row"><span>Cap sconto DAMA per evento</span><span style="display:flex;align-items:center;gap:0.4rem;"><input type="number" id="cfg-dama-cap" value="60"> <span style="font-size:0.75rem;color:var(--ink-6)">%</span></span></div>
-              <div class="cfg-row"><span>Posti garantiti Osservatori</span><input type="number" id="cfg-posti-oss" value="5"></div>
-            </div>
-          </div>
-        </div>
-        <div class="card">
-          <div class="card-head"><div class="card-title">Regolamenti attivi · Tre velocità</div></div>
-          <div style="overflow-x:auto;">
-            <table style="width:100%;border-collapse:collapse;">
-              <thead><tr>
-                <th style="font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink-6);padding:0.7rem 1.2rem;text-align:left;border-bottom:1px solid rgba(201,169,110,0.08)">Ambito</th>
-                <th style="font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink-6);padding:0.7rem 1.2rem;text-align:left;border-bottom:1px solid rgba(201,169,110,0.08)">Velocità</th>
-                <th style="font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink-6);padding:0.7rem 1.2rem;text-align:left;border-bottom:1px solid rgba(201,169,110,0.08)">Tipo decisione</th>
-                <th style="font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink-6);padding:0.7rem 1.2rem;text-align:left;border-bottom:1px solid rgba(201,169,110,0.08)">Sostegno min.</th>
-                <th style="font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink-6);padding:0.7rem 1.2rem;text-align:left;border-bottom:1px solid rgba(201,169,110,0.08)">Quorum</th>
-                <th style="font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink-6);padding:0.7rem 1.2rem;text-align:left;border-bottom:1px solid rgba(201,169,110,0.08)">Maggioranza</th>
-              </tr></thead>
-              <tbody id="regolamenti-tbody"><tr><td colspan="6" style="text-align:center;padding:3rem;color:var(--ink-6);font-style:italic;">Caricamento...</td></tr></tbody>
-            </table>
-          </div>
-          <div style="padding:0.8rem 1.2rem;font-size:0.72rem;color:var(--ink-6);border-top:1px solid rgba(201,169,110,0.06)">Le regole sono <strong>versionate</strong>: all'apertura di un voto la versione viene congelata. Cambiarle dopo non altera le decisioni già prese.</div>
-        </div>
-        <div style="margin-top:1rem;display:flex;gap:0.6rem;align-items:center;">
-          <button class="btn btn-primary" onclick="saveConfig()">Salva configurazione</button>
-          <span style="font-size:0.72rem;color:var(--ink-6);font-style:italic;">Ogni modifica viene registrata in audit_log (chi, cosa, prima → dopo).</span>
-        </div>
-      </div>
-
-
-    </div><!-- /content -->
+  </div><!-- /content -->
   </div><!-- /main -->
 </div><!-- /app -->
 
@@ -1095,301 +564,294 @@ body { background:var(--ink); color:var(--avorio); font-family:var(--font-s); fo
 <!-- MODAL TEMPLATE -->
 <div class="modal-overlay" id="modal-tpl">
   <div class="modal">
-    <div class="modal-head">
-      <h3 id="mtpl-title">Nuovo Template</h3>
-      <button class="modal-close" onclick="closeModal('modal-tpl')">×</button>
-    </div>
-    <div class="modal-body">
-      <input type="hidden" id="tpl-editing-id">
-      <div class="form-section">Identità</div>
-      <div class="form-row">
-        <div class="form-group">
-          <label class="form-label">ID Template *</label>
-          <input type="text" class="form-input" id="tpl-id" placeholder="es. tiro_arco" oninput="normalizzaId(this)">
-          <div class="form-hint">Immutabile dopo la creazione. Solo minuscole, numeri, underscore.</div>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Nome *</label>
-          <input type="text" class="form-input" id="tpl-nome" placeholder="es. Tiro con l'Arco">
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Descrizione breve</label>
-        <input type="text" class="form-input" id="tpl-desc" placeholder="Una riga — usata nelle card sul sito">
-      </div>
-      <div class="form-group">
-        <label class="form-label">Descrizione completa</label>
-        <textarea class="form-textarea" id="tpl-desc-long"></textarea>
-      </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label class="form-label">Categoria</label>
-          <select class="form-select" id="tpl-cat">
-            <option value="socialita">Socialità & Cultura</option>
-            <option value="cultura">Cultura & Incontri</option>
-            <option value="esperienza">Esperienze</option>
-            <option value="esclusivo">Solo Soci</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Visibilità default</label>
-          <select class="form-select" id="tpl-vis">
-            <option value="public">Pubblico</option>
-            <option value="members">Solo Soci</option>
-          </select>
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="form-label">URL immagine</label>
-        <input type="url" class="form-input" id="tpl-img" placeholder="https://...">
-      </div>
+  <div class="modal-head">
+  <h3 id="mtpl-title">Nuovo Template</h3>
+  <button class="modal-close" onclick="closeModal('modal-tpl')">×</button>
+  </div>
+  <div class="modal-body">
+  <input type="hidden" id="tpl-editing-id">
+  <div class="form-section">Identità</div>
+  <div class="form-row">
+  <div class="form-group">
+  <label class="form-label">ID Template *</label>
+  <input type="text" class="form-input" id="tpl-id" placeholder="es. tiro_arco" oninput="normalizzaId(this)">
+  <div class="form-hint">Immutabile dopo la creazione. Solo minuscole, numeri, underscore.</div>
+  </div>
+  <div class="form-group">
+  <label class="form-label">Nome *</label>
+  <input type="text" class="form-input" id="tpl-nome" placeholder="es. Tiro con l'Arco">
+  </div>
+  </div>
+  <div class="form-group">
+  <label class="form-label">Descrizione breve</label>
+  <input type="text" class="form-input" id="tpl-desc" placeholder="Una riga — usata nelle card sul sito">
+  </div>
+  <div class="form-group">
+  <label class="form-label">Descrizione completa</label>
+  <textarea class="form-textarea" id="tpl-desc-long"></textarea>
+  </div>
+  <div class="form-row">
+  <div class="form-group">
+  <label class="form-label">Categoria</label>
+  <select class="form-select" id="tpl-cat">
+  <option value="socialita">Socialità & Cultura</option>
+  <option value="cultura">Cultura & Incontri</option>
+  <option value="esperienza">Esperienze</option>
+  <option value="esclusivo">Solo Soci</option>
+  </select>
+  </div>
+  <div class="form-group">
+  <label class="form-label">Visibilità default</label>
+  <select class="form-select" id="tpl-vis">
+  <option value="public">Pubblico</option>
+  <option value="members">Solo Soci</option>
+  </select>
+  </div>
+  </div>
+  <div class="form-group">
+  <label class="form-label">URL immagine</label>
+  <input type="url" class="form-input" id="tpl-img" placeholder="https://...">
+  </div>
 
-      <div class="form-section">Valori default</div>
-      <div class="form-group">
-        <label class="form-label" style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;">
-          <input type="checkbox" id="tpl-free" onchange="togglePrezziTpl(this.checked)"> Ingresso gratuito
-        </label>
-      </div>
-      <div id="tpl-prezzi" class="form-row-3">
-        <div class="form-group">
-          <label class="form-label">Prezzo Osservatore €</label>
-          <input type="number" class="form-input" id="tpl-p-oss" placeholder="45">
-        </div>
-        <div class="form-group">
-          <label class="form-label">Prezzo Custode €</label>
-          <input type="number" class="form-input" id="tpl-p-cus" placeholder="38">
-        </div>
-        <div class="form-group">
-          <label class="form-label">Prezzo Damascato €</label>
-          <input type="number" class="form-input" id="tpl-p-dam" placeholder="30">
-        </div>
-      </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label class="form-label">Capacità default</label>
-          <input type="number" class="form-input" id="tpl-cap" placeholder="20">
-        </div>
-        <div class="form-group">
-          <label class="form-label">Durata (ore)</label>
-          <input type="number" class="form-input" id="tpl-durata" placeholder="2.5" step="0.5">
-        </div>
-      </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label class="form-label">Posti Osservatore</label>
-          <input type="number" class="form-input" id="tpl-cap-oss" placeholder="10">
-        </div>
-        <div class="form-group">
-          <label class="form-label">Posti Custode</label>
-          <input type="number" class="form-input" id="tpl-cap-cus" placeholder="6">
-        </div>
-      </div>
-      <div class="form-group" style="max-width:50%">
-        <label class="form-label">Posti Damascato</label>
-        <input type="number" class="form-input" id="tpl-cap-dam" placeholder="4">
-      </div>
-    </div>
-    <div class="modal-foot">
-      <button class="btn btn-ghost" onclick="closeModal('modal-tpl')">Annulla</button>
-      <button class="btn btn-primary" onclick="saveTpl()"><span id="save-tpl-lbl">Crea Template</span></button>
-    </div>
+  <div class="form-section">Valori default</div>
+  <div class="form-group">
+  <label class="form-label" style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;">
+  <input type="checkbox" id="tpl-free" onchange="togglePrezziTpl(this.checked)"> Ingresso gratuito
+  </label>
+  </div>
+  <div id="tpl-prezzi" class="form-row-3">
+  <div class="form-group">
+  <label class="form-label">Prezzo Osservatore €</label>
+  <input type="number" class="form-input" id="tpl-p-oss" placeholder="45">
+  </div>
+  <div class="form-group">
+  <label class="form-label">Prezzo Custode €</label>
+  <input type="number" class="form-input" id="tpl-p-cus" placeholder="38">
+  </div>
+  <div class="form-group">
+  <label class="form-label">Prezzo Damascato €</label>
+  <input type="number" class="form-input" id="tpl-p-dam" placeholder="30">
+  </div>
+  </div>
+  <div class="form-row">
+  <div class="form-group">
+  <label class="form-label">Capacità default</label>
+  <input type="number" class="form-input" id="tpl-cap" placeholder="20">
+  </div>
+  <div class="form-group">
+  <label class="form-label">Durata (ore)</label>
+  <input type="number" class="form-input" id="tpl-durata" placeholder="2.5" step="0.5">
+  </div>
+  </div>
+  <div class="form-row">
+  <div class="form-group">
+  <label class="form-label">Posti Osservatore</label>
+  <input type="number" class="form-input" id="tpl-cap-oss" placeholder="10">
+  </div>
+  <div class="form-group">
+  <label class="form-label">Posti Custode</label>
+  <input type="number" class="form-input" id="tpl-cap-cus" placeholder="6">
+  </div>
+  </div>
+  <div class="form-group" style="max-width:50%">
+  <label class="form-label">Posti Damascato</label>
+  <input type="number" class="form-input" id="tpl-cap-dam" placeholder="4">
+  </div>
+  </div>
+  <div class="modal-foot">
+  <button class="btn btn-ghost" onclick="closeModal('modal-tpl')">Annulla</button>
+  <button class="btn btn-primary" onclick="saveTpl()"><span id="save-tpl-lbl">Crea Template</span></button>
+  </div>
   </div>
 </div>
 
 <!-- MODAL OCCORRENZA -->
 <div class="modal-overlay" id="modal-occ">
   <div class="modal">
-    <div class="modal-head">
-      <h3 id="mocc-title">Nuova Occorrenza</h3>
-      <button class="modal-close" onclick="closeModal('modal-occ')">×</button>
-    </div>
-    <div class="modal-body">
-      <input type="hidden" id="occ-editing-id">
+  <div class="modal-head">
+  <h3 id="mocc-title">Nuova Occorrenza</h3>
+  <button class="modal-close" onclick="closeModal('modal-occ')">×</button>
+  </div>
+  <div class="modal-body">
+  <input type="hidden" id="occ-editing-id">
 
-      <div class="form-section">Template & Luogo</div>
-      <div class="form-row">
-        <div class="form-group">
-          <label class="form-label">Template *</label>
-          <select class="form-select" id="occ-tpl" onchange="onOccTplChange()">
-            <option value="">— scegli template —</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Città *</label>
-          <input type="text" class="form-input" id="occ-citta" placeholder="es. Roma" oninput="aggiornaIdOcc()" list="citta-list">
-          <datalist id="citta-list">
-            <option value="Roma"><option value="Milano"><option value="Napoli"><option value="Torino">
-            <option value="Berlino"><option value="Monaco"><option value="Barcellona"><option value="Madrid">
-          </datalist>
-        </div>
-      </div>
+  <div class="form-section">Template & Luogo</div>
+  <div class="form-row">
+  <div class="form-group">
+  <label class="form-label">Template *</label>
+  <select class="form-select" id="occ-tpl" onchange="onOccTplChange()">
+  <option value="">— scegli template —</option>
+  </select>
+  </div>
+  <div class="form-group">
+  <label class="form-label">Città *</label>
+  <input type="text" class="form-input" id="occ-citta" placeholder="es. Roma" oninput="aggiornaIdOcc()" list="citta-list">
+  <datalist id="citta-list">
+  <option value="Roma"><option value="Milano"><option value="Napoli"><option value="Torino">
+  <option value="Berlino"><option value="Monaco"><option value="Barcellona"><option value="Madrid">
+  </datalist>
+  </div>
+  </div>
 
-      <!-- ID PREVIEW -->
-      <div class="id-preview" id="occ-id-preview" style="display:none;">
-        <div class="id-preview-label">ID occorrenza generato</div>
-        <div class="id-preview-value" id="occ-id-val">—</div>
-        <div class="id-sub" id="occ-id-sub"></div>
-      </div>
+  <!-- ID PREVIEW -->
+  <div class="id-preview" id="occ-id-preview" style="display:none;">
+  <div class="id-preview-label">ID occorrenza generato</div>
+  <div class="id-preview-value" id="occ-id-val">—</div>
+  <div class="id-sub" id="occ-id-sub"></div>
+  </div>
 
-      <div class="form-section">Quando</div>
-      <div class="form-row">
-        <div class="form-group">
-          <label class="form-label">Data e ora inizio *</label>
-          <input type="datetime-local" class="form-input" id="occ-start" onchange="aggiornaIdOcc()">
-        </div>
-        <div class="form-group">
-          <label class="form-label">Data e ora fine</label>
-          <input type="datetime-local" class="form-input" id="occ-end">
-        </div>
-      </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label class="form-label">Pubblica il (lascia vuoto = subito)</label>
-          <input type="datetime-local" class="form-input" id="occ-publish">
-        </div>
-        <div class="form-group">
-          <label class="form-label">Visibilità</label>
-          <select class="form-select" id="occ-vis">
-            <option value="public">Pubblico</option>
-            <option value="members">Solo Soci</option>
-          </select>
-        </div>
-      </div>
+  <div class="form-section">Quando</div>
+  <div class="form-row">
+  <div class="form-group">
+  <label class="form-label">Data e ora inizio *</label>
+  <input type="datetime-local" class="form-input" id="occ-start" onchange="aggiornaIdOcc()">
+  </div>
+  <div class="form-group">
+  <label class="form-label">Data e ora fine</label>
+  <input type="datetime-local" class="form-input" id="occ-end">
+  </div>
+  </div>
+  <div class="form-row">
+  <div class="form-group">
+  <label class="form-label">Pubblica il (lascia vuoto = subito)</label>
+  <input type="datetime-local" class="form-input" id="occ-publish">
+  </div>
+  <div class="form-group">
+  <label class="form-label">Visibilità</label>
+  <select class="form-select" id="occ-vis">
+  <option value="public">Pubblico</option>
+  <option value="members">Solo Soci</option>
+  </select>
+  </div>
+  </div>
 
-      <div class="form-section">Luogo</div>
-      <div class="form-row">
-        <div class="form-group">
-          <label class="form-label">Nome luogo</label>
-          <input type="text" class="form-input" id="occ-loc-nome">
-        </div>
-        <div class="form-group">
-          <label class="form-label">Indirizzo</label>
-          <input type="text" class="form-input" id="occ-loc-addr">
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Link Google Maps</label>
-        <input type="url" class="form-input" id="occ-loc-maps">
-      </div>
+  <div class="form-section">Luogo</div>
+  <div class="form-row">
+  <div class="form-group">
+  <label class="form-label">Nome luogo</label>
+  <input type="text" class="form-input" id="occ-loc-nome">
+  </div>
+  <div class="form-group">
+  <label class="form-label">Indirizzo</label>
+  <input type="text" class="form-input" id="occ-loc-addr">
+  </div>
+  </div>
+  <div class="form-group">
+  <label class="form-label">Link Google Maps</label>
+  <input type="url" class="form-input" id="occ-loc-maps">
+  </div>
 
-      <div class="form-section">Personalizzazioni (opzionali — sovrascrivono il template)</div>
-      <div class="form-group">
-        <label class="form-label">Titolo personalizzato</label>
-        <input type="text" class="form-input" id="occ-title" placeholder="Lascia vuoto per usare il nome del template">
-      </div>
-      <div class="form-group">
-        <label class="form-label">Descrizione personalizzata</label>
-        <textarea class="form-textarea" id="occ-desc" placeholder="Lascia vuoto per usare la descrizione del template"></textarea>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Immagine (override)</label>
-        <input type="url" class="form-input" id="occ-img">
-      </div>
+  <div class="form-section">Personalizzazioni (opzionali — sovrascrivono il template)</div>
+  <div class="form-group">
+  <label class="form-label">Titolo personalizzato</label>
+  <input type="text" class="form-input" id="occ-title" placeholder="Lascia vuoto per usare il nome del template">
+  </div>
+  <div class="form-group">
+  <label class="form-label">Descrizione personalizzata</label>
+  <textarea class="form-textarea" id="occ-desc" placeholder="Lascia vuoto per usare la descrizione del template"></textarea>
+  </div>
+  <div class="form-group">
+  <label class="form-label">Immagine (override)</label>
+  <input type="url" class="form-input" id="occ-img">
+  </div>
 
-      <div class="form-section">Capacità & Prezzi (override)</div>
-      <div class="form-row">
-        <div class="form-group">
-          <label class="form-label">Posti totali</label>
-          <input type="number" class="form-input" id="occ-cap">
-        </div>
-        <div class="form-group">
-          <label class="form-label">Posti disponibili</label>
-          <input type="number" class="form-input" id="occ-cap-avail">
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="form-label" style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;">
-          <input type="checkbox" id="occ-free" onchange="togglePrezziOcc(this.checked)"> Gratuito per questo evento
-        </label>
-      </div>
-      <div id="occ-prezzi" class="form-row-3">
-        <div class="form-group"><label class="form-label">€ Osservatore</label><input type="number" class="form-input" id="occ-p-oss"></div>
-        <div class="form-group"><label class="form-label">€ Custode</label><input type="number" class="form-input" id="occ-p-cus"></div>
-        <div class="form-group"><label class="form-label">€ Damascato</label><input type="number" class="form-input" id="occ-p-dam"></div>
-      </div>
+  <div class="form-section">Capacità & Prezzi (override)</div>
+  <div class="form-row">
+  <div class="form-group">
+  <label class="form-label">Posti totali</label>
+  <input type="number" class="form-input" id="occ-cap">
+  </div>
+  <div class="form-group">
+  <label class="form-label">Posti disponibili</label>
+  <input type="number" class="form-input" id="occ-cap-avail">
+  </div>
+  </div>
+  <div class="form-group">
+  <label class="form-label" style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;">
+  <input type="checkbox" id="occ-free" onchange="togglePrezziOcc(this.checked)"> Gratuito per questo evento
+  </label>
+  </div>
+  <div id="occ-prezzi" class="form-row-3">
+  <div class="form-group"><label class="form-label">€ Osservatore</label><input type="number" class="form-input" id="occ-p-oss"></div>
+  <div class="form-group"><label class="form-label">€ Custode</label><input type="number" class="form-input" id="occ-p-cus"></div>
+  <div class="form-group"><label class="form-label">€ Damascato</label><input type="number" class="form-input" id="occ-p-dam"></div>
+  </div>
 
-      <div class="form-section">Impostazioni</div>
-      <div class="form-row">
-        <div class="form-group">
-          <label class="form-label">Status</label>
-          <select class="form-select" id="occ-status">
-            <option value="available">Disponibile</option>
-            <option value="sold_out">Sold Out</option>
-            <option value="coming_soon">Presto disponibile</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Link prenotazione</label>
-          <input type="url" class="form-input" id="occ-booking" placeholder="https://wa.me/393515182533?text=...">
-        </div>
-      </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label class="form-label" style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;">
-            <input type="checkbox" id="occ-pub"> Pubblicato
-          </label>
-        </div>
-        <div class="form-group">
-          <label class="form-label" style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;">
-            <input type="checkbox" id="occ-feat"> In evidenza
-          </label>
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Note interne</label>
-        <textarea class="form-textarea" id="occ-notes" style="min-height:60px;"></textarea>
-      </div>
-    </div>
-    <div class="modal-foot">
-      <button class="btn btn-ghost" onclick="closeModal('modal-occ')">Annulla</button>
-      <button class="btn btn-primary" onclick="saveOcc()"><span id="save-occ-lbl">Crea Occorrenza</span></button>
-    </div>
+  <div class="form-section">Impostazioni</div>
+  <div class="form-row">
+  <div class="form-group">
+  <label class="form-label">Status</label>
+  <select class="form-select" id="occ-status">
+  <option value="available">Disponibile</option>
+  <option value="sold_out">Sold Out</option>
+  <option value="coming_soon">Presto disponibile</option>
+  </select>
+  </div>
+  <div class="form-group">
+  <label class="form-label">Link prenotazione</label>
+  <input type="url" class="form-input" id="occ-booking" placeholder="https://wa.me/393515182533?text=...">
+  </div>
+  </div>
+  <div class="form-row">
+  <div class="form-group">
+  <label class="form-label" style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;">
+  <input type="checkbox" id="occ-pub"> Pubblicato
+  </label>
+  </div>
+  <div class="form-group">
+  <label class="form-label" style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;">
+  <input type="checkbox" id="occ-feat"> In evidenza
+  </label>
+  </div>
+  </div>
+  <div class="form-group">
+  <label class="form-label">Note interne</label>
+  <textarea class="form-textarea" id="occ-notes" style="min-height:60px;"></textarea>
+  </div>
+  </div>
+  <div class="modal-foot">
+  <button class="btn btn-ghost" onclick="closeModal('modal-occ')">Annulla</button>
+  <button class="btn btn-primary" onclick="saveOcc()"><span id="save-occ-lbl">Crea Occorrenza</span></button>
+  </div>
   </div>
 </div>
 
 <!-- MODAL DAMA -->
 <div class="modal-overlay" id="modal-dama-assign">
   <div class="modal" style="max-width:440px;">
-    <div class="modal-head"><h3>Assegna DAMA</h3><button class="modal-close" onclick="closeModal('modal-dama-assign')">×</button></div>
-    <div class="modal-body">
-      <div class="form-group"><label class="form-label">Iscritto</label><select class="form-select" id="da-isc"></select></div>
-      <div class="form-row">
-        <div class="form-group"><label class="form-label">Importo</label><input type="number" class="form-input" id="da-imp" placeholder="10"></div>
-        <div class="form-group"><label class="form-label">Tipo</label>
-          <select class="form-select" id="da-tipo">
-            <option value="presenza">Presenza</option>
-            <option value="bonus_frequenza">Bonus frequenza</option>
-            <option value="referral">Referral</option>
-            <option value="social">Social</option>
-            <option value="manuale">Manuale</option>
-            <option value="utilizzo">Utilizzo (negativo)</option>
-          </select>
-        </div>
-      </div>
-      <div class="form-group"><label class="form-label">Scadenza</label><input type="date" class="form-input" id="da-scad"></div>
-      <div class="form-group"><label class="form-label">Note</label><input type="text" class="form-input" id="da-note"></div>
-    </div>
-    <div class="modal-foot">
-      <button class="btn btn-ghost" onclick="closeModal('modal-dama-assign')">Annulla</button>
-      <button class="btn btn-primary" onclick="saveDama()">Assegna</button>
-    </div>
+  <div class="modal-head"><h3>Assegna DAMA</h3><button class="modal-close" onclick="closeModal('modal-dama-assign')">×</button></div>
+  <div class="modal-body">
+  <div class="form-group"><label class="form-label">Iscritto</label><select class="form-select" id="da-isc"></select></div>
+  <div class="form-row">
+  <div class="form-group"><label class="form-label">Importo</label><input type="number" class="form-input" id="da-imp" placeholder="10"></div>
+  <div class="form-group"><label class="form-label">Tipo</label>
+  <select class="form-select" id="da-tipo">
+  <option value="presenza">Presenza</option>
+  <option value="bonus_frequenza">Bonus frequenza</option>
+  <option value="referral">Referral</option>
+  <option value="social">Social</option>
+  <option value="manuale">Manuale</option>
+  <option value="utilizzo">Utilizzo (negativo)</option>
+  </select>
+  </div>
+  </div>
+  <div class="form-group"><label class="form-label">Scadenza</label><input type="date" class="form-input" id="da-scad"></div>
+  <div class="form-group"><label class="form-label">Note</label><input type="text" class="form-input" id="da-note"></div>
+  </div>
+  <div class="modal-foot">
+  <button class="btn btn-ghost" onclick="closeModal('modal-dama-assign')">Annulla</button>
+  <button class="btn btn-primary" onclick="saveDama()">Assegna</button>
+  </div>
   </div>
 </div>
 
 <script>
-// ═══════════════════════════════════
-// CONFIG
-// ═══════════════════════════════════
 const SB_URL  = 'https://plsthpdttewxkyilyyno.supabase.co';
 const SB_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBsc3RocGR0dGV3eGt5aWx5eW5vIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg2ODkyODIsImV4cCI6MjA5NDI2NTI4Mn0.D0nI7F1-xouepfRCOP5nqXwFrY96Q9urAuoHynj5KRw';
 const GA_ID   = 'G-9P2126F2PQ';
 let TOKEN = null;
 
 const CITIES = ['Roma','Milano','Napoli','Torino','Berlino','Monaco','Barcellona','Madrid'];
-
-// ═══════════════════════════════════
-// SUPABASE API
-// ═══════════════════════════════════
 async function refreshToken() {
   const rt = sessionStorage.getItem('dsc_rt');
   if (!rt) { doLogout(); return false; }
@@ -1436,17 +898,13 @@ async function sbD(table,id) {
   if(r.status===401){await refreshToken();r=await fetch(`${SB_URL}/rest/v1/${table}?id=eq.${id}`,{method:'DELETE',headers:H()});}
   if(!r.ok) throw new Error(`Delete: ${r.status}`);
 }
-
-// ═══════════════════════════════════
-// LOGIN
-// ═══════════════════════════════════
 async function doLogin() {
   const email=document.getElementById('l-email').value.trim();
   const pass=document.getElementById('l-pass').value;
   const btn=document.querySelector('.btn-login');
   const err=document.getElementById('l-err');
   err.style.display='none';
-  btn.innerHTML='<span class="loader" style="border-top-color:#0F0D0B"></span>';
+  btn.innerHTML='<span class="loader" style="border-top-color:#0F0D0B"><\/span>';
   try {
     const r=await fetch(`${SB_URL}/auth/v1/token?grant_type=password`,{
       method:'POST',headers:{'apikey':SB_ANON,'Content-Type':'application/json'},
@@ -1473,19 +931,11 @@ async function doLogout() {
   document.getElementById('login-screen').style.display='flex';
   document.getElementById('l-pass').value='';
 }
-
-// ═══════════════════════════════════
-// CACHE
-// ═══════════════════════════════════
 let C = { templates:[], occorrenze:[], iscritti:[], dama:[], presenze:[] };
 let activeCity = 'all';
 let calYear = new Date().getFullYear();
 let calMonth = new Date().getMonth();
 let charts = {};
-
-// ═══════════════════════════════════
-// INIT
-// ═══════════════════════════════════
 async function initApp(email) {
   document.getElementById('sb-user-name').textContent = email.split('@')[0];
   document.getElementById('sb-user-email').textContent = email;
@@ -1496,10 +946,7 @@ async function initApp(email) {
   await Promise.all([loadTemplates(), loadOccorrenze(), loadIscritti(), loadDama()]);
   loadDashboard();
   renderCalendario();
-
-  // Refresh automatico ogni 50 minuti
   setInterval(()=>{if(TOKEN)refreshToken();},50*60*1000);
-  // Realtime update ogni 30 secondi
   setInterval(updateRealtime,30000);
 }
 
@@ -1512,16 +959,12 @@ function onCityChange() {
 }
 
 function populateCityDropdowns() {
-  const opts = CITIES.map(c=>`<option value="${c}">${c}</option>`).join('');
+  const opts = CITIES.map(c=>`<option value="${c}">${c}<\/option>`).join('');
   ['cal-city-filter','occ-city-filter','isc-city-filter'].forEach(id=>{
     const el=document.getElementById(id);
-    if(el) el.innerHTML=`<option value="all">Tutte le città</option>`+opts;
+    if(el) el.innerHTML=`<option value="all">Tutte le città<\/option>`+opts;
   });
 }
-
-// ═══════════════════════════════════
-// NAVIGATION
-// ═══════════════════════════════════
 const PANEL_TITLES = {
   dashboard:'Dashboard',analytics:'Analytics',calendario:'Calendario',
   template:'Template Evento',occorrenze:'Occorrenze',iscritti:'Iscritti',
@@ -1534,7 +977,7 @@ function showPanel(name) {
   document.getElementById('panel-'+name).classList.add('active');
   const nav=document.querySelector(`.nav-item[onclick="showPanel('${name}')"]`);
   if(nav) nav.classList.add('active');
-  document.getElementById('topbar-title').innerHTML = `${PANEL_TITLES[name]||name} <span>· Il Salotto</span>`;
+  document.getElementById('topbar-title').innerHTML = `${PANEL_TITLES[name]||name} <span>· Il Salotto<\/span>`;
   if(name==='analytics') initCharts();
   if(name==='dama') loadDamaStats();
   if(name==='checkin') populateScanSelects();
@@ -1542,12 +985,7 @@ function showPanel(name) {
   if(name==='tesoreria') loadTesoreria();
   if(name==='cariche') loadCariche();
 }
-
-// ═══════════════════════════════════
-// DASHBOARD
-// ═══════════════════════════════════
 async function loadDashboard() {
-  // Stats
   const filtIsc = activeCity==='all' ? C.iscritti : C.iscritti.filter(i=>i.citta===activeCity);
   const filtOcc = activeCity==='all' ? C.occorrenze : C.occorrenze.filter(e=>e.citta===activeCity);
 
@@ -1565,52 +1003,42 @@ async function loadDashboard() {
     const pres = await sbQ('presenze','?select=id');
     document.getElementById('s-presenze').textContent = pres.length;
   } catch(e){}
-
-  // Tasso occupazione medio
   const conCap = filtOcc.filter(e=>e.capacity_total>0);
   if(conCap.length) {
     const avg = conCap.reduce((s,e)=>s+(1-(e.capacity_available/e.capacity_total)),0)/conCap.length;
     document.getElementById('s-occupazione').textContent = Math.round(avg*100)+'%';
   }
-
-  // Sub iscritti città
   if(activeCity!=='all') document.getElementById('s-iscritti-sub').textContent = `a ${activeCity}`;
-
-  // Prossimi eventi
   const prossimi = filtOcc.filter(e=>e.published&&!isExpired(e))
     .sort((a,b)=>new Date(a.date_start)-new Date(b.date_start)).slice(0,5);
   const list = document.getElementById('dash-next-events');
-  if(!prossimi.length){list.innerHTML='<div style="text-align:center;padding:2rem;color:var(--ink-6);font-style:italic;">Nessun evento programmato</div>';return;}
+  if(!prossimi.length){list.innerHTML='<div style="text-align:center;padding:2rem;color:var(--ink-6);font-style:italic;">Nessun evento programmato<\/div>';return;}
   list.innerHTML = prossimi.map(e=>{
     const pct = e.capacity_total?Math.round((1-e.capacity_available/e.capacity_total)*100):0;
     const tpl = C.templates.find(t=>t.id===e.format_id)||{nome:e.format_id};
     return `<div style="display:flex;align-items:center;gap:1rem;padding:0.7rem 1.2rem;border-bottom:1px solid rgba(201,169,110,0.05);">
-      <div style="font-family:var(--font-m);font-size:0.68rem;color:var(--ink-6);min-width:80px;">${fmtDate(e.date_start)}</div>
-      <div style="flex:1;">
-        <div style="font-size:0.85rem;font-weight:500">${e.title||tpl.nome}</div>
-        <div style="font-size:0.72rem;color:var(--ink-6)">${e.citta||'—'}</div>
-      </div>
-      <div style="font-size:0.72rem;color:var(--ink-6);min-width:60px;text-align:right">${e.capacity_available??'—'}/${e.capacity_total??'—'}</div>
-      <div style="width:60px"><div style="height:3px;background:var(--ink-4);border-radius:2px"><div style="height:100%;width:${pct}%;background:var(--oro);border-radius:2px"></div></div></div>
-      <span class="badge badge-${e.status}">${labelStatus(e.status)}</span>
-      <button class="btn btn-ghost btn-sm btn-icon" onclick="editOcc('${e.id}')">✎</button>
-    </div>`;
+  <div style="font-family:var(--font-m);font-size:0.68rem;color:var(--ink-6);min-width:80px;">${fmtDate(e.date_start)}<\/div>
+  <div style="flex:1;">
+  <div style="font-size:0.85rem;font-weight:500">${e.title||tpl.nome}<\/div>
+  <div style="font-size:0.72rem;color:var(--ink-6)">${e.citta||'—'}<\/div>
+  <\/div>
+  <div style="font-size:0.72rem;color:var(--ink-6);min-width:60px;text-align:right">${e.capacity_available??'—'}/${e.capacity_total??'—'}<\/div>
+  <div style="width:60px"><div style="height:3px;background:var(--ink-4);border-radius:2px"><div style="height:100%;width:${pct}%;background:var(--oro);border-radius:2px"><\/div><\/div><\/div>
+  <span class="badge badge-${e.status}">${labelStatus(e.status)}<\/span>
+  <button class="btn btn-ghost btn-sm btn-icon" onclick="editOcc('${e.id}')">✎<\/button>
+  <\/div>`;
   }).join('');
-
-  // Tier chart
   const tiers = {osservatore:0,custode:0,damascato:0};
   filtIsc.forEach(i=>{ if(tiers[i.tier]!==undefined) tiers[i.tier]++; });
   renderTierChart(Object.values(tiers));
-
-  // Ultime iscrizioni
   const ultimi = [...filtIsc].sort((a,b)=>new Date(b.created_at)-new Date(a.created_at)).slice(0,8);
   document.getElementById('dash-recent-iscritti').innerHTML = ultimi.map(i=>`
-    <tr>
-      <td style="font-size:0.82rem;font-weight:500">${i.nome} ${i.cognome}</td>
-      <td style="font-size:0.72rem;color:var(--ink-6)">${i.citta||'—'}</td>
-      <td><span class="badge badge-${i.tier}">${cap(i.tier)}</span></td>
-      <td style="font-size:0.72rem;color:var(--ink-6);font-family:var(--font-m)">${fmtDate(i.created_at)}</td>
-    </tr>`).join('');
+  <tr>
+  <td style="font-size:0.82rem;font-weight:500">${i.nome} ${i.cognome}<\/td>
+  <td style="font-size:0.72rem;color:var(--ink-6)">${i.citta||'—'}<\/td>
+  <td><span class="badge badge-${i.tier}">${cap(i.tier)}<\/span><\/td>
+  <td style="font-size:0.72rem;color:var(--ink-6);font-family:var(--font-m)">${fmtDate(i.created_at)}<\/td>
+  <\/tr>`).join('');
 
   updateRealtime();
 }
@@ -1632,10 +1060,6 @@ function updateRealtime() {
   document.getElementById('rt-next-event').textContent = prossimo ? (prossimo.title||tpl?.nome||'—') : '—';
   document.getElementById('last-update').textContent = `Aggiornato alle ${now.toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'})}`;
 }
-
-// ═══════════════════════════════════
-// ANALYTICS + CHARTS
-// ═══════════════════════════════════
 function chartDefaults() {
   Chart.defaults.color = '#6B6050';
   Chart.defaults.borderColor = 'rgba(201,169,110,0.08)';
@@ -1678,8 +1102,6 @@ function initCharts() {
     const ds=d.toDateString();
     counts.push(C.iscritti.filter(x=>new Date(x.created_at).toDateString()===ds).length);
   }
-
-  // Iscrizioni nel tempo
   const ctx1=document.getElementById('chart-iscrizioni');
   if(charts.isc) charts.isc.destroy();
   if(ctx1) charts.isc = new Chart(ctx1,{
@@ -1687,8 +1109,6 @@ function initCharts() {
     data:{labels,datasets:[{label:'Iscrizioni',data:counts,borderColor:'#C9A96E',backgroundColor:'rgba(201,169,110,0.08)',fill:true,tension:0.4,pointRadius:3,pointBackgroundColor:'#C9A96E'}]},
     options:{plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,ticks:{stepSize:1}}}}
   });
-
-  // Iscrizioni per città
   const ctx2=document.getElementById('chart-citta');
   if(charts.citta) charts.citta.destroy();
   const cityCounts={};
@@ -1699,8 +1119,6 @@ function initCharts() {
     data:{labels:sortedCities.map(x=>x[0]),datasets:[{label:'Iscritti',data:sortedCities.map(x=>x[1]),backgroundColor:'rgba(201,169,110,0.6)',borderColor:'rgba(201,169,110,0.9)',borderWidth:1,borderRadius:3}]},
     options:{plugins:{legend:{display:false}},scales:{y:{beginAtZero:true}},indexAxis:'y'}
   });
-
-  // Presenze per evento
   const ctx3=document.getElementById('chart-presenze');
   if(charts.pres) charts.pres.destroy();
   const evtPres={};
@@ -1714,8 +1132,6 @@ function initCharts() {
     },
     options:{plugins:{legend:{display:false}},scales:{y:{beginAtZero:true}}}
   });
-
-  // DAMA
   const ctx4=document.getElementById('chart-dama');
   if(charts.dama) charts.dama.destroy();
   if(ctx4) {
@@ -1727,8 +1143,6 @@ function initCharts() {
       options:{plugins:{legend:{position:'bottom',labels:{padding:10,boxWidth:10}}},cutout:'60%'}
     });
   }
-
-  // Tasso occupazione
   const ctx5=document.getElementById('chart-occupazione');
   if(charts.occ) charts.occ.destroy();
   const evtOcc = C.occorrenze.filter(e=>e.capacity_total>0).slice(-8);
@@ -1740,8 +1154,6 @@ function initCharts() {
     },
     options:{plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,max:100}}}
   });
-
-  // Crescita membership
   const ctx6=document.getElementById('chart-crescita');
   if(charts.crescita) charts.crescita.destroy();
   const monthlyLabels=[],monthlyCounts=[];
@@ -1756,21 +1168,15 @@ function initCharts() {
     data:{labels:monthlyLabels,datasets:[{label:'Nuovi iscritti',data:monthlyCounts,borderColor:'#C9A96E',backgroundColor:'rgba(201,169,110,0.1)',fill:true,tension:0.4,pointRadius:4,pointBackgroundColor:'#C9A96E'}]},
     options:{plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,ticks:{stepSize:1}}}}
   });
-
-  // Top eventi
   const topEl=document.getElementById('top-eventi');
   if(topEl) topEl.innerHTML = topEvt.slice(0,5).map(([id,cnt])=>{
     const e=C.occorrenze.find(o=>o.id===id)||{title:id,citta:'—'};
     return `<div style="display:flex;align-items:center;gap:1rem;padding:0.6rem 1.2rem;border-bottom:1px solid rgba(201,169,110,0.05);">
-      <div style="flex:1;font-size:0.82rem">${e.title||id}<span style="font-size:0.68rem;color:var(--ink-6);margin-left:0.5rem">${e.citta||''}</span></div>
-      <div style="font-family:var(--font-m);font-size:0.82rem;color:var(--oro)">${cnt}</div>
-    </div>`;
+  <div style="flex:1;font-size:0.82rem">${e.title||id}<span style="font-size:0.68rem;color:var(--ink-6);margin-left:0.5rem">${e.citta||''}<\/span><\/div>
+  <div style="font-family:var(--font-m);font-size:0.82rem;color:var(--oro)">${cnt}<\/div>
+  <\/div>`;
   }).join('');
 }
-
-// ═══════════════════════════════════
-// CALENDARIO
-// ═══════════════════════════════════
 function calPrev() { calMonth--; if(calMonth<0){calMonth=11;calYear--;} renderCalendario(); }
 function calNext() { calMonth++; if(calMonth>11){calMonth=0;calYear++;} renderCalendario(); }
 
@@ -1785,15 +1191,11 @@ function renderCalendario() {
 
   const grid = document.getElementById('cal-grid');
   const headers = grid.querySelectorAll('.cal-day-header');
-
-  // Rimuovi solo i giorni (non gli header)
   [...grid.children].forEach(c=>{ if(!c.classList.contains('cal-day-header')) c.remove(); });
-
-  // Giorni del mese precedente
   for(let i=1;i<startDow;i++){
     const prevDay=new Date(calYear,calMonth,1-startDow+i);
     const el=document.createElement('div'); el.className='cal-day other-month';
-    el.innerHTML=`<div class="cal-day-num">${prevDay.getDate()}</div>`; grid.appendChild(el);
+    el.innerHTML=`<div class="cal-day-num">${prevDay.getDate()}<\/div>`; grid.appendChild(el);
   }
 
   const today=new Date();
@@ -1807,7 +1209,7 @@ function renderCalendario() {
     const el=document.createElement('div');
     const isToday=today.getDate()===d&&today.getMonth()===calMonth&&today.getFullYear()===calYear;
     el.className='cal-day'+(isToday?' today':'');
-    el.innerHTML=`<div class="cal-day-num">${d}</div>`;
+    el.innerHTML=`<div class="cal-day-num">${d}<\/div>`;
 
     const dayEvts=occMonth.filter(e=>new Date(e.date_start).getDate()===d);
     dayEvts.forEach(e=>{
@@ -1826,30 +1228,23 @@ function renderCalendario() {
     };
     grid.appendChild(el);
   }
-
-  // Giorni mese successivo
   const totalCells = grid.querySelectorAll('.cal-day').length;
   const remaining = (7-((startDow-1+lastDay.getDate())%7))%7;
   for(let i=1;i<=remaining;i++){
     const el=document.createElement('div'); el.className='cal-day other-month';
-    el.innerHTML=`<div class="cal-day-num">${i}</div>`; grid.appendChild(el);
+    el.innerHTML=`<div class="cal-day-num">${i}<\/div>`; grid.appendChild(el);
   }
 }
-
-// ═══════════════════════════════════
-// TEMPLATES
-// ═══════════════════════════════════
 async function loadTemplates() {
   try {
     const data = await sbQ('formats','?order=id.asc');
     C.templates = data;
     renderTemplateGrid(data);
-    // Popola select template
-    const opts = data.map(t=>`<option value="${t.id}">${t.nome}</option>`).join('');
+    const opts = data.map(t=>`<option value="${t.id}">${t.nome}<\/option>`).join('');
     ['occ-tpl','occ-template-filter'].forEach(id=>{
       const el=document.getElementById(id);
-      if(el) el.innerHTML=(id==='occ-template-filter'?'<option value="all">Tutti i template</option>':'')+opts+(id==='occ-tpl'?'':'');
-      if(id==='occ-tpl') el.innerHTML='<option value="">— scegli template —</option>'+opts;
+      if(el) el.innerHTML=(id==='occ-template-filter'?'<option value="all">Tutti i template<\/option>':'')+opts+(id==='occ-tpl'?'':'');
+      if(id==='occ-tpl') el.innerHTML='<option value="">— scegli template —<\/option>'+opts;
     });
     document.getElementById('s-template').textContent = data.length;
   } catch(e){ toast('Errore caricamento template','error'); }
@@ -1857,33 +1252,33 @@ async function loadTemplates() {
 
 function renderTemplateGrid(data) {
   const grid = document.getElementById('template-grid');
-  if(!data.length){grid.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--ink-6);font-style:italic;">Nessun template — creane uno per iniziare.</div>';return;}
+  if(!data.length){grid.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--ink-6);font-style:italic;">Nessun template — creane uno per iniziare.<\/div>';return;}
   grid.innerHTML = data.map(t=>{
     const occCount = C.occorrenze.filter(e=>e.format_id===t.id).length;
     const futureCount = C.occorrenze.filter(e=>e.format_id===t.id&&!isExpired(e)).length;
     return `<div class="tpl-card">
-      <div class="tpl-img">
-        ${t.immagine_default?`<img src="${t.immagine_default}" alt="${t.nome}" loading="lazy">`:`<div class="tpl-img-placeholder">✦</div>`}
-        <div class="tpl-id-badge">${t.id}</div>
-      </div>
-      <div class="tpl-body">
-        <div class="tpl-name">${t.nome}</div>
-        <div class="tpl-desc">${t.descrizione_breve||'—'}</div>
-        <div class="tpl-meta">
-          <span class="badge badge-${t.categoria||'socialita'}">${t.categoria||'—'}</span>
-          <span class="badge badge-${t.visibilita_default||'public'}">${t.visibilita_default==='members'?'Solo Soci':'Pubblico'}</span>
-          ${t.prezzo_osservatore_default?`<span style="font-size:0.65rem;color:var(--ink-6)">da €${t.prezzo_osservatore_default}</span>`:`<span style="font-size:0.65rem;color:var(--ink-6)">Gratuito</span>`}
-        </div>
-        <div class="tpl-occurrences">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width:12px;height:12px"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+  <div class="tpl-img">
+        ${t.immagine_default?`<img src="${t.immagine_default}" alt="${t.nome}" loading="lazy">`:`<div class="tpl-img-placeholder">✦<\/div>`}
+  <div class="tpl-id-badge">${t.id}<\/div>
+  <\/div>
+  <div class="tpl-body">
+  <div class="tpl-name">${t.nome}<\/div>
+  <div class="tpl-desc">${t.descrizione_breve||'—'}<\/div>
+  <div class="tpl-meta">
+  <span class="badge badge-${t.categoria||'socialita'}">${t.categoria||'—'}<\/span>
+  <span class="badge badge-${t.visibilita_default||'public'}">${t.visibilita_default==='members'?'Solo Soci':'Pubblico'}<\/span>
+          ${t.prezzo_osservatore_default?`<span style="font-size:0.65rem;color:var(--ink-6)">da €${t.prezzo_osservatore_default}<\/span>`:`<span style="font-size:0.65rem;color:var(--ink-6)">Gratuito<\/span>`}
+  <\/div>
+  <div class="tpl-occurrences">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width:12px;height:12px"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/><\/svg>
           ${futureCount} futuri · ${occCount} totali
-        </div>
-        <div class="tpl-actions">
-          <button class="btn btn-ghost btn-sm" onclick="editTpl('${t.id}')">✎ Modifica</button>
-          <button class="btn btn-primary btn-sm" onclick="openModalOccorrenza(null,null,'${t.id}')">+ Occorrenza</button>
-        </div>
-      </div>
-    </div>`;
+  <\/div>
+  <div class="tpl-actions">
+  <button class="btn btn-ghost btn-sm" onclick="editTpl('${t.id}')">✎ Modifica<\/button>
+  <button class="btn btn-primary btn-sm" onclick="openModalOccorrenza(null,null,'${t.id}')">+ Occorrenza<\/button>
+  <\/div>
+  <\/div>
+  <\/div>`;
   }).join('');
 }
 
@@ -1956,7 +1351,7 @@ async function saveTpl() {
   };
 
   try{
-    document.getElementById('save-tpl-lbl').innerHTML='<span class="loader"></span>';
+    document.getElementById('save-tpl-lbl').innerHTML='<span class="loader"><\/span>';
     if(eid){await sbU('formats',eid,payload);toast('Template aggiornato ✓','success');}
     else{payload.id=id;await sbI('formats',payload);toast(`Template "${id}" creato ✓`,'success');}
     closeModal('modal-tpl');
@@ -1964,10 +1359,6 @@ async function saveTpl() {
   }catch(err){toast('Errore: '+err.message,'error');}
   finally{document.getElementById('save-tpl-lbl').textContent=eid?'Salva Modifiche':'Crea Template';}
 }
-
-// ═══════════════════════════════════
-// OCCORRENZE
-// ═══════════════════════════════════
 async function loadOccorrenze() {
   try {
     const data = await sbQ('eventi','?order=date_start.desc');
@@ -1989,7 +1380,7 @@ function filterOccorrenze() {
 
 function renderOccorrenze(data) {
   const list = document.getElementById('occorrenze-list');
-  if(!data.length){list.innerHTML='<div style="text-align:center;padding:3rem;color:var(--ink-6);font-style:italic;">Nessuna occorrenza trovata</div>';return;}
+  if(!data.length){list.innerHTML='<div style="text-align:center;padding:3rem;color:var(--ink-6);font-style:italic;">Nessuna occorrenza trovata<\/div>';return;}
 
   const sorted = [...data].sort((a,b)=>new Date(b.date_start)-new Date(a.date_start));
   list.innerHTML = sorted.map(e=>{
@@ -1997,31 +1388,31 @@ function renderOccorrenze(data) {
     const expired=isExpired(e);
     const pct=e.capacity_total?Math.round((1-e.capacity_available/e.capacity_total)*100):0;
     return `<div class="occ-row" style="${expired?'opacity:0.5':''}">
-      <div class="occ-date">${fmtDate(e.date_start)}</div>
-      <div>
-        <div class="occ-title">${e.title||tpl.nome}</div>
-        <div style="font-size:0.68rem;font-family:var(--font-m);color:var(--ink-6);margin-top:2px;">${e.id}</div>
-      </div>
-      <div class="occ-city">${e.citta||'—'}</div>
-      <div>
-        <span class="badge badge-${e.status}">${labelStatus(e.status)}</span>
-      </div>
-      <div>
-        <div style="font-size:0.78rem;color:var(--ink-6)">${e.capacity_available??'—'}/${e.capacity_total??'—'}</div>
-        <div class="cap-bar"><div class="cap-fill" style="width:${pct}%"></div></div>
-      </div>
-      <div>
-        <label style="display:flex;align-items:center;gap:0.3rem;cursor:pointer;font-size:0.75rem;">
-          <input type="checkbox" ${e.published?'checked':''} onchange="togglePubOcc('${e.id}',this.checked)">
+  <div class="occ-date">${fmtDate(e.date_start)}<\/div>
+  <div>
+  <div class="occ-title">${e.title||tpl.nome}<\/div>
+  <div style="font-size:0.68rem;font-family:var(--font-m);color:var(--ink-6);margin-top:2px;">${e.id}<\/div>
+  <\/div>
+  <div class="occ-city">${e.citta||'—'}<\/div>
+  <div>
+  <span class="badge badge-${e.status}">${labelStatus(e.status)}<\/span>
+  <\/div>
+  <div>
+  <div style="font-size:0.78rem;color:var(--ink-6)">${e.capacity_available??'—'}/${e.capacity_total??'—'}<\/div>
+  <div class="cap-bar"><div class="cap-fill" style="width:${pct}%"><\/div><\/div>
+  <\/div>
+  <div>
+  <label style="display:flex;align-items:center;gap:0.3rem;cursor:pointer;font-size:0.75rem;">
+  <input type="checkbox" ${e.published?'checked':''} onchange="togglePubOcc('${e.id}',this.checked)">
           ${e.published?'Pub.':'Bozza'}
-        </label>
-      </div>
-      <div class="occ-actions">
-        <button class="btn btn-ghost btn-sm" onclick="editOcc('${e.id}')">✎</button>
-        <button class="btn btn-ghost btn-sm" onclick="showQrForOcc('${e.id}')">QR</button>
-        <button class="btn btn-danger btn-sm" onclick="deleteOcc('${e.id}')">✕</button>
-      </div>
-    </div>`;
+  <\/label>
+  <\/div>
+  <div class="occ-actions">
+  <button class="btn btn-ghost btn-sm" onclick="editOcc('${e.id}')">✎<\/button>
+  <button class="btn btn-ghost btn-sm" onclick="showQrForOcc('${e.id}')">QR<\/button>
+  <button class="btn btn-danger btn-sm" onclick="deleteOcc('${e.id}')">✕<\/button>
+  <\/div>
+  <\/div>`;
   }).join('');
 }
 
@@ -2040,8 +1431,6 @@ async function aggiornaIdOcc() {
   const mese=String(d.getMonth()+1).padStart(2,'0');
   const giorno=String(d.getDate()).padStart(2,'0');
   const cittaNorm=citta.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/\s+/g,'_').replace(/[^a-z0-9_]/g,'');
-
-  // Conta occorrenze esistenti con stesso template + città + anno
   const existing = C.occorrenze.filter(e=>{
     return e.format_id===tplId && (e.citta||'').toLowerCase()===citta.toLowerCase() && e.id && e.id.startsWith(`${tplId}_${cittaNorm}_${anno}`);
   });
@@ -2052,8 +1441,6 @@ async function aggiornaIdOcc() {
   val.className='id-preview-value checking';
   val.textContent=newId;
   sub.textContent=`${existing.length} occorrenze precedenti a ${citta} nel 20${anno}`;
-
-  // Verifica unicità
   try {
     const check=await sbQ('eventi',`?id=eq.${newId}&select=id`);
     if(check.length){val.className='id-preview-value error';val.textContent=newId+' (già esiste — cambia data)';
@@ -2121,7 +1508,6 @@ function openModalOccorrenza(occ=null, preDate=null, preTpl=null) {
     document.getElementById('occ-booking').value=occ.registration_url||'';
     document.getElementById('occ-notes').value=occ.notes_internal||'';
     togglePrezziOcc(occ.pricing_free);
-    // Mostra ID esistente
     const box=document.getElementById('occ-id-preview');
     box.style.display='block';
     document.getElementById('occ-id-val').className='id-preview-value';
@@ -2181,7 +1567,7 @@ async function saveOcc() {
   };
 
   try{
-    document.getElementById('save-occ-lbl').innerHTML='<span class="loader"></span>';
+    document.getElementById('save-occ-lbl').innerHTML='<span class="loader"><\/span>';
     if(eid){await sbU('eventi',eid,payload);toast('Occorrenza aggiornata ✓','success');}
     else{
       payload.id=occId; payload.created_at=now;
@@ -2207,10 +1593,6 @@ async function deleteOcc(id){
   try{await sbD('eventi',id);toast('Eliminata','success');await loadOccorrenze();loadDashboard();}
   catch(e){toast('Errore','error');}
 }
-
-// ═══════════════════════════════════
-// ISCRITTI
-// ═══════════════════════════════════
 async function loadIscritti() {
   try{
     const data=await sbQ('iscritti','?order=created_at.desc');
@@ -2218,23 +1600,23 @@ async function loadIscritti() {
     renderIscritti(data);
     document.getElementById('badge-isc').textContent=data.length;
     const sel=document.getElementById('da-isc');
-    sel.innerHTML=data.map(i=>`<option value="${i.id}">${i.nome} ${i.cognome} — ${i.tier}</option>`).join('');
+    sel.innerHTML=data.map(i=>`<option value="${i.id}">${i.nome} ${i.cognome} — ${i.tier}<\/option>`).join('');
   }catch(e){toast('Errore iscritti','error');}
 }
 
 function renderIscritti(data) {
   const tbody=document.getElementById('iscritti-tbody');
-  if(!data.length){tbody.innerHTML='<tr><td colspan="8" style="text-align:center;padding:3rem;color:var(--ink-6);font-style:italic;">Nessun iscritto</td></tr>';return;}
+  if(!data.length){tbody.innerHTML='<tr><td colspan="8" style="text-align:center;padding:3rem;color:var(--ink-6);font-style:italic;">Nessun iscritto<\/td><\/tr>';return;}
   tbody.innerHTML=data.map(i=>`<tr>
-    <td style="font-weight:500;font-size:0.82rem">${i.nome} ${i.cognome}</td>
-    <td style="font-size:0.75rem;color:var(--ink-6)">${i.email}</td>
-    <td style="font-size:0.78rem">${i.citta||'—'}</td>
-    <td><span class="badge badge-${i.tier}">${cap(i.tier)}</span></td>
-    <td id="ds-${i.id}" style="font-family:var(--font-m);font-size:0.78rem">—</td>
-    <td id="pres-${i.id}" style="font-size:0.78rem">—</td>
-    <td style="font-size:0.72rem;color:var(--ink-6);font-family:var(--font-m)">${fmtDate(i.created_at)}</td>
-    <td><button class="btn btn-ghost btn-sm" onclick="openModalDama('${i.id}')">+ DAMA</button></td>
-  </tr>`).join('');
+  <td style="font-weight:500;font-size:0.82rem">${i.nome} ${i.cognome}<\/td>
+  <td style="font-size:0.75rem;color:var(--ink-6)">${i.email}<\/td>
+  <td style="font-size:0.78rem">${i.citta||'—'}<\/td>
+  <td><span class="badge badge-${i.tier}">${cap(i.tier)}<\/span><\/td>
+  <td id="ds-${i.id}" style="font-family:var(--font-m);font-size:0.78rem">—<\/td>
+  <td id="pres-${i.id}" style="font-size:0.78rem">—<\/td>
+  <td style="font-size:0.72rem;color:var(--ink-6);font-family:var(--font-m)">${fmtDate(i.created_at)}<\/td>
+  <td><button class="btn btn-ghost btn-sm" onclick="openModalDama('${i.id}')">+ DAMA<\/button><\/td>
+  <\/tr>`).join('');
   data.forEach(i=>loadSaldo(i.id));
 }
 
@@ -2256,10 +1638,6 @@ async function loadSaldo(id) {
     if(elp) elp.textContent=pres.length;
   }catch(e){}
 }
-
-// ═══════════════════════════════════
-// DAMA
-// ═══════════════════════════════════
 async function loadDama() {
   try{
     const data=await sbQ('dama_log','?order=created_at.desc&limit=100');
@@ -2270,19 +1648,19 @@ async function loadDama() {
 
 function renderDamaTable(data) {
   const tbody=document.getElementById('dama-tbody');
-  if(!data.length){tbody.innerHTML='<tr><td colspan="6" style="text-align:center;padding:3rem;color:var(--ink-6);font-style:italic;">Nessun movimento</td></tr>';return;}
+  if(!data.length){tbody.innerHTML='<tr><td colspan="6" style="text-align:center;padding:3rem;color:var(--ink-6);font-style:italic;">Nessun movimento<\/td><\/tr>';return;}
   tbody.innerHTML=data.map(d=>{
     const isc=C.iscritti.find(i=>i.id===d.iscritto_id);
     const evt=C.occorrenze.find(e=>e.id===d.evento_id);
     const pos=parseFloat(d.importo)>=0;
     return `<tr>
-      <td style="font-size:0.82rem">${isc?`${isc.nome} ${isc.cognome}`:d.iscritto_id}</td>
-      <td><span class="badge">${d.tipo}</span></td>
-      <td style="font-family:var(--font-m);font-size:0.82rem;color:${pos?'#6dbe6d':'#ff8080'};font-weight:500">${pos?'+':''}${d.importo}</td>
-      <td style="font-size:0.78rem;color:var(--ink-6)">${evt?evt.title:d.evento_id||'—'}</td>
-      <td style="font-size:0.72rem;color:var(--ink-6)">${d.scadenza?fmtDate(d.scadenza):'—'}</td>
-      <td style="font-size:0.72rem;color:var(--ink-6);font-family:var(--font-m)">${fmtDate(d.created_at)}</td>
-    </tr>`;
+  <td style="font-size:0.82rem">${isc?`${isc.nome} ${isc.cognome}`:d.iscritto_id}<\/td>
+  <td><span class="badge">${d.tipo}<\/span><\/td>
+  <td style="font-family:var(--font-m);font-size:0.82rem;color:${pos?'#6dbe6d':'#ff8080'};font-weight:500">${pos?'+':''}${d.importo}<\/td>
+  <td style="font-size:0.78rem;color:var(--ink-6)">${evt?evt.title:d.evento_id||'—'}<\/td>
+  <td style="font-size:0.72rem;color:var(--ink-6)">${d.scadenza?fmtDate(d.scadenza):'—'}<\/td>
+  <td style="font-size:0.72rem;color:var(--ink-6);font-family:var(--font-m)">${fmtDate(d.created_at)}<\/td>
+  <\/tr>`;
   }).join('');
 }
 
@@ -2314,12 +1692,8 @@ async function saveDama(){
     await loadDama(); loadSaldo(id);
   }catch(err){toast('Errore: '+err.message,'error');}
 }
-
-// ═══════════════════════════════════
-// CHECK-IN QR
-// ═══════════════════════════════════
 function populateScanSelects(){
-  const opts=C.occorrenze.filter(e=>e.published).sort((a,b)=>new Date(a.date_start)-new Date(b.date_start)).map(e=>`<option value="${e.id}">${e.title||e.format_id} — ${e.citta} ${fmtDate(e.date_start)}</option>`).join('');
+  const opts=C.occorrenze.filter(e=>e.published).sort((a,b)=>new Date(a.date_start)-new Date(b.date_start)).map(e=>`<option value="${e.id}">${e.title||e.format_id} — ${e.citta} ${fmtDate(e.date_start)}<\/option>`).join('');
   ['scan-evt-sel','qr-evt-sel'].forEach(id=>{const el=document.getElementById(id);if(el){const f=el.options[0].outerHTML;el.innerHTML=f+opts;}});
 }
 
@@ -2334,14 +1708,14 @@ async function loadQrEvento(){
   const id=document.getElementById('qr-evt-sel').value;
   const cont=document.getElementById('qr-container');
   const info=document.getElementById('qr-info');
-  if(!id){cont.innerHTML='<span style="color:var(--ink-6);font-style:italic;font-size:0.82rem;">Seleziona un evento</span>';info.innerHTML='';return;}
+  if(!id){cont.innerHTML='<span style="color:var(--ink-6);font-style:italic;font-size:0.82rem;">Seleziona un evento<\/span>';info.innerHTML='';return;}
   try{
     const qrData=await sbQ('qr_eventi',`?evento_id=eq.${id}&attivo=eq.true&limit=1`);
-    if(!qrData.length){cont.innerHTML='<span style="color:var(--ink-6);font-style:italic;">Nessun QR — clicca Rigenera</span>';return;}
+    if(!qrData.length){cont.innerHTML='<span style="color:var(--ink-6);font-style:italic;">Nessun QR — clicca Rigenera<\/span>';return;}
     const qr=qrData[0];
-    cont.innerHTML='<div id="qr-render" style="display:inline-block"></div>';
+    cont.innerHTML='<div id="qr-render" style="display:inline-block"><\/div>';
     new QRCode(document.getElementById('qr-render'),{text:qr.qr_url,width:160,height:160,colorDark:'#0F0D0B',colorLight:'#FFFFFF',correctLevel:QRCode.CorrectLevel.H});
-    info.innerHTML=`<div style="font-family:var(--font-m);font-size:0.65rem;word-break:break-all">${qr.qr_url}</div><div style="margin-top:0.2rem">Scansioni: <strong>${qr.scansioni_count||0}</strong></div>`;
+    info.innerHTML=`<div style="font-family:var(--font-m);font-size:0.65rem;word-break:break-all">${qr.qr_url}<\/div><div style="margin-top:0.2rem">Scansioni: <strong>${qr.scansioni_count||0}<\/strong><\/div>`;
   }catch(e){toast('Errore QR','error');}
 }
 
@@ -2403,12 +1777,8 @@ async function processQr(data){
   }catch(e){showScanRes('error','Errore: '+e.message);}
 }
 function calDama(tier,evt){const tassi={osservatore:0.02,custode:0.05,damascato:0.10};const prezzo=evt&&!evt.pricing_free?({osservatore:evt.prezzo_osservatore,custode:evt.prezzo_custode,damascato:evt.prezzo_damascato}[tier]||0):0;return 10+Math.round(prezzo*(tassi[tier]||0.02));}
-function showScanRes(type,title,detail=''){const el=document.getElementById('scan-result');el.className='scan-result '+type;el.style.display='block';const c=type==='success'?'#6dbe6d':type==='warning'?'var(--oro)':'#ff8080';el.innerHTML=`<div style="font-family:var(--font-d);font-size:1.1rem;color:${c};margin-bottom:0.2rem">${type==='success'?'✓':type==='warning'?'⚠':'✕'} ${title}</div>${detail?`<div style="font-size:0.78rem;color:var(--ink-6)">${detail}</div>`:''}`;}
-function addScanLog(isc,dama){const tb=document.getElementById('scan-log');const ora=new Date().toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'});if(tb.innerHTML.includes('Nessuna'))tb.innerHTML='';tb.insertAdjacentHTML('afterbegin',`<tr><td style="font-size:0.8rem">${isc.nome} ${isc.cognome}<br><span style="font-size:0.65rem;color:var(--ink-6)">${isc.tier}</span></td><td style="font-family:var(--font-m);font-size:0.75rem">${ora}</td><td style="font-family:var(--font-m);font-size:0.78rem;color:#6dbe6d">+${dama}</td></tr>`);}
-
-// ═══════════════════════════════════
-// UTILS
-// ═══════════════════════════════════
+function showScanRes(type,title,detail=''){const el=document.getElementById('scan-result');el.className='scan-result '+type;el.style.display='block';const c=type==='success'?'#6dbe6d':type==='warning'?'var(--oro)':'#ff8080';el.innerHTML=`<div style="font-family:var(--font-d);font-size:1.1rem;color:${c};margin-bottom:0.2rem">${type==='success'?'✓':type==='warning'?'⚠':'✕'} ${title}<\/div>${detail?`<div style="font-size:0.78rem;color:var(--ink-6)">${detail}<\/div>`:''}`;}
+function addScanLog(isc,dama){const tb=document.getElementById('scan-log');const ora=new Date().toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'});if(tb.innerHTML.includes('Nessuna'))tb.innerHTML='';tb.insertAdjacentHTML('afterbegin',`<tr><td style="font-size:0.8rem">${isc.nome} ${isc.cognome}<br><span style="font-size:0.65rem;color:var(--ink-6)">${isc.tier}<\/span><\/td><td style="font-family:var(--font-m);font-size:0.75rem">${ora}<\/td><td style="font-family:var(--font-m);font-size:0.78rem;color:#6dbe6d">+${dama}<\/td><\/tr>`);}
 function isExpired(e){const end=new Date(e.date_end||e.date_start);end.setHours(end.getHours()+2);return end<new Date();}
 function fmtDate(iso){if(!iso)return'—';return new Date(iso).toLocaleDateString('it-IT',{day:'2-digit',month:'2-digit',year:'2-digit',hour:'2-digit',minute:'2-digit'});}
 function toLocal(iso){if(!iso)return'';const d=new Date(iso),p=n=>String(n).padStart(2,'0');return `${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())}T${p(d.getHours())}:${p(d.getMinutes())}`;}
@@ -2425,20 +1795,12 @@ function toast(msg,type=''){
 }
 
 document.querySelectorAll('.modal-overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open');}));
-
-// Auto-restore sessione
 (function(){
   const t=sessionStorage.getItem('dsc_tok');
   if(t){TOKEN=t;document.getElementById('login-screen').style.display='none';document.getElementById('app').style.display='block';initApp(sessionStorage.getItem('dsc_email')||'Admin');}
 })();
 
 setInterval(()=>{if(TOKEN)refreshToken();},50*60*1000);
-
-// ═══════════════════════════════════
-// GOVERNO — VOTO
-// ═══════════════════════════════════
-
-// Dati demo (fallback se le tabelle governance non esistono ancora)
 const GOV_DEMO_PROPOSTE = [
   {id:'gov-001',titolo:'Aprire un salotto a Firenze',velocita:'costituzionale',ambito:'globale',target:null,stato:'approvata_dal_fondatore',sostegni:62,si_pct:null},
   {id:'gov-002',titolo:'Sindaco di Milano: rosa di candidati',velocita:'politica',ambito:'cittadino',target:'Milano',stato:'in_votazione',sostegni:54,si_pct:71},
@@ -2483,7 +1845,6 @@ const STATO_MAP = {
 };
 
 async function loadVoto() {
-  // Leggi la % fondatore da config (se esiste) o usa default 35
   let pct = 35;
   try {
     const cfg = await sbQ('config','?chiave=eq.fondatore_percentuale&select=valore');
@@ -2493,8 +1854,6 @@ async function loadVoto() {
   if(govPctEl) govPctEl.textContent = pct + '%';
   const simP = document.getElementById('sim-p');
   if(simP) simP.value = pct;
-
-  // Carica proposte reali, fallback su demo
   let proposte = GOV_DEMO_PROPOSTE;
   try {
     const data = await sbQ('proposte','?order=created_at.desc');
@@ -2508,24 +1867,24 @@ async function loadVoto() {
 function renderProposte(proposte) {
   const tbody = document.getElementById('voto-tbody');
   if(!tbody) return;
-  if(!proposte.length){tbody.innerHTML='<tr><td colspan="7" style="text-align:center;padding:3rem;color:var(--ink-6);font-style:italic;">Nessuna proposta</td></tr>';return;}
+  if(!proposte.length){tbody.innerHTML='<tr><td colspan="7" style="text-align:center;padding:3rem;color:var(--ink-6);font-style:italic;">Nessuna proposta<\/td><\/tr>';return;}
   tbody.innerHTML = proposte.map(p=>{
     const [cls,lbl] = STATO_MAP[p.stato]||['ps-bozza',p.stato];
     const velCls = p.velocita==='costituzionale'?'velocita-cost':p.velocita==='politica'?'velocita-pol':'';
     const azione = p.stato==='sostegno_raggiunto'
-      ? `<button class="btn btn-primary btn-sm" onclick="approvaPropostaFondatore('${p.id}')">Approva →</button>`
+      ? `<button class="btn btn-primary btn-sm" onclick="approvaPropostaFondatore('${p.id}')">Approva →<\/button>`
       : p.velocita==='costituzionale' && p.stato==='approvata_dal_fondatore'
-      ? '<span style="font-size:0.72rem;color:var(--ink-6)">decidi tu</span>'
+      ? '<span style="font-size:0.72rem;color:var(--ink-6)">decidi tu<\/span>'
       : '—';
     return `<tr>
-      <td style="font-size:0.82rem;font-weight:500">${p.titolo}</td>
-      <td><span class="${velCls}" style="font-size:0.78rem;">${p.velocita}</span></td>
-      <td style="font-size:0.75rem;color:var(--ink-6)">${p.ambito}${p.target?' · '+p.target:''}</td>
-      <td style="font-family:var(--font-m);font-size:0.78rem;">${p.sostegni||0}</td>
-      <td style="font-family:var(--font-m);font-size:0.82rem;${p.si_pct!=null?'color:var(--oro)':''}">${p.si_pct!=null?p.si_pct+'%':'—'}</td>
-      <td><span class="proposta-stato ${cls}">${lbl}</span></td>
-      <td>${azione}</td>
-    </tr>`;
+  <td style="font-size:0.82rem;font-weight:500">${p.titolo}<\/td>
+  <td><span class="${velCls}" style="font-size:0.78rem;">${p.velocita}<\/span><\/td>
+  <td style="font-size:0.75rem;color:var(--ink-6)">${p.ambito}${p.target?' · '+p.target:''}<\/td>
+  <td style="font-family:var(--font-m);font-size:0.78rem;">${p.sostegni||0}<\/td>
+  <td style="font-family:var(--font-m);font-size:0.82rem;${p.si_pct!=null?'color:var(--oro)':''}">${p.si_pct!=null?p.si_pct+'%':'—'}<\/td>
+  <td><span class="proposta-stato ${cls}">${lbl}<\/span><\/td>
+  <td>${azione}<\/td>
+  <\/tr>`;
   }).join('');
 }
 
@@ -2551,13 +1910,9 @@ function runSim() {
   out.textContent = pct + '% SÌ';
   out.style.color = pct > 50 ? 'var(--oro)' : 'var(--rosso)';
   out.style.fontSize = '1.6rem';
-  const passCls = pct > 50 ? ' · <span style="color:var(--oro)">passa</span>' : ' · <span style="color:var(--rosso)">non passa</span>';
+  const passCls = pct > 50 ? ' · <span style="color:var(--oro)">passa<\/span>' : ' · <span style="color:var(--rosso)">non passa<\/span>';
   out.innerHTML = pct + '% SÌ' + passCls;
 }
-
-// ═══════════════════════════════════
-// GOVERNO — TESORERIA
-// ═══════════════════════════════════
 async function loadTesoreria() {
   let obiettivi = GOV_DEMO_OBIETTIVI;
   let contributi = GOV_DEMO_CONTRIBUTI;
@@ -2578,8 +1933,6 @@ async function loadTesoreria() {
   document.getElementById('tes-raccolto').textContent = fmt(raccolto);
   document.getElementById('tes-speso').textContent    = fmt(speso);
   document.getElementById('tes-saldo').textContent    = fmt(raccolto - speso);
-
-  // Obiettivi con barra progresso
   const obEl = document.getElementById('tes-obiettivi');
   obEl.innerHTML = obiettivi.map(o=>{
     const target = parseFloat(o.target_importo||o.target)||0;
@@ -2587,34 +1940,30 @@ async function loadTesoreria() {
     const sp     = parseFloat(o.speso||o.speso_importo)||0;
     const pct    = target>0 ? Math.min(100,Math.round(racc/target*100)) : 0;
     return `<div class="obiettivo-row">
-      <div>
-        <div style="font-size:0.82rem;font-weight:500">${o.titolo}</div>
-        <div style="font-size:0.68rem;color:var(--ink-6)">${o.citta||'globale'}</div>
-      </div>
-      <div>
-        <div class="cap-bar" style="height:6px"><div class="cap-fill" style="width:${pct}%"></div></div>
-        <div style="font-size:0.65rem;color:var(--ink-6);margin-top:2px">${pct}% di ${fmt(target)}</div>
-      </div>
-      <div style="font-size:0.78rem;font-family:var(--font-m);color:var(--oro)">${fmt(racc)}</div>
-      <div style="font-size:0.78rem;font-family:var(--font-m);color:var(--ink-6)">${fmt(sp)}</div>
-      <div style="font-size:0.78rem;font-family:var(--font-m)">${fmt(racc-sp)}</div>
-    </div>`;
+  <div>
+  <div style="font-size:0.82rem;font-weight:500">${o.titolo}<\/div>
+  <div style="font-size:0.68rem;color:var(--ink-6)">${o.citta||'globale'}<\/div>
+  <\/div>
+  <div>
+  <div class="cap-bar" style="height:6px"><div class="cap-fill" style="width:${pct}%"><\/div><\/div>
+  <div style="font-size:0.65rem;color:var(--ink-6);margin-top:2px">${pct}% di ${fmt(target)}<\/div>
+  <\/div>
+  <div style="font-size:0.78rem;font-family:var(--font-m);color:var(--oro)">${fmt(racc)}<\/div>
+  <div style="font-size:0.78rem;font-family:var(--font-m);color:var(--ink-6)">${fmt(sp)}<\/div>
+  <div style="font-size:0.78rem;font-family:var(--font-m)">${fmt(racc-sp)}<\/div>
+  <\/div>`;
   }).join('');
-
-  // Contributi
   const ctbTbody = document.getElementById('tes-contributi');
-  if(!contributi.length){ctbTbody.innerHTML='<tr><td colspan="5" style="text-align:center;padding:2rem;color:var(--ink-6);font-style:italic;">Nessun contributo</td></tr>';
+  if(!contributi.length){ctbTbody.innerHTML='<tr><td colspan="5" style="text-align:center;padding:2rem;color:var(--ink-6);font-style:italic;">Nessun contributo<\/td><\/tr>';
   } else {
     ctbTbody.innerHTML = contributi.map(c=>`<tr>
-      <td style="font-size:0.82rem">${c.membro||c.iscritto_id||'—'}</td>
-      <td><span class="badge">${(c.tipo||'—').replace(/_/g,' ')}</span></td>
-      <td style="font-family:var(--font-m);font-size:0.82rem;color:var(--oro)">${fmt(c.importo)}</td>
-      <td style="font-size:0.75rem;color:var(--ink-6)">${c.citta||'—'}</td>
-      <td style="font-size:0.72rem;color:var(--ink-6);font-family:var(--font-m)">${c.data||fmtDate(c.created_at)}</td>
-    </tr>`).join('');
+  <td style="font-size:0.82rem">${c.membro||c.iscritto_id||'—'}<\/td>
+  <td><span class="badge">${(c.tipo||'—').replace(/_/g,' ')}<\/span><\/td>
+  <td style="font-family:var(--font-m);font-size:0.82rem;color:var(--oro)">${fmt(c.importo)}<\/td>
+  <td style="font-size:0.75rem;color:var(--ink-6)">${c.citta||'—'}<\/td>
+  <td style="font-size:0.72rem;color:var(--ink-6);font-family:var(--font-m)">${c.data||fmtDate(c.created_at)}<\/td>
+  <\/tr>`).join('');
   }
-
-  // Grafico composizione contributi
   const tipi = [...new Set(contributi.map(c=>c.tipo||'altro'))];
   const tipiTot = tipi.map(t=>contributi.filter(c=>(c.tipo||'altro')===t).reduce((s,c)=>s+parseFloat(c.importo||0),0));
   chartDefaults();
@@ -2631,10 +1980,6 @@ async function loadTesoreria() {
     });
   }
 }
-
-// ═══════════════════════════════════
-// GOVERNO — CARICHE & CONFIG
-// ═══════════════════════════════════
 async function loadCariche() {
   let cariche = GOV_DEMO_CARICHE;
   let regolamenti = GOV_DEMO_REGOLAMENTI;
@@ -2650,41 +1995,35 @@ async function loadCariche() {
     if(r&&r.length) regolamenti = r;
     if(cfg&&cfg.length) cfg.forEach(row=>{config[row.chiave]=row.valore;});
   } catch(e){}
-
-  // Aggiorna input config con valori reali
   const pctEl = document.getElementById('cfg-fondatore-pct');
   if(pctEl && config.fondatore_percentuale) pctEl.value = config.fondatore_percentuale;
-
-  // Cariche
   const ctbody = document.getElementById('cariche-tbody');
-  if(!cariche.length){ctbody.innerHTML='<tr><td colspan="4" style="text-align:center;padding:2rem;color:var(--ink-6);font-style:italic;">Nessuna carica</td></tr>';
+  if(!cariche.length){ctbody.innerHTML='<tr><td colspan="4" style="text-align:center;padding:2rem;color:var(--ink-6);font-style:italic;">Nessuna carica<\/td><\/tr>';
   } else {
     ctbody.innerHTML = cariche.map(c=>`<tr>
-      <td style="font-size:0.82rem;font-weight:500">${c.nome}</td>
-      <td style="font-size:0.75rem;color:var(--ink-6)">${c.ambito}</td>
-      <td style="font-family:var(--font-m);font-size:0.78rem">${c.peso_voto||c.peso||'—'}</td>
-      <td>
+  <td style="font-size:0.82rem;font-weight:500">${c.nome}<\/td>
+  <td style="font-size:0.75rem;color:var(--ink-6)">${c.ambito}<\/td>
+  <td style="font-family:var(--font-m);font-size:0.78rem">${c.peso_voto||c.peso||'—'}<\/td>
+  <td>
         ${(c.puo_proporre||c.propone)
-          ? '<span class="badge badge-available">sì</span>'
-          : '<span class="badge">no</span>'}
-      </td>
-    </tr>`).join('');
+          ? '<span class="badge badge-available">sì<\/span>'
+          : '<span class="badge">no<\/span>'}
+  <\/td>
+  <\/tr>`).join('');
   }
-
-  // Regolamenti
   const rtbody = document.getElementById('regolamenti-tbody');
-  if(!regolamenti.length){rtbody.innerHTML='<tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--ink-6);font-style:italic;">Nessun regolamento</td></tr>';
+  if(!regolamenti.length){rtbody.innerHTML='<tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--ink-6);font-style:italic;">Nessun regolamento<\/td><\/tr>';
   } else {
     rtbody.innerHTML = regolamenti.map(r=>{
       const velCls = r.velocita==='costituzionale'?'velocita-cost':r.velocita==='politica'?'velocita-pol':'';
       return `<tr>
-        <td style="font-size:0.78rem">${r.ambito}</td>
-        <td><span class="${velCls}" style="font-size:0.78rem;">${r.velocita}</span></td>
-        <td style="font-size:0.75rem;color:var(--ink-6)">${r.tipo_decisione||r.tipo||'—'}</td>
-        <td style="font-size:0.75rem;font-family:var(--font-m)">${r.sostegno_min||r.sostegno||'—'}</td>
-        <td style="font-size:0.75rem;font-family:var(--font-m)">${r.quorum_percent||r.quorum||'—'}</td>
-        <td style="font-size:0.75rem;font-family:var(--font-m)">${r.maggioranza_percent||r.magg||'—'}</td>
-      </tr>`;
+  <td style="font-size:0.78rem">${r.ambito}<\/td>
+  <td><span class="${velCls}" style="font-size:0.78rem;">${r.velocita}<\/span><\/td>
+  <td style="font-size:0.75rem;color:var(--ink-6)">${r.tipo_decisione||r.tipo||'—'}<\/td>
+  <td style="font-size:0.75rem;font-family:var(--font-m)">${r.sostegno_min||r.sostegno||'—'}<\/td>
+  <td style="font-size:0.75rem;font-family:var(--font-m)">${r.quorum_percent||r.quorum||'—'}<\/td>
+  <td style="font-size:0.75rem;font-family:var(--font-m)">${r.maggioranza_percent||r.magg||'—'}<\/td>
+  <\/tr>`;
     }).join('');
   }
 }
@@ -2705,11 +2044,9 @@ async function saveConfig() {
   let ok = 0, fail = 0;
   for(const u of updates) {
     try {
-      // Upsert: prova update, se 0 righe inserisce
       const existing = await sbQ('config',`?chiave=eq.${u.chiave}&select=chiave`);
       if(existing&&existing.length) {
         await sbU('config',null,{valore:u.valore});
-        // Supabase PATCH by chiave
         await fetch(`${SB_URL}/rest/v1/config?chiave=eq.${u.chiave}`,{method:'PATCH',headers:H({'Prefer':'return=representation'}),body:JSON.stringify({valore:u.valore})});
       } else {
         await sbI('config',{chiave:u.chiave,valore:u.valore,descrizione:'Impostazione dal pannello',aggiornabile_da:'fondatore'});
@@ -2720,11 +2057,10 @@ async function saveConfig() {
 
   if(fail===0) toast(`Configurazione salvata (${ok} valori)`, 'success');
   else toast(`Salvati ${ok}, errori ${fail}`, 'error');
-
-  // Aggiorna la % nel pannello voto se visibile
   const govPctEl = document.getElementById('gov-pct');
   if(govPctEl) govPctEl.textContent = pct + '%';
 }
 
+</script>
 </body>
 </html>
