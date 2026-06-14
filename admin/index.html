@@ -134,6 +134,8 @@
 
   <!-- ── DASHBOARD ── -->
   <div class="panel active" id="panel-dashboard">
+
+  <!-- realtime bar (invariata) -->
   <div class="realtime-bar">
   <div class="pulse-dot"></div>
   <div>
@@ -144,30 +146,67 @@
   <div class="realtime-item"><div class="realtime-label">Iscrizioni oggi</div><div class="realtime-value" id="rt-today">—</div></div>
   <div class="realtime-item"><div class="realtime-label">Questa settimana</div><div class="realtime-value" id="rt-week">—</div></div>
   <div class="realtime-item"><div class="realtime-label">Questo mese</div><div class="realtime-value" id="rt-month">—</div></div>
-  <div class="realtime-item"><div class="realtime-label">Prossimo evento</div><div class="realtime-value" id="rt-next-event" style="font-size:1rem">—</div></div>
+  <div class="realtime-item"><div class="realtime-label">Prossimo incontro</div><div class="realtime-value" id="rt-next-event" style="font-size:1rem">—</div></div>
   </div>
   </div>
 
+  <!-- 4 stat-card (invariate) -->
   <div class="stats-grid">
   <div class="stat-card"><div class="stat-l">Iscritti totali</div><div class="stat-v" id="s-iscritti">—</div><div class="stat-s" id="s-iscritti-sub">nel movimento</div></div>
-  <div class="stat-card"><div class="stat-l">Template attivi</div><div class="stat-v" id="s-template">—</div><div class="stat-s">formati evento</div></div>
-  <div class="stat-card"><div class="stat-l">Occorrenze programmate</div><div class="stat-v" id="s-occ">—</div><div class="stat-s">eventi futuri</div></div>
+  <div class="stat-card"><div class="stat-l">Template attivi</div><div class="stat-v" id="s-template">—</div><div class="stat-s">formati incontro</div></div>
+  <div class="stat-card"><div class="stat-l">Incontri programmati</div><div class="stat-v" id="s-occ">—</div><div class="stat-s">eventi futuri</div></div>
   <div class="stat-card"><div class="stat-l">DAMA circolanti</div><div class="stat-v" id="s-dama">—</div><div class="stat-s">crediti attivi</div></div>
   <div class="stat-card"><div class="stat-l">Presenze totali</div><div class="stat-v" id="s-presenze">—</div><div class="stat-s">check-in effettuati</div></div>
-  <div class="stat-card"><div class="stat-l">Tasso occupazione</div><div class="stat-v" id="s-occupazione">—</div><div class="stat-s">media eventi</div></div>
+  <div class="stat-card"><div class="stat-l">Tasso occupazione</div><div class="stat-v" id="s-occupazione">—</div><div class="stat-s">media incontri</div></div>
   </div>
 
-  <div style="display:grid;grid-template-columns:2fr 1fr;gap:1rem;margin-bottom:1rem;">
+  <!-- riga 3 grafici (NUOVA) -->
+  <div class="charts-grid-3" style="margin-bottom:1rem;">
   <div class="card">
-  <div class="card-head"><div class="card-title">Prossimi eventi</div><button class="btn btn-primary btn-sm" onclick="showPanel('occorrenze')">Vedi tutti</button></div>
-  <div id="dash-next-events" style="padding:0.5rem 0;"></div>
+  <div class="card-head"><div class="card-title">Partecipazioni per livello</div></div>
+  <div class="card-body" style="padding-bottom:0.5rem;">
+  <div style="font-size:0.7rem;color:var(--ink-6);font-style:italic;margin-bottom:0.8rem;">Composizione della comunità</div>
+  <canvas id="chart-tier" height="200"></canvas>
+  </div>
   </div>
   <div class="card">
-  <div class="card-head"><div class="card-title">Distribuzione tier</div></div>
-  <div class="card-body"><canvas id="chart-tier" height="180"></canvas></div>
+  <div class="card-head"><div class="card-title">Incontri per ramo</div></div>
+  <div class="card-body" style="padding-bottom:0.5rem;">
+  <div style="font-size:0.7rem;color:var(--ink-6);font-style:italic;margin-bottom:0.8rem;">Equilibrio dell'offerta</div>
+  <canvas id="chart-ramo" height="200"></canvas>
+  </div>
+  </div>
+  <div class="card">
+  <div class="card-head"><div class="card-title">Tessere per origine</div></div>
+  <div class="card-body" style="padding-bottom:0.5rem;">
+  <div style="font-size:0.7rem;color:var(--ink-6);font-style:italic;margin-bottom:0.8rem;">Sostegno · merito · riconoscimento</div>
+  <canvas id="chart-origine" height="200"></canvas>
+  </div>
   </div>
   </div>
 
+  <!-- riga inferiore: prossimi incontri + trasparenza (NUOVA proporzione) -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;">
+  <div class="card">
+  <div class="card-head">
+  <div class="card-title">Prossimi incontri</div>
+  <div style="font-size:0.7rem;color:var(--ink-6);font-style:italic;">Riempimento</div>
+  <button class="btn btn-primary btn-sm" onclick="showPanel('occorrenze')">Vedi tutti</button>
+  </div>
+  <div id="dash-next-events" style="padding:0.3rem 0;"></div>
+  </div>
+  <div class="card">
+  <div class="card-head">
+  <div class="card-title">Trasparenza obiettivi</div>
+  <div style="font-size:0.7rem;color:var(--ink-6);font-style:italic;">Raccolto vs speso</div>
+  </div>
+  <div class="card-body" style="padding-top:0.6rem;">
+  <canvas id="chart-obiettivi" height="200"></canvas>
+  </div>
+  </div>
+  </div>
+
+  <!-- ultime iscrizioni (invariata) -->
   <div class="card">
   <div class="card-head"><div class="card-title">Ultime iscrizioni</div></div>
   <div style="overflow-x:auto;">
@@ -184,7 +223,7 @@
   </div>
   </div>
 
-  <!-- ── ANALYTICS ── -->
+    <!-- ── ANALYTICS ── -->
   <div class="panel" id="panel-analytics">
   <div class="realtime-bar" style="margin-bottom:1.5rem;">
   <div class="pulse-dot"></div>
@@ -993,54 +1032,190 @@ async function loadDashboard() {
   document.getElementById('s-template').textContent = C.templates.length;
   document.getElementById('s-occ').textContent = filtOcc.filter(e=>e.published&&!isExpired(e)).length;
 
+  // DAMA reali
   try {
     const dama = await sbQ('dama_log','?select=importo');
     const tot = dama.reduce((s,r)=>s+(parseFloat(r.importo)||0),0);
     document.getElementById('s-dama').textContent = Math.round(tot);
   } catch(e){}
 
+  // Presenze reali
   try {
     const pres = await sbQ('presenze','?select=id');
     document.getElementById('s-presenze').textContent = pres.length;
   } catch(e){}
+
+  // Tasso occupazione
   const conCap = filtOcc.filter(e=>e.capacity_total>0);
   if(conCap.length) {
     const avg = conCap.reduce((s,e)=>s+(1-(e.capacity_available/e.capacity_total)),0)/conCap.length;
     document.getElementById('s-occupazione').textContent = Math.round(avg*100)+'%';
   }
   if(activeCity!=='all') document.getElementById('s-iscritti-sub').textContent = `a ${activeCity}`;
+
+  // Prossimi incontri con barre
   const prossimi = filtOcc.filter(e=>e.published&&!isExpired(e))
-    .sort((a,b)=>new Date(a.date_start)-new Date(b.date_start)).slice(0,5);
+    .sort((a,b)=>new Date(a.date_start)-new Date(b.date_start)).slice(0,6);
   const list = document.getElementById('dash-next-events');
-  if(!prossimi.length){list.innerHTML='<div style="text-align:center;padding:2rem;color:var(--ink-6);font-style:italic;">Nessun evento programmato<\/div>';return;}
-  list.innerHTML = prossimi.map(e=>{
-    const pct = e.capacity_total?Math.round((1-e.capacity_available/e.capacity_total)*100):0;
-    const tpl = C.templates.find(t=>t.id===e.format_id)||{nome:e.format_id};
-    return `<div style="display:flex;align-items:center;gap:1rem;padding:0.7rem 1.2rem;border-bottom:1px solid rgba(201,169,110,0.05);">
-  <div style="font-family:var(--font-m);font-size:0.68rem;color:var(--ink-6);min-width:80px;">${fmtDate(e.date_start)}<\/div>
-  <div style="flex:1;">
-  <div style="font-size:0.85rem;font-weight:500">${e.title||tpl.nome}<\/div>
-  <div style="font-size:0.72rem;color:var(--ink-6)">${e.citta||'—'}<\/div>
+  if(!prossimi.length){
+    list.innerHTML='<div style="text-align:center;padding:2rem;color:var(--ink-6);font-style:italic;">Nessun incontro programmato<\/div>';
+  } else {
+    list.innerHTML = prossimi.map(e=>{
+      const tot = e.capacity_total||0;
+      const avail = e.capacity_available??tot;
+      const pren = tot - avail;
+      const pct = tot ? Math.min(100,Math.round(pren/tot*100)) : 0;
+      const barColor = pct>=100?'rgba(255,128,128,0.8)':pct>=80?'rgba(255,170,80,0.8)':'rgba(201,169,110,0.7)';
+      const tpl = C.templates.find(t=>t.id===e.format_id)||{nome:e.format_id};
+      return `<div style="display:flex;align-items:center;gap:0.8rem;padding:0.6rem 1.2rem;border-bottom:1px solid rgba(201,169,110,0.05);">
+  <div style="flex:1;min-width:0;">
+  <div style="font-size:0.83rem;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${e.title||tpl.nome}<\/div>
+  <div style="font-size:0.68rem;color:var(--ink-6)">${e.citta||'—'} · ${fmtDate(e.date_start)}<\/div>
   <\/div>
-  <div style="font-size:0.72rem;color:var(--ink-6);min-width:60px;text-align:right">${e.capacity_available??'—'}/${e.capacity_total??'—'}<\/div>
-  <div style="width:60px"><div style="height:3px;background:var(--ink-4);border-radius:2px"><div style="height:100%;width:${pct}%;background:var(--oro);border-radius:2px"><\/div><\/div><\/div>
-  <span class="badge badge-${e.status}">${labelStatus(e.status)}<\/span>
+  <div style="min-width:80px;">
+  <div style="display:flex;justify-content:space-between;margin-bottom:3px;">
+  <span style="font-size:0.65rem;color:var(--ink-6)">${pren}\/${tot||'—'}<\/span>
+  <span style="font-size:0.65rem;color:var(--ink-6)">${pct}%<\/span>
+  <\/div>
+  <div style="height:4px;background:var(--ink-4);border-radius:2px;overflow:hidden;">
+  <div style="height:100%;width:${pct}%;background:${barColor};border-radius:2px;transition:width .4s;"><\/div>
+  <\/div>
+  <\/div>
   <button class="btn btn-ghost btn-sm btn-icon" onclick="editOcc('${e.id}')">✎<\/button>
   <\/div>`;
-  }).join('');
-  const tiers = {osservatore:0,custode:0,damascato:0};
-  filtIsc.forEach(i=>{ if(tiers[i.tier]!==undefined) tiers[i.tier]++; });
-  renderTierChart(Object.values(tiers));
+    }).join('');
+  }
+
+  // Ultime iscrizioni
   const ultimi = [...filtIsc].sort((a,b)=>new Date(b.created_at)-new Date(a.created_at)).slice(0,8);
   document.getElementById('dash-recent-iscritti').innerHTML = ultimi.map(i=>`
   <tr>
-  <td style="font-size:0.82rem;font-weight:500">${i.nome} ${i.cognome}<\/td>
-  <td style="font-size:0.72rem;color:var(--ink-6)">${i.citta||'—'}<\/td>
+  <td style="font-size:0.82rem;font-weight:500">${i.nome||i.name||''} ${i.cognome||i.surname||''}<\/td>
+  <td style="font-size:0.72rem;color:var(--ink-6)">${i.citta||i.city||'—'}<\/td>
   <td><span class="badge badge-${i.tier}">${cap(i.tier)}<\/span><\/td>
   <td style="font-size:0.72rem;color:var(--ink-6);font-family:var(--font-m)">${fmtDate(i.created_at)}<\/td>
   <\/tr>`).join('');
 
+  // Grafici dashboard
+  renderDashCharts(filtIsc, filtOcc);
   updateRealtime();
+}
+
+function renderDashCharts(filtIsc, filtOcc) {
+  chartDefaults();
+  const PAL_DASH = [
+    'rgba(107,96,80,0.65)',   // muted scuro
+    'rgba(201,169,110,0.55)', // oro medio
+    'rgba(201,169,110,0.85)', // oro pieno
+    'rgba(160,24,24,0.55)',   // bordeaux
+    'rgba(201,169,110,0.35)'  // oro chiaro
+  ];
+
+  // 1 · TIER (donut)
+  const ctx1 = document.getElementById('chart-tier');
+  if(ctx1) {
+    if(charts.tier) charts.tier.destroy();
+    const tiers = {osservatore:0, lino:0, velluto:0, custode:0, damascato:0};
+    filtIsc.forEach(i=>{ const k=i.tier||i.livello; if(tiers[k]!==undefined) tiers[k]++; });
+    charts.tier = new Chart(ctx1, {
+      type:'doughnut',
+      data:{
+        labels:['Osservatore','Ospite di Lino','Membro di Velluto','Custode di Seta','Damascato'],
+        datasets:[{data:Object.values(tiers),backgroundColor:PAL_DASH,borderColor:'transparent',hoverOffset:6}]
+      },
+      options:{plugins:{legend:{position:'bottom',labels:{padding:10,boxWidth:10,font:{size:10}}}},cutout:'62%'}
+    });
+  }
+
+  // 2 · RAMO (bar verticale)
+  const ctx2 = document.getElementById('chart-ramo');
+  if(ctx2) {
+    if(charts.ramo) charts.ramo.destroy();
+    const rami = {humanitas:0, convivium:0, officina:0, ludus:0};
+    filtOcc.forEach(e=>{ const r=(e.ramo||'').toLowerCase(); if(rami[r]!==undefined) rami[r]++; });
+    // prova anche dalla taxonomy tramite templates
+    if(Object.values(rami).every(v=>v===0)) {
+      filtOcc.forEach(e=>{
+        const tpl = C.templates.find(t=>t.id===e.format_id);
+        if(tpl){const r=(tpl.ramo||'').toLowerCase();if(rami[r]!==undefined)rami[r]++;}
+      });
+    }
+    charts.ramo = new Chart(ctx2, {
+      type:'bar',
+      data:{
+        labels:['Humanitas','Convivium','Officina','Ludus'],
+        datasets:[{
+          data:Object.values(rami),
+          backgroundColor:PAL_DASH.slice(0,4),
+          borderRadius:3, borderSkipped:false
+        }]
+      },
+      options:{
+        plugins:{legend:{display:false}},
+        scales:{
+          y:{beginAtZero:true, ticks:{stepSize:1, font:{size:10}}},
+          x:{ticks:{font:{size:10}}}
+        }
+      }
+    });
+  }
+
+  // 3 · ORIGINE TESSERA (donut)
+  const ctx3 = document.getElementById('chart-origine');
+  if(ctx3) {
+    if(charts.origine) charts.origine.destroy();
+    const orig = {sostegno:0, merito:0, riconoscimento:0};
+    filtIsc.forEach(i=>{ const k=(i.tessera_origine||'').toLowerCase(); if(orig[k]!==undefined) orig[k]++; });
+    charts.origine = new Chart(ctx3, {
+      type:'doughnut',
+      data:{
+        labels:['Sostegno','Merito','Riconoscimento'],
+        datasets:[{data:Object.values(orig),backgroundColor:['rgba(107,96,80,0.65)','rgba(201,169,110,0.75)','rgba(160,24,24,0.55)'],borderColor:'transparent',hoverOffset:6}]
+      },
+      options:{plugins:{legend:{position:'bottom',labels:{padding:10,boxWidth:10,font:{size:10}}}},cutout:'62%'}
+    });
+  }
+
+  // 4 · OBIETTIVI — raccolto vs speso (bar orizzontale grouped)
+  const ctx4 = document.getElementById('chart-obiettivi');
+  if(ctx4) {
+    if(charts.obiettivi) charts.obiettivi.destroy();
+    // usa dati tesoreria se già caricati, altrimenti carica
+    _renderObiettiviChart(ctx4);
+  }
+}
+
+async function _renderObiettiviChart(ctx) {
+  let obiettivi = [];
+  try {
+    const raw = await sbQ('obiettivi','?order=created_at.desc&limit=5');
+    if(raw&&raw.length) obiettivi = raw;
+  } catch(e){ obiettivi = (typeof GOV_DEMO_OBIETTIVI!=='undefined') ? GOV_DEMO_OBIETTIVI.slice(0,5) : []; }
+
+  if(!obiettivi.length) return;
+  const labels = obiettivi.map(o=>(o.nome||o.titolo||'').slice(0,22));
+  const raccolto = obiettivi.map(o=>parseFloat(o.raccolto||o.raccolto_importo)||0);
+  const speso    = obiettivi.map(o=>parseFloat(o.speso||o.speso_importo)||0);
+
+  if(charts.obiettivi) charts.obiettivi.destroy();
+  charts.obiettivi = new Chart(ctx, {
+    type:'bar',
+    data:{
+      labels,
+      datasets:[
+        {label:'Raccolto', data:raccolto, backgroundColor:'rgba(201,169,110,0.65)', borderRadius:3, borderSkipped:false},
+        {label:'Speso',    data:speso,    backgroundColor:'rgba(160,24,24,0.5)',    borderRadius:3, borderSkipped:false}
+      ]
+    },
+    options:{
+      indexAxis:'y',
+      plugins:{legend:{position:'top',labels:{padding:12,boxWidth:10,font:{size:10}}}},
+      scales:{
+        x:{beginAtZero:true, ticks:{font:{size:10}, callback:v=>'€'+Math.round(v/1000)+'k'}},
+        y:{ticks:{font:{size:10}}}
+      }
+    }
+  });
 }
 
 function updateRealtime() {
