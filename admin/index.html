@@ -1398,8 +1398,10 @@ function renderCalendario() {
     });
 
     el.onclick=()=>{
-      const d2=new Date(calYear,calMonth,d);
-      openModalOccorrenza(null, d2.toISOString().slice(0,16));
+      const d2=new Date(calYear,calMonth,d,20,0);
+      const _p=n=>String(n).padStart(2,'0');
+      const _iso=`${d2.getFullYear()}-${_p(d2.getMonth()+1)}-${_p(d2.getDate())}T${_p(d2.getHours())}:${_p(d2.getMinutes())}`;
+      openModalOccorrenza(null, _iso);
     };
     grid.appendChild(el);
   }
