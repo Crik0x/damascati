@@ -1684,7 +1684,7 @@ function openModalOccorrenza(occ=null, preDate=null, preTpl=null) {
   document.getElementById('occ-vis').value='public';
   document.getElementById('occ-status').value='available';
 
-  if(preDate) document.getElementById('occ-start').value=preDate;
+  if(preDate){document.getElementById('occ-start').value=preDate;autoSetEnd();}
   if(preTpl){document.getElementById('occ-tpl').value=preTpl;onOccTplChange();}
 
   if(occ){
