@@ -641,9 +641,10 @@
   </div>
   <div class="form-group">
   <label class="form-label">Visibilità default</label>
-  <select class="form-select" id="tpl-vis">
+  <select class="form-select" id="tpl-vis" onchange="togglePrezziTpl(document.getElementById('tpl-free').checked)">
   <option value="public">Pubblico</option>
   <option value="members">Solo Soci</option>
+  <option value="su_invito">Su Invito</option>
   </select>
   </div>
   </div>
@@ -1444,7 +1445,7 @@ function renderTemplateGrid(data) {
   <div class="tpl-desc">${t.descrizione_breve||'—'}<\/div>
   <div class="tpl-meta">
   <span class="badge badge-${t.categoria||'socialita'}">${t.categoria||'—'}<\/span>
-  <span class="badge badge-${t.visibilita_default||'public'}">${t.visibilita_default==='members'?'Solo Soci':'Pubblico'}<\/span>
+  <span class="badge badge-${t.visibilita_default||'public'}">${t.visibilita_default==='su_invito'?'Su Invito':t.visibilita_default==='members'?'Solo Soci':'Pubblico'}<\/span>
           ${t.prezzo_osservatore_default?`<span style="font-size:0.65rem;color:var(--ink-6)">da €${t.prezzo_osservatore_default}<\/span>`:`<span style="font-size:0.65rem;color:var(--ink-6)">Gratuito<\/span>`}
   <\/div>
   <div class="tpl-occurrences">
@@ -1492,7 +1493,15 @@ function openModalTemplate(tpl=null) {
 }
 
 function editTpl(id){openModalTemplate(C.templates.find(t=>t.id===id));}
-function togglePrezziTpl(f){document.getElementById('tpl-prezzi').style.display=f?'none':'';}
+function togglePrezziTpl(f){
+  const vis=document.getElementById('tpl-vis')?document.getElementById('tpl-vis').value:'public';
+  const suInvito=vis==='su_invito';
+  document.getElementById('tpl-prezzi').style.display=(f||suInvito)?'none':'';
+  let nota=document.getElementById('tpl-contributo-nota');
+  if(!nota){nota=document.createElement('div');nota.id='tpl-contributo-nota';nota.style.cssText='font-size:0.72rem;color:#e8b080;margin-top:0.5rem;padding:0.5rem 0.8rem;border:1px solid rgba(232,176,128,0.3);border-radius:4px;display:none;';const ref=document.getElementById('tpl-free');if(ref)ref.closest('.form-group').insertAdjacentElement('afterend',nota);}
+  nota.style.display=suInvito?'block':'none';
+  nota.textContent=suInvito?'Contributo associativo — il partecipante concorre alle spese dell\'incontro. Il costo viene comunicato con l\'invito.':'';
+}
 
 async function saveTpl() {
   const eid=document.getElementById('tpl-editing-id').value;
