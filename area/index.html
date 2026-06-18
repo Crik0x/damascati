@@ -275,7 +275,7 @@ body {
 .evento-img-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:var(--font-d);font-size:3rem;color:rgba(201,169,110,0.12);}
 .evento-vis-badge{position:absolute;top:0.6rem;left:0.6rem;font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;padding:0.2rem 0.5rem;border-radius:2px;backdrop-filter:blur(8px);}
 .vis-public{background:rgba(128,179,255,0.15);color:#80b3ff;border:1px solid rgba(128,179,255,0.3);}
-.vis-members{background:rgba(201,169,110,0.15);color:var(--oro);border:1px solid rgba(201,169,110,0.3);}
+.vis-members{background:rgba(201,169,110,0.15);color:var(--oro);border:1px solid rgba(201,169,110,0.3);}.vis-su_invito{background:rgba(232,176,128,0.12);color:#e8b080;border:1px solid rgba(232,176,128,0.35);}
 .evento-body{padding:1rem 1.2rem;}
 .evento-cat{font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--oro);margin-bottom:0.4rem;}
 .evento-title{font-family:var(--font-d);font-size:1.15rem;color:var(--text);margin-bottom:0.4rem;line-height:1.3;}
@@ -1022,8 +1022,9 @@ function buildEventoCard(evt, tier) {
   // Prezzi
   const pr = evt.pricing_event||{};
   const isFree = pr.free_with_booking;
-  const prezzo = isFree ? null : (pr[tier] ?? pr.osservatore ?? null);
-  const prezzoLabel = isFree ? 'Gratuito' : (prezzo!=null ? `€${prezzo}` : '—');
+  const isSuInvito = pr.su_invito === true;
+  const prezzo = (isFree||isSuInvito) ? null : (pr[tier] ?? pr.osservatore ?? null);
+  const prezzoLabel = isFree ? 'Gratuito' : isSuInvito ? 'Contributo associativo' : (prezzo!=null ? `€${prezzo}` : '—');
 
   // Posti
   const cap = evt.capacity||{};
@@ -1043,6 +1044,8 @@ function buildEventoCard(evt, tier) {
     btnHtml=`<button class="btn-prenota prenotato">✓ Prenotato</button>`;
   } else if(evt.status==='sold_out'||avail===0) {
     btnHtml=`<button class="btn-prenota disabled">Sold Out</button>`;
+  } else if(evt.visibility==='su_invito') {
+    btnHtml=`<button class="btn-prenota disabled" style="background:rgba(232,176,128,0.15);color:#e8b080;border-color:rgba(232,176,128,0.4);" title="Riservato su invito personale">Su invito ✦</button>`;
   } else if(evt.visibility==='members'&&(tier==='osservatore')) {
     btnHtml=`<button class="btn-prenota disabled">Solo Soci</button>`;
   } else {
@@ -1052,7 +1055,7 @@ function buildEventoCard(evt, tier) {
   return `<div class="evento-card">
     <div class="evento-img">
       ${img?`<img src="${img}" alt="${title}" loading="lazy">`:`<div class="evento-img-placeholder">✦</div>`}
-      <span class="evento-vis-badge ${evt.visibility==='members'?'vis-members':'vis-public'}">${evt.visibility==='members'?'Solo Soci':'Pubblico'}</span>
+      <span class="evento-vis-badge ${evt.visibility==='su_invito'?'vis-su_invito':evt.visibility==='members'?'vis-members':'vis-public'}">${evt.visibility==='su_invito'?'Su Invito':evt.visibility==='members'?'Solo Soci':'Pubblico'}</span>
     </div>
     <div class="evento-body">
       <div class="evento-cat">${catLabel}</div>

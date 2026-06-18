@@ -522,6 +522,28 @@
   </div>
   </div>
 
+
+  <!-- ── SYNC CONFIG ── -->
+  <div class="card" style="margin-top:1rem">
+  <div class="card-head"><div class="card-title">Sync GitHub · Token di accesso</div></div>
+  <div class="card-body">
+  <p style="font-size:0.8rem;color:var(--ink-6);margin-bottom:0.8rem;line-height:1.5;">
+    Il <b>GitHub PAT</b> permette all'admin di triggerare il sync Supabase → JSON subito dopo ogni modifica agli eventi. Il token viene salvato <b>solo nel tuo browser</b> (localStorage), mai nel repo.
+  </p>
+  <div style="display:flex;gap:0.6rem;align-items:flex-end;flex-wrap:wrap;">
+    <div class="form-group" style="flex:1;margin-bottom:0;min-width:200px">
+    <label class="form-label">GitHub PAT</label>
+    <input type="password" class="form-input" id="cfg-gh-pat" placeholder="Incolla il token github_pat_...">
+    </div>
+    <button class="btn btn-primary btn-sm" onclick="saveGhPat()" style="white-space:nowrap">Salva PAT</button>
+    <button class="btn btn-ghost btn-sm" onclick="triggerSync()" style="white-space:nowrap">▶ Sync ora</button>
+  </div>
+  <div style="font-size:0.72rem;color:var(--ink-6);margin-top:0.5rem;font-style:italic;">
+    Scope necessario: <code>repo</code> · Il sync gira comunque ogni ora in automatico via GitHub Actions.
+  </div>
+  </div>
+  </div>
+
   <!-- ── CARICHE & CONFIG ── -->
   <div class="panel" id="panel-cariche">
   <div style="margin-bottom:1.5rem;">
@@ -1429,6 +1451,16 @@ async function loadTemplates() {
   } catch(e){ toast('Errore caricamento template','error'); }
 }
 
+function aggiornaContatoriTemplate(){
+  if(!C.templates||!C.templates.length||!C.occorrenze) return;
+  C.templates.forEach(t=>{
+    const el=document.getElementById('tpl-cnt-'+t.id);
+    if(!el) return;
+    const occCount=C.occorrenze.filter(e=>e.format_id===t.id).length;
+    const futureCount=C.occorrenze.filter(e=>e.format_id===t.id&&!isExpired(e)).length;
+    el.textContent=futureCount+' futuri · '+occCount+' totali';
+  });
+}
 function renderTemplateGrid(data) {
   const grid = document.getElementById('template-grid');
   if(!data.length){grid.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--ink-6);font-style:italic;">Nessun template — creane uno per iniziare.<\/div>';return;}
@@ -1450,7 +1482,7 @@ function renderTemplateGrid(data) {
   <\/div>
   <div class="tpl-occurrences">
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width:12px;height:12px"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/><\/svg>
-          ${futureCount} futuri · ${occCount} totali
+          <span id='tpl-cnt-${t.id}'>${futureCount} futuri · ${occCount} totali</span>
   <\/div>
   <div class="tpl-actions">
   <button class="btn btn-ghost btn-sm" onclick="editTpl('${t.id}')">✎ Modifica<\/button>
@@ -1551,6 +1583,7 @@ async function loadOccorrenze() {
     const data = await sbQ('eventi','?order=date_start.desc');
     C.occorrenze = data;
     filterOccorrenze();
+    aggiornaContatoriTemplate();
     document.getElementById('badge-occ').textContent = data.filter(e=>e.published&&!isExpired(e)).length;
     renderCalendario();
   } catch(e){ toast('Errore occorrenze','error'); }
@@ -1784,18 +1817,19 @@ async function saveOcc() {
     await loadOccorrenze();
     loadDashboard();
     renderCalendario();
+    triggerSync();
   }catch(err){toast('Errore: '+err.message,'error');}
   finally{document.getElementById('save-occ-lbl').textContent=eid?'Salva Modifiche':'Crea Occorrenza';}
 }
 
 async function togglePubOcc(id,val){
-  try{await sbU('eventi',id,{published:val,updated_at:new Date().toISOString()});toast(val?'Pubblicato':'Bozza','success');await loadOccorrenze();loadDashboard();}
+  try{await sbU('eventi',id,{published:val,updated_at:new Date().toISOString()});toast(val?'Pubblicato':'Bozza','success');await loadOccorrenze();loadDashboard();triggerSync();}
   catch(e){toast('Errore','error');}
 }
 
 async function deleteOcc(id){
   if(!confirm(`Eliminare "${id}"?`))return;
-  try{await sbD('eventi',id);toast('Eliminata','success');await loadOccorrenze();loadDashboard();}
+  try{await sbD('eventi',id);toast('Eliminata','success');await loadOccorrenze();loadDashboard();triggerSync();}
   catch(e){toast('Errore','error');}
 }
 async function loadIscritti() {
@@ -2264,6 +2298,36 @@ async function saveConfig() {
   else toast(`Salvati ${ok}, errori ${fail}`, 'error');
   const govPctEl = document.getElementById('gov-pct');
   if(govPctEl) govPctEl.textContent = pct + '%';
+}
+
+// ═══════════════════════════════════
+// SYNC GITHUB
+// ═══════════════════════════════════
+async function triggerSync() {
+  const pat = localStorage.getItem('dsc_gh_pat') || '';
+  if (!pat) return;
+  try {
+    const r = await fetch('https://api.github.com/repos/Crik0x/damascati/dispatches', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${pat}`,
+        'Accept': 'application/vnd.github.v3+json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ event_type: 'sync-eventi' })
+    });
+    if (r.status === 204) toast('Sync GitHub avviato ✓', 'success');
+    else { const e = await r.json(); console.warn('triggerSync:', e.message); }
+  } catch(e) { console.warn('triggerSync fallito:', e.message); }
+}
+
+function saveGhPat() {
+  const val = document.getElementById('cfg-gh-pat').value.trim();
+  if (!val) { localStorage.removeItem('dsc_gh_pat'); toast('GH_PAT rimosso', ''); return; }
+  localStorage.setItem('dsc_gh_pat', val);
+  document.getElementById('cfg-gh-pat').value = '';
+  document.getElementById('cfg-gh-pat').placeholder = '✓ PAT salvato (nascosto)';
+  toast('GH_PAT salvato — sync automatico attivo', 'success');
 }
 
 </script>

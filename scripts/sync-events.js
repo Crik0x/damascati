@@ -1,5 +1,5 @@
 /**
- * sync-events.js v2
+ * sync-events.js v3
  * Legge eventi, formats e config da Supabase e scrive:
  *   - damascati_events.json  (eventi futuri pubblicati)
  *   - events_archive.json    (eventi passati)
@@ -44,6 +44,8 @@ function calcolaPrezzo(prezzoManuale, prezzoBase, scontoPercent) {
 
 function buildPricingEvent(evt, config) {
   if (evt.pricing_free) return { free_with_booking: true };
+  // Su invito: il prezzo viene comunicato con l'invito, non nel JSON pubblico
+  if (evt.visibility === 'su_invito') return { su_invito: true };
 
   const base = evt.prezzo_osservatore ?? null;
   const sc   = parseFloat(config.sconto_custode   || '10');
@@ -57,6 +59,7 @@ function buildPricingEvent(evt, config) {
 }
 
 function buildPricingFormat(fmt, config) {
+  if (fmt.visibilita_default === 'su_invito') return { su_invito: true };
   const base = fmt.prezzo_osservatore_default ?? null;
   if (!base && !fmt.prezzo_custode_default) {
     return { free_with_booking: true };
@@ -127,7 +130,7 @@ async function main() {
 
   // 1. Carica dati in parallelo (incluso config)
   const [eventiRaw, formatsRaw, configRaw] = await Promise.all([
-    query('eventi',  '?published=eq.true&order=date_start.asc'),
+    query('eventi',  '?or=(published.eq.true,published.is.null)&order=date_start.asc'),
     query('formats', '?attivo=eq.true&order=id.asc'),
     query('config',  '?select=chiave,valore')
   ]);
@@ -204,8 +207,11 @@ async function main() {
 
   // 5. Categories
   const categoryMap = {
-    socialita: 'Socialità & Cultura', cultura: 'Cultura & Incontri',
-    esperienza: 'Esperienze', esclusivo: 'Solo Soci'
+    socialita:  'Socialità & Cultura',
+    cultura:    'Cultura & Incontri',
+    esperienza: 'Esperienze',
+    esclusivo:  'Solo Soci',
+    su_invito:  'Su Invito'
   };
   const usedCats = [...new Set(formatsRaw.map(f => f.categoria).filter(Boolean))];
   const categories = usedCats.map(id => ({ id, label: categoryMap[id] || id }));
@@ -221,7 +227,7 @@ async function main() {
   const eventsJson = {
     club: 'Il Salotto dei Damascati',
     last_updated: new Date().toISOString(),
-    version: '2.1',
+    version: '3.0',
     config: { sconto_custode: sc, sconto_damascato: sd },
     pricing_tiers,
     categories,
@@ -240,7 +246,7 @@ async function main() {
   fs.writeFileSync('events_archive.json', JSON.stringify({
     club: 'Il Salotto dei Damascati',
     last_updated: new Date().toISOString(),
-    version: '2.1',
+    version: '3.0',
     archive: mergedArchive
   }, null, 2), 'utf8');
   console.log('✅ events_archive.json scritto');
