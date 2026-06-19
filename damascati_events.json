@@ -1,6 +1,6 @@
 {
   "club": "Il Salotto dei Damascati",
-  "last_updated": "2026-06-18T23:49:34.173Z",
+  "last_updated": "2026-06-19T00:33:24.941Z",
   "version": "3.0",
   "config": {
     "sconto_custode": 10,
@@ -81,7 +81,7 @@
       "pricing_event": {
         "su_invito": true
       },
-      "description_override": "",
+      "description_override": "Tema della serata: Desiderio di Meritare\n\nIl desiderio di essere all'altezza delle esperienze, delle relazioni e dei valori che si incontrano.",
       "media": {
         "image_card": "https://static.tildacdn.com/tild3761-6537-4339-b361-323437666632/Salotto_dei_Damascat.jpg"
       },
@@ -95,8 +95,8 @@
       "format_id": "salatto_culturale",
       "title": "Salotto Culturale",
       "citta": "Roma",
-      "date_start": "2026-06-20T20:00:00+00:00",
-      "date_end": "2026-06-20T23:00:00+00:00",
+      "date_start": "2026-06-26T20:00:00+00:00",
+      "date_end": "2026-06-26T23:00:00+00:00",
       "publish_at": null,
       "visibility": "members",
       "status": "available",
@@ -133,8 +133,8 @@
       "format_id": "salatto_culturale",
       "title": "Salotto Culturale",
       "citta": "Roma",
-      "date_start": "2026-06-26T20:00:00+00:00",
-      "date_end": "2026-06-26T23:00:00+00:00",
+      "date_start": "2026-07-03T20:00:00+00:00",
+      "date_end": "2026-07-03T23:00:00+00:00",
       "publish_at": null,
       "visibility": "su_invito",
       "status": "available",
