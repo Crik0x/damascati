@@ -1,6 +1,6 @@
 {
   "club": "Il Salotto dei Damascati",
-  "last_updated": "2026-06-19T00:35:32.530Z",
+  "last_updated": "2026-06-19T05:01:24.225Z",
   "version": "3.0",
   "config": {
     "sconto_custode": 10,
@@ -131,8 +131,8 @@
       "format_id": "salatto_culturale",
       "title": "Salotto Culturale",
       "citta": "Roma",
-      "date_start": "2026-07-03T22:00:00+00:00",
-      "date_end": "2026-07-04T01:00:00+00:00",
+      "date_start": "2026-07-04T00:00:00+00:00",
+      "date_end": "2026-07-04T03:00:00+00:00",
       "publish_at": null,
       "visibility": "su_invito",
       "status": "available",
@@ -153,7 +153,7 @@
       "pricing_event": {
         "su_invito": true
       },
-      "description_override": "Tema della serata: Rapporto con il tempo\n\nLa capacità di alternare intensità e contemplazione, azione e riflessione.",
+      "description_override": "Tema della serata: Rapporto con il tempo <br>\nLa capacità di alternare intensità e contemplazione, azione e riflessione.",
       "media": {
         "image_card": "https://static.tildacdn.com/tild3761-6537-4339-b361-323437666632/Salotto_dei_Damascat.jpg"
       },
