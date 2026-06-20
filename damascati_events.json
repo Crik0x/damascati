@@ -1,6 +1,6 @@
 {
   "club": "Il Salotto dei Damascati",
-  "last_updated": "2026-06-19T23:03:54.866Z",
+  "last_updated": "2026-06-20T04:14:19.374Z",
   "version": "3.0",
   "config": {
     "sconto_custode": 10,
@@ -54,42 +54,6 @@
     }
   ],
   "events": [
-    {
-      "id": "salatto_culturale_roma_26_001",
-      "format_id": "salatto_culturale",
-      "title": "Salotto Culturale",
-      "citta": "Roma",
-      "date_start": "2026-06-19T20:00:00+00:00",
-      "date_end": "2026-06-19T23:00:00+00:00",
-      "publish_at": null,
-      "visibility": "su_invito",
-      "status": "available",
-      "published": true,
-      "featured": false,
-      "location": {
-        "name": "Vatican Privé",
-        "address": "Via della Conciliazione 44",
-        "maps_url": "https://maps.app.goo.gl/7onYiX7ZFN8Jfj2bA"
-      },
-      "capacity": {
-        "total": 20,
-        "available": null,
-        "osservatore": null,
-        "custode": null,
-        "damascato": null
-      },
-      "pricing_event": {
-        "su_invito": true
-      },
-      "description_override": "Tema della serata: Desiderio di Meritare\n\nIl desiderio di essere all'altezza delle esperienze, delle relazioni e dei valori che si incontrano.",
-      "media": {
-        "image_card": "https://static.tildacdn.com/tild3761-6537-4339-b361-323437666632/Salotto_dei_Damascat.jpg"
-      },
-      "registration": {
-        "url": ""
-      },
-      "google_calendar_id": ""
-    },
     {
       "id": "salatto_culturale_roma_26_002",
       "format_id": "salatto_culturale",
