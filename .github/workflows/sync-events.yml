@@ -2,7 +2,7 @@ name: Sync Supabase -> JSON
 
 on:
   schedule:
-    - cron: '0 * * * *'
+    - cron: '*/15 * * * *'
   workflow_dispatch:
   repository_dispatch:
     types: [sync-eventi]
