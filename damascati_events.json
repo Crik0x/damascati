@@ -1,6 +1,6 @@
 {
   "club": "Il Salotto dei Damascati",
-  "last_updated": "2026-06-22T17:42:57.255Z",
+  "last_updated": "2026-06-22T20:56:05.189Z",
   "version": "3.0",
   "config": {
     "sconto_custode": 10,
@@ -95,21 +95,21 @@
       "format_id": "salatto_culturale",
       "title": "Salotto Culturale",
       "citta": "Roma",
-      "date_start": "2026-07-04T00:00:00+00:00",
-      "date_end": "2026-07-04T03:00:00+00:00",
+      "date_start": "2026-07-03T20:00:00+00:00",
+      "date_end": "2026-07-03T23:00:00+00:00",
       "publish_at": null,
       "visibility": "su_invito",
       "status": "available",
       "published": true,
       "featured": false,
       "location": {
-        "name": "",
-        "address": "",
-        "maps_url": ""
+        "name": "Vatican Privé",
+        "address": "Via della Conciliazione 44",
+        "maps_url": "https://maps.app.goo.gl/7onYiX7ZFN8Jfj2bA"
       },
       "capacity": {
-        "total": null,
-        "available": null,
+        "total": 15,
+        "available": 6,
         "osservatore": null,
         "custode": null,
         "damascato": null
@@ -117,7 +117,7 @@
       "pricing_event": {
         "su_invito": true
       },
-      "description_override": "Tema della serata: Rapporto con il tempo <br>\nLa capacità di alternare intensità e contemplazione, azione e riflessione.",
+      "description_override": "Tema della serata: Rapporto con il tempo \nLa capacità di alternare intensità e contemplazione, azione e riflessione.",
       "media": {
         "image_card": "https://static.tildacdn.com/tild3761-6537-4339-b361-323437666632/Salotto_dei_Damascat.jpg"
       },
