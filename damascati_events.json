@@ -1,6 +1,6 @@
 {
   "club": "Il Salotto dei Damascati",
-  "last_updated": "2026-06-23T20:55:34.487Z",
+  "last_updated": "2026-06-23T21:50:57.943Z",
   "version": "3.0",
   "config": {
     "sconto_custode": 10,
@@ -72,8 +72,8 @@
         "maps_url": "https://maps.app.goo.gl/7onYiX7ZFN8Jfj2bA"
       },
       "capacity": {
-        "total": null,
-        "available": null,
+        "total": 10,
+        "available": 1,
         "osservatore": null,
         "custode": null,
         "damascato": null
@@ -86,7 +86,7 @@
         "image_card": "https://static.tildacdn.com/tild3761-6537-4339-b361-323437666632/Salotto_dei_Damascat.jpg"
       },
       "registration": {
-        "url": ""
+        "url": "https://api.whatsapp.com/send/?phone=393203194044&amp;text=Salve%2C+vorrei+partecipare+al+prossimo+evento+\"Aperitivi+diVini\".+Ci+sono+ancora+posti+disponibili%3F+Mi+chiamo+&amp;type=phone_number&amp;app_absent=0"
       },
       "google_calendar_id": ""
     },
