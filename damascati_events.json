@@ -1,6 +1,6 @@
 {
   "club": "Il Salotto dei Damascati",
-  "last_updated": "2026-07-01T20:23:10.324Z",
+  "last_updated": "2026-07-01T21:58:47.797Z",
   "version": "3.0",
   "config": {
     "sconto_custode": 10,
@@ -22,15 +22,31 @@
   },
   "categories": [
     {
-      "id": "socialita",
-      "label": "Socialità & Cultura"
-    },
-    {
       "id": "esperienza",
       "label": "Esperienze"
+    },
+    {
+      "id": "socialita",
+      "label": "Socialità & Cultura"
     }
   ],
   "formats": [
+    {
+      "format_id": "cena",
+      "base_title": "Cena",
+      "description_short": "Una cena",
+      "description_long": "Cena completa",
+      "image_url": "",
+      "category": [
+        "esperienza"
+      ],
+      "pricing": {
+        "free_with_booking": true
+      },
+      "price_variable": false,
+      "duration_hours": null,
+      "visibility": "public"
+    },
     {
       "format_id": "salatto_culturale",
       "base_title": "Salotto Culturale",
