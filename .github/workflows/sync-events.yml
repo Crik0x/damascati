@@ -40,3 +40,4 @@ jobs:
           git commit -m "sync: aggiorna events [$(date '+%Y-%m-%d %H:%M')]"
           git pull --rebase origin main
           git push origin main
+ 
