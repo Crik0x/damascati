@@ -820,11 +820,9 @@
   </div>
   <div class="form-group">
   <label class="form-label">Città *</label>
-  <input type="text" class="form-input" id="occ-citta" placeholder="es. Roma" oninput="aggiornaIdOcc()" list="citta-list">
-  <datalist id="citta-list">
-  <option value="Roma"><option value="Milano"><option value="Napoli"><option value="Torino">
-  <option value="Berlino"><option value="Monaco"><option value="Barcellona"><option value="Madrid">
-  </datalist>
+  <select class="form-input" id="occ-citta" onchange="aggiornaIdOcc()">
+  <option value="">— scegli città —</option>
+  </select>
   </div>
   </div>
 
@@ -1519,8 +1517,8 @@ function renderCalendario() {
 }
 async function loadTemplates() {
   try {
-    const data = await sbQ('formats','?order=id.asc');
-    C.templates = data.map(normFormat); data = C.templates;
+    let data = await sbQ('formats','?order=id.asc');
+    data = data.map(normFormat); C.templates = data;
     try{ renderTemplateGrid(data); }catch(err){ console.error('renderTemplateGrid:', err); }
     const opts = data.map(t=>`<option value="${t.id}">${t.nome}<\/option>`).join('');
     ['occ-tpl','occ-template-filter'].forEach(id=>{
@@ -1710,21 +1708,24 @@ function renderOccorrenze(data) {
 async function aggiornaIdOcc()
  {
   const tplId  = document.getElementById('occ-tpl').value;
-  const citta  = document.getElementById('occ-citta').value.trim();
+  const cityCode = document.getElementById('occ-citta').value.trim();  // codice città es. 'RM'
   const start  = document.getElementById('occ-start').value;
   const box    = document.getElementById('occ-id-preview');
   const val    = document.getElementById('occ-id-val');
   const sub    = document.getElementById('occ-id-sub');
 
-  if(!tplId||!citta||!start){box.style.display='none';return;}
+  if(!tplId||!cityCode||!start){box.style.display='none';return;}
 
+  // Lo slug dell'ID usa il NOME città (es. 'roma'), non il codice — formato: tpl_roma_26_003
+  const cityObj = (CITIES_DB||[]).find(c=>c.code===cityCode);
+  const cityName = cityObj ? cityObj.name : cityCode;
   const d=new Date(start);
   const anno=String(d.getFullYear()).slice(-2);
   const mese=String(d.getMonth()+1).padStart(2,'0');
   const giorno=String(d.getDate()).padStart(2,'0');
-  const cittaNorm=citta.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/\s+/g,'_').replace(/[^a-z0-9_]/g,'');
+  const cittaNorm=cityName.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/\s+/g,'_').replace(/[^a-z0-9_]/g,'');
   const existing = C.occorrenze.filter(e=>{
-    return e.format_id===tplId && (e.citta||'').toLowerCase()===citta.toLowerCase() && e.id && e.id.startsWith(`${tplId}_${cittaNorm}_${anno}`);
+    return e.format_id===tplId && (e.citta||'')===cityCode && e.id && e.id.startsWith(`${tplId}_${cittaNorm}_${anno}`);
   });
   const prog=String(existing.length+1).padStart(3,'0');
   const newId=`${tplId}_${cittaNorm}_${anno}_${prog}`;
@@ -1732,7 +1733,7 @@ async function aggiornaIdOcc()
   box.style.display='block';
   val.className='id-preview-value checking';
   val.textContent=newId;
-  sub.textContent=`${existing.length} occorrenze precedenti a ${citta} nel 20${anno}`;
+  sub.textContent=`${existing.length} occorrenze precedenti a ${cityName} nel 20${anno}`;
   try {
     const check=await sbQ('events',`?id=eq.${newId}&select=id`);
     if(check.length){val.className='id-preview-value error';val.textContent=newId+' (già esiste — cambia data)';
@@ -1791,6 +1792,9 @@ function openModalOccorrenza(occ=null, preDate=null, preTpl=null) {
   const _tplOpts=(C.templates||[]).map(t=>`<option value="${t.id}">${t.nome||t.name||t.id}</option>`).join('');
   const _ot=document.getElementById('occ-tpl'); if(_ot) _ot.innerHTML='<option value="">— scegli template —</option>'+_tplOpts;
   const _of=document.getElementById('occ-template-filter'); if(_of&&_of.options.length<=1) _of.innerHTML='<option value="all">Tutti i template</option>'+_tplOpts;
+
+  // Popola la select città con i CODICI reali della tabella cities (value=codice, es. 'RM')
+  popolaCittaSelect(document.getElementById('occ-citta'));
 
   if(preDate){document.getElementById('occ-start').value=preDate;autoSetEnd();}
   if(preTpl){document.getElementById('occ-tpl').value=preTpl;onOccTplChange();}
@@ -1855,7 +1859,7 @@ async function saveOcc() {
   const payload={
     format_id:tplId,
     title:document.getElementById('occ-title').value||(tpl.nome||''),
-    city:citta,
+    city:citta||null,
     date_start:start||null,
     date_end:document.getElementById('occ-end').value||null,
     publish_at:document.getElementById('occ-publish').value||null,
@@ -2317,6 +2321,15 @@ async function sbRPC(fn,args){ args=args||{}; let r=await fetch(`${SB_URL}/rest/
 function esc(s){ return (s==null?'':''+s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
 function eurI(n){ return '€ '+Math.round(Number(n||0)).toLocaleString('it-IT'); }
 function cityLabel(code){ var c=CITIES_DB.find(x=>x.code===code); return c?c.name:(code||'—'); }
+// Popola una <select> con i codici città reali (value = codice 'RM', label = 'Roma (RM)').
+// Preserva la selezione corrente se ancora valida.
+function popolaCittaSelect(sel){
+  if(!sel) return;
+  const cur=sel.value;
+  const opts=(CITIES_DB||[]).map(c=>`<option value="${c.code}">${esc(c.name)} (${c.code})</option>`).join('');
+  sel.innerHTML='<option value="">— scegli città —</option>'+opts;
+  if(cur) sel.value=cur;
+}
 
 /* modale generica (riusa .modal-overlay del CSS originale) */
 function closeIscModal(){ const m=document.getElementById('modal-isc'); if(m)m.classList.remove('open'); }
