@@ -1,6 +1,6 @@
 {
   "club": "Il Salotto dei Damascati",
-  "last_updated": "2026-07-01T07:58:38.029Z",
+  "last_updated": "2026-07-01T15:47:25.171Z",
   "version": "3.0",
   "config": {
     "sconto_custode": 10,
@@ -24,14 +24,18 @@
     {
       "id": "socialita",
       "label": "Socialità & Cultura"
+    },
+    {
+      "id": "esperienza",
+      "label": "Esperienze"
     }
   ],
   "formats": [
     {
       "format_id": "salatto_culturale",
       "base_title": "Salotto Culturale",
-      "description_short": "Ogni settimana una conversazione guidata su un tema che merita lentezza: il senso, la bellezza, lo spirito, le grandi domande.",
-      "description_long": "Tema della serata: Desiderio di Meritare",
+      "description_short": "Spiritualità",
+      "description_long": "Tema della serata: <strong>Spiritualità</strong> - Tensione alla ricerca di senso e profondità come modo privilegiato di esperire l'esistenza.",
       "image_url": "https://static.tildacdn.com/tild3761-6537-4339-b361-323437666632/Salotto_dei_Damascat.jpg",
       "category": [
         "socialita"
@@ -40,7 +44,23 @@
         "su_invito": true
       },
       "price_variable": false,
-      "duration_hours": null,
+      "duration_hours": 3,
+      "visibility": "su_invito"
+    },
+    {
+      "format_id": "scacchiera_dei_re",
+      "base_title": "Scacchiera dei Re",
+      "description_short": "Prova",
+      "description_long": "",
+      "image_url": "",
+      "category": [
+        "esperienza"
+      ],
+      "pricing": {
+        "su_invito": true
+      },
+      "price_variable": false,
+      "duration_hours": 2,
       "visibility": "su_invito"
     }
   ],
@@ -49,46 +69,9 @@
       "id": "nicolaj",
       "name": "Nicolaj D'Ortona",
       "role": "Fondatore",
-      "url": "https://damascati.it/chi-siamo",
+      "url": "https://damascati.it/identita",
       "image": ""
     }
   ],
-  "events": [
-    {
-      "id": "salatto_culturale_roma_26_003",
-      "format_id": "salatto_culturale",
-      "title": "Salotto Culturale",
-      "citta": "Roma",
-      "date_start": "2026-07-03T20:00:00+00:00",
-      "date_end": "2026-07-03T23:00:00+00:00",
-      "publish_at": null,
-      "visibility": "su_invito",
-      "status": "available",
-      "published": true,
-      "featured": false,
-      "location": {
-        "name": "Vatican Privé",
-        "address": "Via della Conciliazione 44",
-        "maps_url": "https://maps.app.goo.gl/7onYiX7ZFN8Jfj2bA"
-      },
-      "capacity": {
-        "total": 15,
-        "available": 6,
-        "osservatore": null,
-        "custode": null,
-        "damascato": null
-      },
-      "pricing_event": {
-        "su_invito": true
-      },
-      "description_override": "Tema della serata: Rapporto con il tempo \nLa capacità di alternare intensità e contemplazione, azione e riflessione.",
-      "media": {
-        "image_card": "https://static.tildacdn.com/tild3761-6537-4339-b361-323437666632/Salotto_dei_Damascat.jpg"
-      },
-      "registration": {
-        "url": ""
-      },
-      "google_calendar_id": ""
-    }
-  ]
+  "events": []
 }
