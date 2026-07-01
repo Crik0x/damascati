@@ -234,7 +234,7 @@ async function main() {
     formats: formatsRaw.filter(f => f.attivo).map(f => formatToJson(f, config)),
     hosts: [{
       id: 'nicolaj', name: "Nicolaj D'Ortona", role: 'Fondatore',
-      url: 'https://damascati.it/chi-siamo', image: ''
+      url: 'https://damascati.it/identita', image: ''
     }],
     events: upcoming
   };
