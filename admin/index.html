@@ -1521,7 +1521,7 @@ async function loadTemplates() {
   try {
     const data = await sbQ('formats','?order=id.asc');
     C.templates = data.map(normFormat); data = C.templates;
-    renderTemplateGrid(data);
+    try{ renderTemplateGrid(data); }catch(err){ console.error('renderTemplateGrid:', err); }
     const opts = data.map(t=>`<option value="${t.id}">${t.nome}<\/option>`).join('');
     ['occ-tpl','occ-template-filter'].forEach(id=>{
       const el=document.getElementById(id);
@@ -1529,7 +1529,7 @@ async function loadTemplates() {
       if(id==='occ-tpl') el.innerHTML='<option value="">— scegli template —<\/option>'+opts;
     });
     document.getElementById('s-template').textContent = data.length;
-  } catch(e){ toast('Errore caricamento template','error'); }
+  } catch(e){ console.error('loadTemplates:', e); toast('Errore template: '+((e&&e.message)?e.message:e),'error'); }
 }
 
 function aggiornaContatoriTemplate(){
@@ -1787,6 +1787,10 @@ function openModalOccorrenza(occ=null, preDate=null, preTpl=null) {
   document.getElementById('occ-prezzi').style.display='';
   document.getElementById('occ-vis').value='public';
   document.getElementById('occ-status').value='available';
+
+  const _tplOpts=(C.templates||[]).map(t=>`<option value="${t.id}">${t.nome||t.name||t.id}</option>`).join('');
+  const _ot=document.getElementById('occ-tpl'); if(_ot) _ot.innerHTML='<option value="">— scegli template —</option>'+_tplOpts;
+  const _of=document.getElementById('occ-template-filter'); if(_of&&_of.options.length<=1) _of.innerHTML='<option value="all">Tutti i template</option>'+_tplOpts;
 
   if(preDate){document.getElementById('occ-start').value=preDate;autoSetEnd();}
   if(preTpl){document.getElementById('occ-tpl').value=preTpl;onOccTplChange();}
