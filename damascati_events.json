@@ -1,6 +1,6 @@
 {
   "club": "Il Salotto dei Damascati",
-  "last_updated": "2026-07-01T23:21:35.038Z",
+  "last_updated": "2026-07-02T05:42:19.657Z",
   "version": "3.0",
   "config": {
     "sconto_custode": 10,
@@ -89,5 +89,42 @@
       "image": ""
     }
   ],
-  "events": []
+  "events": [
+    {
+      "id": "salatto_culturale_roma_26_001",
+      "format_id": "salatto_culturale",
+      "title": "Salotto Culturale",
+      "citta": "RM",
+      "date_start": "2026-07-03T20:00:00+00:00",
+      "date_end": "2026-07-03T23:00:00+00:00",
+      "publish_at": null,
+      "visibility": "su_invito",
+      "status": "available",
+      "published": true,
+      "featured": false,
+      "location": {
+        "name": "Villa Privata - Olgiata",
+        "address": "",
+        "maps_url": ""
+      },
+      "capacity": {
+        "total": 15,
+        "available": 4,
+        "osservatore": null,
+        "custode": null,
+        "damascato": null
+      },
+      "pricing_event": {
+        "free_with_booking": true
+      },
+      "description_override": "",
+      "media": {
+        "image_card": "https://static.tildacdn.com/tild3761-6537-4339-b361-323437666632/Salotto_dei_Damascat.jpg"
+      },
+      "registration": {
+        "url": ""
+      },
+      "google_calendar_id": ""
+    }
+  ]
 }
