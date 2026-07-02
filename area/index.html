@@ -1,4 +1,12 @@
 <!DOCTYPE html>
+<!-- ═══════════════════════════════════════════════════
+     AREA RISERVATA — Il Salotto dei Damascati · area.damascati.it
+     File: area.html (index) · Versione: v2 · Creato: 2026-07-02 (Europe/Rome)
+     Cambia: auth su tabella members via auth_user_id · schermata /welcome
+     (completamento profilo + password, strada A) · INSERT membro via webhook
+     n8n · letture pannelli riallineate a bookings/attendance/dama_log.
+     NB: flusso prenotazioni (sync DAMA/prezzi/capacità) resta blocco dedicato.
+════════════════════════════════════════════════════ -->
 <html lang="it">
 <head>
 <meta charset="UTF-8">
@@ -66,11 +74,6 @@ body {
   padding:2rem;
   background:var(--bg);
   position:relative; overflow:hidden;
-}
-#login-screen::before {
-  content:'';position:absolute;inset:0;
-  background:radial-gradient(ellipse 60% 50% at 50% 30%, rgba(201,169,110,0.08) 0%, transparent 60%);
-  pointer-events:none;
 }
 .login-card {
   width:100%;max-width:420px;
@@ -454,6 +457,54 @@ body {
   .profilo-grid{grid-template-columns:1fr;}
   .eventi-grid{grid-template-columns:1fr;}
 }
+
+/* ── WELCOME: completamento profilo (post-conferma email) ── */
+#welcome-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:2rem;background:var(--bg);}
+.wl-card{width:100%;max-width:560px;background:var(--bg-2);border:1px solid var(--border);border-radius:12px;padding:2.6rem 2.4rem;box-shadow:var(--shadow);}
+.wl-head{text-align:center;margin-bottom:1.4rem;}
+.wl-symbol{font-size:1.6rem;color:var(--oro);}
+.wl-title{font-family:var(--font-d);font-size:1.7rem;color:var(--text);margin-top:.4rem;}
+.wl-sub{font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--text-3);margin-top:.3rem;}
+.wl-steps{display:flex;margin:1.2rem 0 1.6rem;border:1px solid var(--border);border-radius:var(--r);overflow:hidden;}
+.wl-step-item{flex:1;text-align:center;padding:.6rem .3rem;font-size:.6rem;letter-spacing:.05em;text-transform:uppercase;color:var(--text-3);background:var(--bg-3);border-right:1px solid var(--border);}
+.wl-step-item:last-child{border-right:none;}
+.wl-step-item.active{background:var(--oro);color:#0F0D0B;}
+.wl-step-item.done{background:var(--bg-4);color:var(--oro);}
+.wl-pane{display:none;}
+.wl-pane.active{display:block;}
+.wl-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+.wl-field{margin-bottom:1.2rem;}
+.wl-label{display:block;font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--text-2);margin-bottom:.45rem;}
+.wl-label .opt{text-transform:none;letter-spacing:0;color:var(--text-3);font-style:italic;}
+.wl-input{width:100%;background:var(--bg-3);border:1px solid var(--border);border-radius:var(--r);padding:.8rem .9rem;font-family:var(--font-s);font-size:.95rem;color:var(--text);}
+.wl-input:focus{outline:none;border-color:var(--oro);}
+.wl-note{font-size:.72rem;color:var(--text-3);margin-top:.35rem;font-style:italic;}
+.wl-phone{display:flex;gap:.5rem;}
+.wl-prefix{position:relative;background:var(--bg-3);border:1px solid var(--border);border-radius:var(--r);color:var(--text);padding:0 .8rem;cursor:pointer;font-size:.9rem;white-space:nowrap;}
+.wl-arrow{font-size:.6rem;color:var(--text-3);}
+.wl-prefix-menu{display:none;position:absolute;z-index:10;margin-top:.3rem;max-height:220px;overflow:auto;background:var(--bg-2);border:1px solid var(--border-h);border-radius:var(--r);min-width:220px;box-shadow:var(--shadow);}
+.wl-prefix-menu.open{display:block;}
+.wl-prefix-opt{padding:.6rem .9rem;font-size:.85rem;color:var(--text);cursor:pointer;display:flex;justify-content:space-between;gap:1rem;}
+.wl-prefix-opt:hover{background:var(--bg-3);}
+.wl-prefix-opt span{color:var(--text-3);font-family:var(--font-m);}
+.wl-gender{display:flex;gap:.6rem;flex-wrap:wrap;}
+.wl-gbtn{flex:1;min-width:120px;background:var(--bg-3);border:1px solid var(--border);border-radius:var(--r);color:var(--text-2);padding:.7rem;cursor:pointer;font-family:var(--font-s);font-size:.85rem;}
+.wl-gbtn.sel{border-color:var(--oro);color:var(--oro);background:rgba(201,169,110,0.08);}
+.wl-tratti{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:.5rem;max-height:210px;overflow:auto;padding:.2rem;}
+.wl-tratto{background:var(--bg-3);border:1px solid var(--border);border-radius:var(--r);padding:.55rem .6rem;cursor:pointer;}
+.wl-tratto b{display:block;font-family:var(--font-m);font-size:.62rem;color:var(--oro);}
+.wl-tratto span{font-size:.78rem;color:var(--text-2);}
+.wl-tratto.sel{border-color:var(--oro);background:rgba(201,169,110,0.08);}
+.wl-tratto.sel span{color:var(--text);}
+.wl-check{display:flex;gap:.6rem;align-items:flex-start;margin-bottom:1rem;font-size:.82rem;color:var(--text-2);line-height:1.5;cursor:pointer;}
+.wl-check input{margin-top:.2rem;accent-color:var(--oro);}
+.wl-nav{display:flex;justify-content:space-between;gap:1rem;margin-top:1.4rem;}
+.wl-btn{background:var(--oro);color:#0F0D0B;border:none;border-radius:var(--r);padding:.8rem 1.6rem;font-family:var(--font-s);font-weight:600;font-size:.85rem;cursor:pointer;}
+.wl-btn.ghost{background:transparent;border:1px solid var(--border);color:var(--text-2);}
+.wl-btn:hover{opacity:.92;}
+.wl-msg{margin-top:1rem;font-size:.86rem;color:#ff8080;display:none;}
+@media(max-width:520px){.wl-row{grid-template-columns:1fr;}.wl-step-item{font-size:.5rem;}}
+
 </style>
 </head>
 <body data-theme="dark">
@@ -487,6 +538,108 @@ body {
 </div>
 
 <!-- APP -->
+
+<!-- WELCOME · completamento profilo dopo la conferma email -->
+<div id="welcome-screen" style="display:none;">
+  <div class="wl-card">
+    <div class="wl-head">
+      <span class="wl-symbol">✦</span>
+      <div class="wl-title">Il Salotto ti ha riconosciuto</div>
+      <div class="wl-sub">Completa il tuo profilo per entrare</div>
+    </div>
+
+    <div class="wl-steps">
+      <div class="wl-step-item active" data-s="1">I · Chi sei</div>
+      <div class="wl-step-item" data-s="2">II · La radice</div>
+      <div class="wl-step-item" data-s="3">III · Il percorso</div>
+      <div class="wl-step-item" data-s="4">IV · L'accesso</div>
+    </div>
+
+    <div class="wl-pane active" id="wl-1">
+      <div class="wl-row">
+        <div class="wl-field"><label class="wl-label">Nome *</label><input class="wl-input" id="w-nome" type="text" autocomplete="given-name"></div>
+        <div class="wl-field"><label class="wl-label">Cognome *</label><input class="wl-input" id="w-cognome" type="text" autocomplete="family-name"></div>
+      </div>
+      <div class="wl-field">
+        <label class="wl-label">Telefono *</label>
+        <div class="wl-phone">
+          <button type="button" class="wl-prefix" id="w-prefixBtn" onclick="wTogglePrefix(event)"><span id="w-prefixFlag">🇮🇹</span> <span id="w-prefixCode">+39</span> <span class="wl-arrow">▾</span></button>
+          <input class="wl-input" id="w-telefono" type="tel" placeholder="388 000 0000" autocomplete="tel-national">
+        </div>
+        <div class="wl-prefix-menu" id="w-prefixMenu"></div>
+      </div>
+      <div class="wl-nav"><span></span><button class="wl-btn" onclick="wNext(2)">Continua →</button></div>
+    </div>
+
+    <div class="wl-pane" id="wl-2">
+      <div class="wl-field">
+        <label class="wl-label">Genere *</label>
+        <div class="wl-gender">
+          <button type="button" class="wl-gbtn" onclick="wGender('uomo',this)">♂ Uomo</button>
+          <button type="button" class="wl-gbtn" onclick="wGender('donna',this)">♀ Donna</button>
+          <button type="button" class="wl-gbtn" onclick="wGender('altro',this)">Non specificato</button>
+        </div>
+        <input type="hidden" id="w-genere" value="">
+      </div>
+      <div class="wl-field">
+        <label class="wl-label">Città *</label>
+        <select class="wl-input" id="w-citta"><option value="">Caricamento…</option></select>
+        <p class="wl-note">Puoi entrare nelle città dove il Salotto è già attivo. Le altre sono in arrivo.</p>
+      </div>
+      <div class="wl-field">
+        <label class="wl-label">Data di nascita *</label>
+        <input class="wl-input" id="w-nascita" type="date" onchange="wAge(this)">
+        <p class="wl-note" id="w-age-note">Devi avere almeno 18 anni per entrare nel Salotto.</p>
+      </div>
+      <div class="wl-nav"><button class="wl-btn ghost" onclick="wPrev(1)">← Indietro</button><button class="wl-btn" onclick="wNext(3)">Continua →</button></div>
+    </div>
+
+    <div class="wl-pane" id="wl-3">
+      <div class="wl-field">
+        <label class="wl-label">Ambito professionale *</label>
+        <select class="wl-input" id="w-professione"><option value="">Seleziona...</option><option value="Arte e Cultura">Arte e Cultura</option>
+<option value="Imprenditoria">Imprenditoria</option>
+<option value="Finanza e Consulenza">Finanza e Consulenza</option>
+<option value="Educazione e Ricerca">Educazione e Ricerca</option>
+<option value="Professioni liberali">Professioni liberali</option>
+<option value="Comunicazione e Design">Comunicazione e Design</option>
+<option value="Diritto">Diritto</option>
+<option value="Tecnologia">Tecnologia</option>
+<option value="Medicina e Salute">Medicina e Salute</option>
+<option value="Altro">Altro</option></select>
+      </div>
+      <div class="wl-field">
+        <label class="wl-label">Come hai scoperto i Damascati? *</label>
+        <select class="wl-input" id="w-fonte"><option value="">Seleziona...</option><option value="Instagram">Instagram</option>
+<option value="Passaparola">Passaparola</option>
+<option value="Ricerca online">Ricerca online</option>
+<option value="Invito diretto">Invito diretto</option>
+<option value="Evento">Ho partecipato a un incontro</option>
+<option value="Altro">Altro</option></select>
+      </div>
+      <div class="wl-field">
+        <label class="wl-label">Codice di chi ti ha invitato <span class="opt">(facoltativo)</span></label>
+        <input class="wl-input" id="w-referral" type="text" placeholder="IT-26-RM-001">
+      </div>
+      <div class="wl-field">
+        <label class="wl-label">Il tratto che senti più tuo <span class="opt">(facoltativo)</span></label>
+        <div class="wl-tratti" id="w-tratti"></div>
+      </div>
+      <div class="wl-nav"><button class="wl-btn ghost" onclick="wPrev(2)">← Indietro</button><button class="wl-btn" onclick="wNext(4)">Continua →</button></div>
+    </div>
+
+    <div class="wl-pane" id="wl-4">
+      <div class="wl-field"><label class="wl-label">Scegli una password *</label><input class="wl-input" id="w-pass" type="password" autocomplete="new-password" placeholder="Almeno 8 caratteri"></div>
+      <div class="wl-field"><label class="wl-label">Conferma password *</label><input class="wl-input" id="w-pass2" type="password" autocomplete="new-password"></div>
+      <label class="wl-check"><input type="checkbox" id="w-gdpr"><span><b style="color:var(--text-2)">Obbligatorio · </b>Acconsento al trattamento dei dati personali ai sensi del GDPR. I dati non verranno condivisi con terze parti.</span></label>
+      <label class="wl-check"><input type="checkbox" id="w-nl" checked><span>Desidero ricevere la newsletter del Salotto: incontri, articoli de La Rivista, aggiornamenti del movimento.</span></label>
+      <div class="wl-nav"><button class="wl-btn ghost" onclick="wPrev(3)">← Indietro</button><button class="wl-btn" id="w-submit" onclick="submitWelcome()">Attiva il profilo ✦</button></div>
+      <div class="wl-msg" id="w-msg"></div>
+    </div>
+
+  </div>
+</div>
+
 <div id="app">
   <!-- SIDEBAR -->
   <aside class="sidebar" id="sidebar">
@@ -742,6 +895,10 @@ const EVENTS_JSON = 'https://raw.githubusercontent.com/Crik0x/damascati/refs/hea
 
 let SESSION = null;
 let UTENTE  = null; // record da tabella salotto
+let AUTH_USER = null;         // utente auth corrente (auth.users)
+let CITIES_W  = [];           // città per il dropdown welcome
+let welcomeStep = 1;
+const N8N_SIGNUP = 'https://n8n-production-968a.up.railway.app/webhook/nuova-iscrizione-damascati';
 let PRENOTAZIONI_UTENTE = [];
 let EVENTI_DATA = null;
 let EVENTO_SELEZIONATO = null;
@@ -869,35 +1026,169 @@ async function doLogout() {
 // INIT APP
 // ═══════════════════════════════════
 async function avviaApp() {
+  // 1) utente auth corrente
+  let authUser = null;
+  try {
+    authUser = await fetch(`${SB_URL}/auth/v1/user`, {
+      headers:{'apikey':SB_ANON,'Authorization':`Bearer ${SESSION.access_token}`}
+    }).then(r=>r.json());
+  } catch(e) {}
+  if (!authUser || !authUser.id) { doLogout(); return; }
+  AUTH_USER = authUser;
+
+  // 2) esiste già la riga membro? (per auth_user_id, fallback email)
+  let rows = [];
+  try {
+    rows = await sbQ('members', `?auth_user_id=eq.${authUser.id}&limit=1`);
+    if (!rows.length && authUser.email)
+      rows = await sbQ('members', `?email=eq.${encodeURIComponent(authUser.email)}&limit=1`);
+  } catch(e) { console.warn('members lookup:', e.message); }
+  UTENTE = rows[0] || null;
+
+  // 3) profilo non ancora completato → schermata di benvenuto
+  if (!UTENTE) { await mostraWelcome(authUser); return; }
+
+  // 4) profilo esistente → dashboard
   document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('welcome-screen').style.display = 'none';
   document.getElementById('app').style.display = 'block';
   document.getElementById('topbar-date').textContent =
     new Date().toLocaleDateString('it-IT',{weekday:'long',day:'numeric',month:'long'});
 
-  // Carica dati utente da salotto
-  try {
-    const user = await fetch(`${SB_URL}/auth/v1/user`, {
-      headers:{'apikey':SB_ANON,'Authorization':`Bearer ${SESSION.access_token}`}
-    }).then(r=>r.json());
-
-    if (user.email) {
-      const rows = await sbQ('salotto', `?email=eq.${encodeURIComponent(user.email)}&limit=1`);
-      UTENTE = rows[0] || null;
-    }
-  } catch(e) { console.warn('Utente non trovato in salotto:', e.message); }
-
-  // Aggiorna sidebar
-  if (UTENTE) {
-    const nome = `${UTENTE.name||''} ${UTENTE.surname||''}`.trim() || UTENTE.email;
-    document.getElementById('sb-nome').textContent = nome;
-    const tier = UTENTE.membership_level || 'osservatore';
-    const tierEl = document.getElementById('sb-tier');
-    tierEl.textContent = cap(tier);
-    tierEl.className = `sb-user-tier tier-${tier}`;
-  }
+  const nome = `${UTENTE.first_name||''} ${UTENTE.last_name||''}`.trim() || UTENTE.email;
+  document.getElementById('sb-nome').textContent = nome;
+  const tier = UTENTE.level || 'osservatore';
+  const tierEl = document.getElementById('sb-tier');
+  tierEl.textContent = cap(tier);
+  tierEl.className = `sb-user-tier tier-${tier}`;
 
   await Promise.all([loadEventi(), loadPrenotazioni(), loadDama(), loadPresenze()]);
   loadDashboard();
+}
+
+// ══════════════════════════════════════════════════
+// WELCOME — completamento profilo (strada A: password qui)
+// ══════════════════════════════════════════════════
+const WL_PREFIXES=[{f:'🇮🇹',n:'Italia',c:'+39'},{f:'🇫🇷',n:'Francia',c:'+33'},{f:'🇩🇪',n:'Germania',c:'+49'},{f:'🇪🇸',n:'Spagna',c:'+34'},{f:'🇬🇧',n:'Regno Unito',c:'+44'},{f:'🇨🇭',n:'Svizzera',c:'+41'},{f:'🇧🇪',n:'Belgio',c:'+32'},{f:'🇳🇱',n:'Paesi Bassi',c:'+31'},{f:'🇵🇹',n:'Portogallo',c:'+351'},{f:'🇦🇹',n:'Austria',c:'+43'},{f:'🇺🇸',n:'Stati Uniti',c:'+1'},{f:'🇦🇪',n:'Emirati Arabi',c:'+971'}];
+const WL_TRATTI=[['I·1','Protagonismo della Volontà'],['I·2',"Centralità dell'Espressione"],['I·3','Disposizione alla Bellezza'],['I·4','Arte di vivere'],['I·5',"Tensione all'intensità"],['I·6',"Attrazione per l'anti-gravità"],['I·7',"Rifiuto dell'inerzia"],['I·8','Desiderio di meritare'],['II·9','Spiritualità'],['II·10','Rapporto con il tempo'],['II·11','Rapporto con il valore'],['II·12','Rapporto con il reale'],['II·13','Cultura come comprensione'],['II·14','Disposizione alla curiosità'],['III·15','Energia e compatibilità'],['III·16','Condivisione primaria'],['III·17','Condivisione superiore'],['III·18',"Disposizione all'ascolto"],['III·19','Gentilezza'],['III·20','Rispetto'],['IV·21','Sensibilità'],['IV·22','Raffinatezza'],['IV·23','Eleganza'],['IV·24','Gusto'],['IV·25','Stile']];
+let wPrefix=WL_PREFIXES[0], wGenderVal='', wTratto='';
+
+async function mostraWelcome(authUser){
+  document.getElementById('login-screen').style.display='none';
+  document.getElementById('app').style.display='none';
+  document.getElementById('welcome-screen').style.display='flex';
+
+  document.getElementById('w-prefixMenu').innerHTML = WL_PREFIXES.map((p,i)=>
+    `<div class="wl-prefix-opt" onclick="wSelPrefix(${i})">${p.f} ${p.n} <span>${p.c}</span></div>`).join('');
+  document.getElementById('w-tratti').innerHTML = WL_TRATTI.map(([num,name])=>
+    `<div class="wl-tratto" onclick="wSelTratto('${num}',this)"><b>${num}</b><span>${name}</span></div>`).join('');
+  document.getElementById('w-nascita').setAttribute('max', new Date().toISOString().split('T')[0]);
+
+  // Città dal DB: attive selezionabili, non attive mostrate come "in arrivo"
+  try { CITIES_W = await sbQ('cities','?select=code,name,active,country&order=sort_order.asc'); }
+  catch(e){ CITIES_W=[]; }
+  const active = CITIES_W.filter(c=>c.active);
+  const soon   = CITIES_W.filter(c=>!c.active);
+  const sel = document.getElementById('w-citta');
+  sel.innerHTML = '<option value="">— scegli la tua città —</option>'
+    + active.map(c=>`<option value="${c.code}">${c.name}</option>`).join('')
+    + (soon.length ? ('<optgroup label="In arrivo">'
+        + soon.map(c=>`<option value="${c.code}" disabled>${c.name} — in arrivo</option>`).join('')
+        + '</optgroup>') : '');
+  wGo(1);
+}
+
+function wGo(n){
+  welcomeStep=n;
+  document.querySelectorAll('.wl-pane').forEach(p=>p.classList.remove('active'));
+  document.getElementById('wl-'+n).classList.add('active');
+  document.querySelectorAll('.wl-step-item').forEach(it=>{
+    const s=+it.dataset.s; it.classList.toggle('active',s===n); it.classList.toggle('done',s<n);
+  });
+}
+function wNext(n){ if(wValidate(welcomeStep)) wGo(n); }
+function wPrev(n){ wGo(n); }
+
+function wValidate(step){
+  const v=id=>document.getElementById(id).value.trim();
+  if(step===1){
+    if(!v('w-nome')){toast('Inserisci il nome','error');return false;}
+    if(!v('w-cognome')){toast('Inserisci il cognome','error');return false;}
+    if(!v('w-telefono')){toast('Inserisci il telefono','error');return false;}
+  }
+  if(step===2){
+    if(!wGenderVal){toast('Seleziona il genere','error');return false;}
+    if(!document.getElementById('w-citta').value){toast('Seleziona la città','error');return false;}
+    const b=document.getElementById('w-nascita').value;
+    if(!b){toast('Inserisci la data di nascita','error');return false;}
+    if(!wIs18(b)){toast('Devi avere almeno 18 anni','error');return false;}
+  }
+  if(step===3){
+    if(!document.getElementById('w-professione').value){toast('Seleziona l\'ambito professionale','error');return false;}
+    if(!document.getElementById('w-fonte').value){toast('Indica come ci hai scoperto','error');return false;}
+  }
+  return true;
+}
+
+function wTogglePrefix(e){ e.stopPropagation(); document.getElementById('w-prefixMenu').classList.toggle('open'); }
+function wSelPrefix(i){ wPrefix=WL_PREFIXES[i]; document.getElementById('w-prefixFlag').textContent=wPrefix.f; document.getElementById('w-prefixCode').textContent=wPrefix.c; document.getElementById('w-prefixMenu').classList.remove('open'); }
+document.addEventListener('click',function(){ const m=document.getElementById('w-prefixMenu'); if(m) m.classList.remove('open'); });
+function wGender(val,el){ wGenderVal=val; document.getElementById('w-genere').value=val; document.querySelectorAll('.wl-gbtn').forEach(b=>b.classList.remove('sel')); el.classList.add('sel'); }
+function wSelTratto(num,el){ wTratto=num; document.querySelectorAll('.wl-tratto').forEach(t=>t.classList.remove('sel')); el.classList.add('sel'); }
+function wIs18(d){ const b=new Date(d), t=new Date(); let a=t.getFullYear()-b.getFullYear(); const m=t.getMonth()-b.getMonth(); if(m<0||(m===0&&t.getDate()<b.getDate()))a--; return a>=18; }
+function wAge(inp){ const note=document.getElementById('w-age-note'); if(inp.value && !wIs18(inp.value)){ note.textContent='Il Salotto è riservato a chi ha compiuto i 18 anni.'; note.style.color='#ff8080'; } else { note.textContent='Devi avere almeno 18 anni per entrare nel Salotto.'; note.style.color=''; } }
+
+async function submitWelcome(){
+  const msg=document.getElementById('w-msg'); msg.style.display='none'; msg.style.color='#ff8080';
+  const pass=document.getElementById('w-pass').value, pass2=document.getElementById('w-pass2').value;
+  if(pass.length<8){ msg.textContent='La password deve avere almeno 8 caratteri.'; msg.style.display='block'; return; }
+  if(pass!==pass2){ msg.textContent='Le due password non coincidono.'; msg.style.display='block'; return; }
+  if(!document.getElementById('w-gdpr').checked){ msg.textContent='Per continuare devi accettare il trattamento dei dati.'; msg.style.display='block'; return; }
+
+  const btn=document.getElementById('w-submit'); btn.disabled=true; const lbl=btn.textContent;
+  btn.innerHTML='<span class="loader" style="border-top-color:#0F0D0B"></span>';
+
+  const cityCode=document.getElementById('w-citta').value;
+  const cityObj=CITIES_W.find(c=>c.code===cityCode)||{};
+  const rawPhone=document.getElementById('w-telefono').value.trim();
+  const phone=rawPhone.startsWith('+')?rawPhone:(wPrefix.c+' '+rawPhone);
+
+  const payload={
+    auth_user_id: AUTH_USER.id,
+    email: AUTH_USER.email,
+    first_name: document.getElementById('w-nome').value.trim(),
+    last_name:  document.getElementById('w-cognome').value.trim(),
+    phone: phone,
+    city: cityCode,                 // CODICE città (es. RM) → registration_city lato n8n
+    country: cityObj.country||'IT',
+    birthday: document.getElementById('w-nascita').value,
+    gender: wGenderVal,
+    profession: document.getElementById('w-professione').value,
+    source: document.getElementById('w-fonte').value,
+    referral: document.getElementById('w-referral').value.trim(),
+    tratto: wTratto,
+    newsletter: document.getElementById('w-nl').checked ? 'true' : 'false'
+  };
+
+  try{
+    // 1) imposta la password sull'account auth (strada A)
+    const pr=await fetch(`${SB_URL}/auth/v1/user`,{
+      method:'PUT',
+      headers:{'apikey':SB_ANON,'Authorization':`Bearer ${SESSION.access_token}`,'Content-Type':'application/json'},
+      body:JSON.stringify({password:pass})
+    });
+    if(!pr.ok){ const e=await pr.json().catch(()=>({})); throw new Error(e.msg||e.error_description||'Errore impostazione password'); }
+
+    // 2) crea la riga membro via webhook n8n (inserisce members, genera dsc_code, livello, DAMA di benvenuto)
+    await fetch(N8N_SIGNUP,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+
+    msg.style.color='#6dbe6d'; msg.textContent='✦ Profilo attivato. Ti portiamo nell\'area…'; msg.style.display='block';
+    // 3) ricarico: al boot avviaApp troverà la riga membro e aprirà la dashboard
+    setTimeout(function(){ location.href='/'; }, 1500);
+  }catch(err){
+    msg.style.color='#ff8080'; msg.textContent='Errore: '+err.message; msg.style.display='block';
+    btn.disabled=false; btn.textContent=lbl;
+  }
 }
 
 // ═══════════════════════════════════
@@ -936,18 +1227,18 @@ function loadDashboard() {
   // Prenotazioni attive
   const now = new Date();
   const attive = (window._prenotazioni||[]).filter(p=>{
-    const evt = getEvento(p.evento_id);
-    return evt && new Date(evt.date_start) > now && p.stato !== 'cancellata';
+    const evt = getEvento(p.event_id);
+    return evt && new Date(evt.date_start) > now && p.status !== 'cancelled';
   });
   document.getElementById('dash-prenotazioni').textContent = attive.length;
 
   // Prossimo evento prenotato
   const prossimo = attive.sort((a,b)=>{
-    const ea=getEvento(a.evento_id), eb=getEvento(b.evento_id);
+    const ea=getEvento(a.event_id), eb=getEvento(b.event_id);
     return new Date(ea?.date_start||0)-new Date(eb?.date_start||0);
   })[0];
   if (prossimo) {
-    const evt = getEvento(prossimo.evento_id);
+    const evt = getEvento(prossimo.event_id);
     document.getElementById('dash-prossimo').textContent = evt?.title||'—';
     document.getElementById('dash-prossimo-data').textContent = fmtDate(evt?.date_start);
   }
@@ -961,14 +1252,14 @@ function loadDashboard() {
 
   // Presenze list ultime 3
   const pl = document.getElementById('dash-presenze-list');
-  const last3 = [...presenze].sort((a,b)=>new Date(b.timestamp_checkin)-new Date(a.timestamp_checkin)).slice(0,3);
+  const last3 = [...presenze].sort((a,b)=>new Date(b.checkin_at)-new Date(a.checkin_at)).slice(0,3);
   if (last3.length) {
     pl.innerHTML = last3.map(p=>{
-      const evt = getEvento(p.evento_id);
+      const evt = getEvento(p.event_id);
       return `<div class="presenza-item">
-        <div class="presenza-data">${fmtDateShort(p.timestamp_checkin)}</div>
+        <div class="presenza-data">${fmtDateShort(p.checkin_at)}</div>
         <div class="presenza-evento">${evt?.title||'—'}</div>
-        <div class="presenza-dama">+${p.dama_assegnati||0}</div>
+        <div class="presenza-dama">+${p.dama_awarded||0}</div>
       </div>`;
     }).join('');
   }
@@ -1007,7 +1298,7 @@ function renderEventi(evts) {
     grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1;"><p>Nessun evento in programma al momento</p></div>';
     return;
   }
-  const tier = UTENTE?.membership_level||'osservatore';
+  const tier = UTENTE?.level||'osservatore';
   grid.innerHTML = upcoming.map(e=>buildEventoCard(e,tier)).join('');
 }
 
@@ -1036,7 +1327,7 @@ function buildEventoCard(evt, tier) {
   else if(avail<=3){postiClass='pochi';postiLabel=`Ultimi ${avail} posti`;}
 
   // Già prenotato?
-  const giàPrenotato = (window._prenotazioni||[]).some(p=>p.evento_id===evt.id&&p.stato!=='cancellata');
+  const giàPrenotato = (window._prenotazioni||[]).some(p=>p.event_id===evt.id&&p.status!=='cancelled');
 
   // CTA
   let btnHtml='';
@@ -1097,7 +1388,7 @@ function getCatLabel(id){
 async function loadPrenotazioni() {
   if (!UTENTE) return;
   try {
-    const data = await sbQ('prenotazioni',`?iscritto_id=eq.${UTENTE.id}&order=created_at.desc`);
+    const data = await sbQ('bookings',`?member_id=eq.${UTENTE.id}&order=created_at.desc`);
     window._prenotazioni = data;
     PRENOTAZIONI_UTENTE = data;
     renderPrenotazioni(data);
@@ -1111,20 +1402,20 @@ function renderPrenotazioni(data) {
     list.innerHTML='<div class="empty-state"><p>Nessuna prenotazione ancora</p></div>'; return;
   }
   list.innerHTML = data.map(p=>{
-    const evt = getEvento(p.evento_id);
+    const evt = getEvento(p.event_id);
     const past = evt ? new Date(evt.date_start)<now : false;
-    const statusColor = p.stato==='confermata'?'#6dbe6d':p.stato==='attesa'?'var(--oro)':'#ff8080';
+    const statusColor = p.status==='confirmed'?'#6dbe6d':p.status==='waitlist'?'var(--oro)':'#ff8080';
     return `<div class="card" style="margin-bottom:0.8rem;">
       <div class="card-body" style="display:flex;align-items:center;gap:1rem;">
         <div style="flex:1;">
-          <div style="font-family:var(--font-d);font-size:1.1rem;color:var(--text)">${evt?.title||p.evento_id}</div>
+          <div style="font-family:var(--font-d);font-size:1.1rem;color:var(--text)">${evt?.title||p.event_id}</div>
           <div style="font-size:0.72rem;color:var(--text-3);margin-top:2px">${evt?fmtDate(evt.date_start):'—'} · ${evt?.location?.name||evt?.citta||'—'}</div>
         </div>
         <div style="text-align:right;">
-          <div style="font-size:0.68rem;letter-spacing:0.12em;text-transform:uppercase;color:${statusColor}">${p.stato||'confermata'}</div>
-          ${p.prezzo_finale!=null?`<div style="font-family:var(--font-d);font-size:1rem;color:var(--text);margin-top:2px">€${p.prezzo_finale}</div>`:''}
+          <div style="font-size:0.68rem;letter-spacing:0.12em;text-transform:uppercase;color:${statusColor}">${p.status||'confirmed'}</div>
+          ${p.price_quoted!=null?`<div style="font-family:var(--font-d);font-size:1rem;color:var(--text);margin-top:2px">€${p.price_quoted}</div>`:''}
         </div>
-        ${!past&&p.stato!=='cancellata'?`<button class="btn btn-ghost" style="padding:0.3rem 0.7rem;font-size:0.65rem;color:#ff8080;border-color:rgba(255,128,128,0.2);" onclick="cancellaPrenotazione('${p.id}')">Annulla</button>`:''}
+        ${!past&&p.status!=='cancelled'?`<button class="btn btn-ghost" style="padding:0.3rem 0.7rem;font-size:0.65rem;color:#ff8080;border-color:rgba(255,128,128,0.2);" onclick="cancellaPrenotazione('${p.id}')">Annulla</button>`:''}
       </div>
     </div>`;
   }).join('');
@@ -1138,7 +1429,7 @@ function apriModalPrenota(eventoId) {
   if (!evt) return;
   EVENTO_SELEZIONATO = evt;
 
-  const tier = UTENTE?.membership_level||'osservatore';
+  const tier = UTENTE?.level||'osservatore';
   const pr = evt.pricing_event||{};
   const isFree = pr.free_with_booking;
   const prezzo = isFree ? 0 : (pr[tier] ?? pr.osservatore ?? 0);
@@ -1164,14 +1455,14 @@ function apriModalPrenota(eventoId) {
   const postiGarantiti = parseInt(evt.posti_garantiti_osservatore||5);
   if (tier==='osservatore') {
     // Conta prenotazioni Osservatori per questo evento
-    const prenotatiOss = (window._prenotazioni||[]).filter(p=>p.evento_id===eventoId&&p.stato!=='cancellata').length;
+    const prenotatiOss = (window._prenotazioni||[]).filter(p=>p.event_id===eventoId&&p.status!=='cancelled').length;
     if (prenotatiOss >= postiGarantiti) {
       avvisoEl.style.display='block';
       avvisoEl.style.background='rgba(201,169,110,0.08)';
       avvisoEl.style.borderLeft='3px solid var(--oro)';
       avvisoEl.style.color='var(--text-2)';
       avvisoEl.innerHTML='⚠️ I posti garantiti per Osservatori sono esauriti. Verrai inserito in <strong>lista d\'attesa</strong> — conferma definitiva 6 ore prima dell\'evento.';
-      document.getElementById('mp-btn-label').textContent = 'Entra in lista d\'attesa';
+      document.getElementById('mp-btn-label').textContent = 'Entra in lista d\'waitlist';
     } else {
       avvisoEl.style.display='none';
       document.getElementById('mp-btn-label').textContent = 'Conferma prenotazione';
@@ -1187,41 +1478,39 @@ function apriModalPrenota(eventoId) {
 async function confermaPrenota() {
   if (!EVENTO_SELEZIONATO || !UTENTE) return;
   const evt = EVENTO_SELEZIONATO;
-  const tier = UTENTE.membership_level||'osservatore';
+  const tier = UTENTE.level||'osservatore';
   const pr = evt.pricing_event||{};
   const isFree = pr.free_with_booking;
   const prezzo = isFree ? 0 : (pr[tier] ?? pr.osservatore ?? 0);
   const postiGarantiti = parseInt(evt.posti_garantiti_osservatore||5);
 
   // Conta prenotazioni Osservatori
-  const prenotatiOss = (window._prenotazioni||[]).filter(p=>p.evento_id===evt.id&&p.stato!=='cancellata').length;
-  const stato = (tier==='osservatore' && prenotatiOss>=postiGarantiti) ? 'attesa' : 'confermata';
-  const bloccante = tier !== 'osservatore' || stato === 'confermata';
+  const prenotatiOss = (window._prenotazioni||[]).filter(p=>p.event_id===evt.id&&p.status!=='cancelled').length;
+  const stato = (tier==='osservatore' && prenotatiOss>=postiGarantiti) ? 'waitlist' : 'confirmed';
+  const bloccante = tier !== 'osservatore' || stato === 'confirmed';
 
   const btnLabel = document.getElementById('mp-btn-label');
   btnLabel.innerHTML = '<span class="loader" style="border-top-color:#0F0D0B"></span>';
 
   try {
-    // 1. Crea prenotazione
-    await sbI('prenotazioni', {
-      id: 'pre_'+Date.now(),
-      iscritto_id: UTENTE.id,
-      evento_id: evt.id,
-      stato,
-      bloccante,
-      prezzo_pagato: prezzo,
-      prezzo_finale: prezzo,
-      dama_usati: 0,
-      sconto_applicato: 0,
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString()
+    // 1. Crea prenotazione (schema reale: bookings)
+    // ⚠️ FLUSSO PRENOTAZIONI = blocco dedicato ancora da validare (sync DAMA, prezzi
+    //    per livello, capacità/waitlist). Qui l'insert punta alle colonne reali di
+    //    bookings; la logica completa va rifinita nella sessione "prenotazioni".
+    await sbI('bookings', {
+      member_id: UTENTE.id,
+      event_id: evt.id,
+      status: stato,               // 'confirmed' | 'waitlist'
+      price_quoted: prezzo,
+      dama_applied: 0
+      // id: bigserial (auto) · created_at: default now() — non impostare
     });
 
     // 2. Decrementa posti disponibili
     if (bloccante) {
       const cap = evt.capacity||{};
       const nuoviPosti = Math.max(0,(cap.available??0)-1);
-      await sbU('eventi','id=eq.'+evt.id,{capacity_available:nuoviPosti,updated_at:new Date().toISOString()});
+      await sbU('events','id=eq.'+evt.id,{capacity_available:nuoviPosti,updated_at:new Date().toISOString()});
       // Aggiorna localmente
       if (evt.capacity) evt.capacity.available = nuoviPosti;
     }
@@ -1231,7 +1520,7 @@ async function confermaPrenota() {
 
     closeModal('modal-prenota');
 
-    const msg = stato==='confermata'
+    const msg = stato==='confirmed'
       ? '✓ Prenotazione confermata — controlla la tua email'
       : '⌛ Sei in lista d\'attesa — riceverai conferma 6 ore prima';
 
@@ -1250,7 +1539,7 @@ async function confermaPrenota() {
 async function cancellaPrenotazione(id) {
   if (!confirm('Vuoi annullare questa prenotazione?')) return;
   try {
-    await sbU('prenotazioni','id=eq.'+id,{stato:'cancellata',updated_at:new Date().toISOString()});
+    await sbU('bookings','id=eq.'+id,{stato:'cancelled',updated_at:new Date().toISOString()});
     toast('Prenotazione annullata','success');
     await loadPrenotazioni();
     loadDashboard();
@@ -1263,7 +1552,7 @@ async function cancellaPrenotazione(id) {
 async function loadDama() {
   if (!UTENTE) return;
   try {
-    const data = await sbQ('dama_log',`?iscritto_id=eq.${UTENTE.id}&order=created_at.desc`);
+    const data = await sbQ('dama_log',`?member_id=eq.${UTENTE.id}&order=created_at.desc`);
     window._damaLog = data;
     renderDamaFull(data);
   } catch(e) { window._damaLog=[]; }
@@ -1304,7 +1593,7 @@ function labelDama(tipo){
 async function loadPresenze() {
   if (!UTENTE) return;
   try {
-    const data = await sbQ('presenze',`?iscritto_id=eq.${UTENTE.id}&order=timestamp_checkin.desc`);
+    const data = await sbQ('attendance',`?member_id=eq.${UTENTE.id}&order=checkin_at.desc`);
     window._presenze = data;
   } catch(e) { window._presenze=[]; }
 }
@@ -1314,7 +1603,7 @@ async function loadPresenze() {
 // ═══════════════════════════════════
 function renderProfilo() {
   if (!UTENTE) return;
-  const tier = UTENTE.membership_level||'osservatore';
+  const tier = UTENTE.level||'osservatore';
   const tierDescs = {
     osservatore:'Accesso agli eventi pubblici del Salotto',
     custode:'Accesso prioritario + sconto del 10% su tutti gli eventi',
@@ -1322,7 +1611,7 @@ function renderProfilo() {
   };
 
   document.getElementById('profilo-dati').innerHTML = `
-    <div class="profilo-field"><div class="profilo-label">Nome</div><div class="profilo-value">${UTENTE.name||'—'} ${UTENTE.surname||''}</div></div>
+    <div class="profilo-field"><div class="profilo-label">Nome</div><div class="profilo-value">${UTENTE.first_name||'—'} ${UTENTE.last_name||''}</div></div>
     <div class="profilo-field"><div class="profilo-label">Email</div><div class="profilo-value">${UTENTE.email||'—'}</div></div>
     <div class="profilo-field"><div class="profilo-label">Città</div><div class="profilo-value">${UTENTE.city||'—'}</div></div>
     <div class="profilo-field"><div class="profilo-label">Professione</div><div class="profilo-value">${UTENTE.attivita||'—'}</div></div>
