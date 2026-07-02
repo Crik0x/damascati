@@ -1216,7 +1216,7 @@ function closeSidebar(){document.getElementById('sidebar').classList.remove('ope
 function loadDashboard() {
   // DAMA saldo
   const dama = window._damaLog || [];
-  const saldo = Math.round(dama.reduce((s,d)=>s+(parseFloat(d.importo)||0),0));
+  const saldo = Math.round(dama.reduce((s,d)=>s+(parseFloat(d.amount)||0),0));
   document.getElementById('dash-dama').textContent = saldo;
   document.getElementById('dash-dama-sub').textContent = saldo===1?'credito disponibile':'crediti disponibili';
 
@@ -1272,7 +1272,7 @@ async function loadEventi() {
   try {
     const res = await fetch(EVENTS_JSON+'?t='+Date.now());
     EVENTI_DATA = await res.json();
-    const cities = [...new Set((EVENTI_DATA.events||[]).map(e=>e.citta).filter(Boolean))];
+    const cities = [...new Set((EVENTI_DATA.events||[]).map(e=>e.city).filter(Boolean))];
     const sel = document.getElementById('filter-citta');
     sel.innerHTML = '<option value="all">Tutte le città</option>' +
       cities.map(c=>`<option value="${c}">${c}</option>`).join('');
@@ -1282,7 +1282,7 @@ async function loadEventi() {
 
 function filterEventi() {
   const city = document.getElementById('filter-citta').value;
-  const evts = (EVENTI_DATA?.events||[]).filter(e=>city==='all'||e.citta===city);
+  const evts = (EVENTI_DATA?.events||[]).filter(e=>city==='all'||e.city===city);
   renderEventi(evts);
 }
 
@@ -1539,7 +1539,7 @@ async function confermaPrenota() {
 async function cancellaPrenotazione(id) {
   if (!confirm('Vuoi annullare questa prenotazione?')) return;
   try {
-    await sbU('bookings','id=eq.'+id,{stato:'cancelled',updated_at:new Date().toISOString()});
+    await sbU('bookings','id=eq.'+id,{status:'cancelled',updated_at:new Date().toISOString()});
     toast('Prenotazione annullata','success');
     await loadPrenotazioni();
     loadDashboard();
@@ -1559,21 +1559,21 @@ async function loadDama() {
 }
 
 function renderDamaItem(d) {
-  const pos = parseFloat(d.importo)>=0;
+  const pos = parseFloat(d.amount)>=0;
   const icons = {presenza:'🎭',benvenuto:'✦',referral:'👥',social:'📱',manuale:'⚡',utilizzo:'💳',bonus_frequenza:'🔥'};
   return `<div class="dama-item">
-    <div class="dama-icon ${pos?'plus':'minus'}">${icons[d.tipo]||'✦'}</div>
+    <div class="dama-icon ${pos?'plus':'minus'}">${icons[d.kind]||'✦'}</div>
     <div class="dama-info">
-      <div class="dama-tipo">${labelDama(d.tipo)}</div>
+      <div class="dama-tipo">${labelDama(d.kind)}</div>
       <div class="dama-data">${fmtDateShort(d.created_at)}</div>
     </div>
-    <div class="dama-importo ${pos?'plus':'minus'}">${pos?'+':''}${d.importo}</div>
+    <div class="dama-importo ${pos?'plus':'minus'}">${pos?'+':''}${d.amount}</div>
   </div>`;
 }
 
 function renderDamaFull(data) {
-  const em = data.filter(d=>parseFloat(d.importo)>0).reduce((s,d)=>s+parseFloat(d.importo),0);
-  const us = data.filter(d=>parseFloat(d.importo)<0).reduce((s,d)=>s+Math.abs(parseFloat(d.importo)),0);
+  const em = data.filter(d=>parseFloat(d.amount)>0).reduce((s,d)=>s+parseFloat(d.amount),0);
+  const us = data.filter(d=>parseFloat(d.amount)<0).reduce((s,d)=>s+Math.abs(parseFloat(d.amount)),0);
   const saldo = Math.round(em-us);
   document.getElementById('dama-saldo').textContent = saldo;
   document.getElementById('dama-totale').textContent = Math.round(em);
@@ -1613,8 +1613,8 @@ function renderProfilo() {
   document.getElementById('profilo-dati').innerHTML = `
     <div class="profilo-field"><div class="profilo-label">Nome</div><div class="profilo-value">${UTENTE.first_name||'—'} ${UTENTE.last_name||''}</div></div>
     <div class="profilo-field"><div class="profilo-label">Email</div><div class="profilo-value">${UTENTE.email||'—'}</div></div>
-    <div class="profilo-field"><div class="profilo-label">Città</div><div class="profilo-value">${UTENTE.city||'—'}</div></div>
-    <div class="profilo-field"><div class="profilo-label">Professione</div><div class="profilo-value">${UTENTE.attivita||'—'}</div></div>
+    <div class="profilo-field"><div class="profilo-label">Città</div><div class="profilo-value">${current_city_id||'—'}</div></div>
+    <div class="profilo-field"><div class="profilo-label">Professione</div><div class="profilo-value">${UTENTE.profession||'—'}</div></div>
     <div class="profilo-field"><div class="profilo-label">Tratto</div><div class="profilo-value">${UTENTE.tratto||'—'}</div></div>
     <div class="profilo-field"><div class="profilo-label">Iscritto il</div><div class="profilo-value">${fmtDateShort(UTENTE.created_at)}</div></div>
   `;
